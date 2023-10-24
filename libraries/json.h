@@ -2127,11 +2127,11 @@ JSON_HEDLEY_DIAGNOSTIC_POP
        defined(JSON_HEDLEY_TI_CLPRU_VERSION) || \
        defined(__clang__)
 #    define JSON_HEDLEY_IS_CONSTEXPR_(expr) ( \
-        sizeof(void) != \
+        sizeof() != \
         sizeof(*( \
                   1 ? \
                   ((void*) ((expr) * 0L) ) : \
-((struct { char v[sizeof(void) * 2]; } *) 1) \
+((struct { char v[sizeof() * 2]; } *) 1) \
                 ) \
               ) \
                                             )
@@ -9157,7 +9157,7 @@ class binary_reader
     */
     explicit binary_reader(InputAdapterType&& adapter, const input_format_t format = input_format_t::json) noexcept : ia(std::move(adapter)), input_format(format)
     {
-        (void)detail::is_sax_static_asserts<SAX, BasicJsonType> {};
+        ()detail::is_sax_static_asserts<SAX, BasicJsonType> {};
     }
 
     // make class move-only
@@ -12258,7 +12258,7 @@ class parser
     JSON_HEDLEY_NON_NULL(2)
     bool sax_parse(SAX* sax, const bool strict = true)
     {
-        (void)detail::is_sax_static_asserts<SAX, BasicJsonType> {};
+        ()detail::is_sax_static_asserts<SAX, BasicJsonType> {};
         const bool result = sax_parse_internal(sax);
 
         // strict mode: next byte must be EOF

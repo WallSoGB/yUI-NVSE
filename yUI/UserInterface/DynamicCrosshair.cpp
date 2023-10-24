@@ -1,8 +1,12 @@
 #include <main.h>
 
-#include <Menu.h>
-#include <Setting.h>
 #include <SimpleINILibrary.h>
+
+#include <Menu.hpp>
+#include <Setting.hpp>
+#include <PlayerCharacter.hpp>
+#include <HighProcess.hpp>
+#include <TESObjectWEAP.hpp>
 
 namespace UserInterface::DynamicCrosshair
 {
@@ -55,9 +59,9 @@ namespace UserInterface::DynamicCrosshair
 
 	bool IsPlayerWeaponGood()
 	{
-		const auto weaponInfo = g_player->baseProcess->GetWeaponInfo();
+		const auto weaponInfo = g_player->pkBaseProcess->GetWeaponInfo();
 		if (!weaponInfo) return false;
-		if (!g_player->baseProcess->IsWeaponOut()) return false;
+		if (!g_player->pkBaseProcess->IsWeaponOut()) return false;
 		if (!weaponInfo->weapon->IsRangedWeapon()) return false;
 		// TODO: exclusion list
 		return true;
@@ -66,7 +70,7 @@ namespace UserInterface::DynamicCrosshair
 	bool IsPlayerWeaponShotgun()
 	{
 		if (!shotgunAlt) return false;
-		if (g_player->baseProcess->GetWeaponInfo()->GetWeaponNumProjectiles(g_player) < 2) return false;
+		if (g_player->pkBaseProcess->GetWeaponInfo()->GetWeaponNumProjectiles(g_player) < 2) return false;
 		return true;
 	}
 

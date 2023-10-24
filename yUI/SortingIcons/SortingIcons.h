@@ -166,8 +166,8 @@ namespace SortingIcons
 
 		bool IsKey() override { return true; }
 
-		static Keyring* Set(Tile* tile, Keyring* item);
-		static Keyring* Get(Tile* tile);
+		static Keyring* Set(Tile*	pkTile, Keyring* item);
+		static Keyring* Get(Tile*	pkTile);
 	};
 
 	class Icon : public Object
@@ -221,7 +221,7 @@ namespace SortingIcons::Icons
 {
 
 	void InjectTemplates();
-	void InjectIconTile(const Icon* category_, Tile* tile);
+	void InjectIconTile(const Icon* category_, Tile*	pkTile);
 }
 
 namespace SortingIcons::Patch

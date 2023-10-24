@@ -2,7 +2,7 @@
 #include <Safewrite.hpp>
 
 #include <SimpleINILibrary.h>
-#include <BSExtraData.h>
+#include <Bethesda/ExtraDroppedItemList.hpp>
 
 namespace Fix::DroppedItems
 {
@@ -14,7 +14,7 @@ namespace Fix::DroppedItems
 	{
 		const auto xDropped = reinterpret_cast<ExtraDroppedItemList*>(extradatalist->GetByType(kExtraData_DroppedItemList));
 		if (!xDropped) return nullptr;
-		iterDroppedItem = xDropped->itemRefs.Head();
+		iterDroppedItem = xDropped->droppedItemList.Head();
 		if (!iterDroppedItem) return nullptr;
 		return iterDroppedItem->data;
 	}

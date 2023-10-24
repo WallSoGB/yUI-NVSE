@@ -54,7 +54,7 @@ namespace UserInterface::HitIndicator
 	std::unordered_set<Tile*>					tileQueue;
 	std::unordered_map<Tile*, TESObjectREFR*>	tileProcessing;
 
-	bool ProcessTilesInUse(Tile* tile, TESObjectREFR* target)
+	bool ProcessTilesInUse(Tile*	pkTile, TESObjectREFR* target)
 	{
 		if (!tile) return false;
 		if (rotate == 2) tile->Set("_RotateAngle", g_player->GetHeadingAngle(target));
@@ -67,7 +67,7 @@ namespace UserInterface::HitIndicator
 
 	Tile* CreateTileForHitMarker(TESObjectREFR* target)
 	{
-		Tile* tile;
+		Tile*	pkTile;
 		if (tileQueue.empty())
 			tile = tileMain->GetChild("JHIContainer")->AddTileFromTemplate("JHIMarker");
 		else {

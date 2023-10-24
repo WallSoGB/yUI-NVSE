@@ -437,7 +437,7 @@ public:
                 const_cast<char*>(m_scratch.data()),
                 m_scratch.size());
         }
-        const char* Data() { return m_scratch.data(); }
+        const char*	pkData() { return m_scratch.data(); }
     private:
         std::string m_scratch;
     };
@@ -445,7 +445,7 @@ public:
 public:
     /*-----------------------------------------------------------------------*/
 
-    /** Default constructor.
+    /**	pkDefault constructor.
 
         @param a_bIsUtf8				See the method SetUnicode() for details.
         @param a_bMultiKey				See the method SetMultiKey() for details.
@@ -462,10 +462,10 @@ public:
         bool a_bPrependNewKeys = false
     );
 
-    /** Destructor */
+    /**	pkDestructor */
     ~CSimpleIniTempl();
 
-    /** Deallocate all memory stored by this object */
+    /**	pkDeallocate all memory stored by this object */
     void Reset();
 
     /** Has any data been loaded */
@@ -1089,7 +1089,7 @@ public:
         bool            a_bForceReplace = false
     );
 
-    /** Delete an entire section, or a key from a section. Note that the
+    /**	pkDelete an entire section, or a key from a section. Note that the
         data returned by GetSection is invalid and must not be used after
         anything has been deleted from that section using this method.
         Note when multiple keys is enabled, this will delete all keys with
@@ -1113,7 +1113,7 @@ public:
         bool            a_bRemoveEmpty = false
     );
 
-    /** Delete an entire section, or a key from a section. If value is
+    /**	pkDelete an entire section, or a key from a section. If value is
         provided, only remove keys with the value. Note that the data
         returned by GetSection is invalid and must not be used after
         anything has been deleted from that section using this method.
@@ -1222,7 +1222,7 @@ private:
         return (ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n');
     }
 
-    /** Does the supplied character start a comment line? */
+    /**	pkDoes the supplied character start a comment line? */
     inline bool IsComment(SI_CHAR ch) const {
         return (ch == ';' || ch == '#');
     }
@@ -1236,7 +1236,7 @@ private:
     /** Make a copy of the supplied string, replacing the original pointer */
     SI_Error CopyString(const SI_CHAR*& a_pString);
 
-    /** Delete a string from the copied strings buffer if necessary */
+    /**	pkDelete a string from the copied strings buffer if necessary */
     void DeleteString(const SI_CHAR* a_pString);
 
     /** Internal use of our string comparison function */
@@ -2871,7 +2871,7 @@ public:
         const char* a_pInputData,
         size_t          a_uInputDataLen)
     {
-        (void)a_pInputData;
+        ()a_pInputData;
         SI_ASSERT(a_uInputDataLen != (size_t)-1);
 
         // ASCII/MBCS/UTF-8 needs no conversion
@@ -3012,7 +3012,7 @@ public:
 #if defined(SI_NO_MBSTOWCS_NULL) || (!defined(_MSC_VER) && !defined(_linux))
         // fall back processing for platforms that don't support a NULL dest to mbstowcs
         // worst case scenario is 1:1, this will be a sufficient buffer size
-        (void)a_pInputData;
+        ()a_pInputData;
         return a_uInputDataLen;
 #else
         // get the actual required buffer size

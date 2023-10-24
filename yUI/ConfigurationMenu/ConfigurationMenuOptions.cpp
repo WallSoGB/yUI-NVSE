@@ -28,13 +28,13 @@ CMSettingCategory* CMSettingCategory::Default()
 	return this;
 }
 
-CMSettingCategory* CMSettingCategory::Click(Tile* tile)
+CMSettingCategory* CMSettingCategory::Click(Tile*	pkTile)
 {
 	ModConfigurationMenu::GetSingleton()->DisplaySettings(categoryID);
 	return this;
 }
 
-CMSettingChoice* CMSettingChoice::Display(Tile* tile)
+CMSettingChoice* CMSettingChoice::Display(Tile*	pkTile)
 {
 	const auto value = setting.Read();
 
@@ -47,7 +47,7 @@ CMSettingChoice* CMSettingChoice::Display(Tile* tile)
 	return this;
 }
 
-CMSettingSlider* CMSettingSlider::Display(Tile* tile)
+CMSettingSlider* CMSettingSlider::Display(Tile*	pkTile)
 {
 	const auto value = setting.Read();
 	const Float64 percent = (Float64) (value - min) / (Float64) (max - min);
@@ -57,7 +57,7 @@ CMSettingSlider* CMSettingSlider::Display(Tile* tile)
 	return this;
 }
 
-CMSettingFont* CMSettingFont::Display(Tile* tile)
+CMSettingFont* CMSettingFont::Display(Tile*	pkTile)
 {
 	const auto& fontMap = ModConfigurationMenu::GetSingleton()->fontMap;
 	const auto value = font.Read();
@@ -85,7 +85,7 @@ CMSettingFont* CMSettingFont::Display(Tile* tile)
 	return this;
 }
 
-CMSettingControl* CMSettingControl::Display(Tile* tile)
+CMSettingControl* CMSettingControl::Display(Tile*	pkTile)
 {
 	const auto value = keyboard.Read();
 	const auto key = GetStringForScancode(value, 1);
@@ -112,7 +112,7 @@ CMSettingControl* CMSettingControl::Display(Tile* tile)
 	return this;
 }
 
-CMSettingControl* CMSettingControl::ClickValue(Tile* tile, UInt32 option)
+CMSettingControl* CMSettingControl::ClickValue(Tile*	pkTile, UInt32 option)
 {
 	const auto menu = ModConfigurationMenu::GetSingleton();
 	menu->controlHandler.setting = this;
@@ -136,7 +136,7 @@ CMValue CMSettingChoice::GetNext(const CMValue& value)
 	else return iter->first;
 }
 
-CMSettingChoice* CMSettingChoice::ClickValue(Tile* tile, UInt32 option)
+CMSettingChoice* CMSettingChoice::ClickValue(Tile*	pkTile, UInt32 option)
 {
 	switch (option) {
 	case kValue:
@@ -178,7 +178,7 @@ CMValue CMSettingSlider::GetNext(const CMValue& value) const
 	return newValue > max ? value : newValue;
 }
 
-CMSettingSlider* CMSettingSlider::ClickValue(Tile* tile, UInt32 option)
+CMSettingSlider* CMSettingSlider::ClickValue(Tile*	pkTile, UInt32 option)
 {
 	switch (option)
 	{
@@ -239,7 +239,7 @@ CMValue CMSettingFont::GetNext(const CMValue& value)
 	else return iter->first;
 }
 
-CMSettingFont* CMSettingFont::ClickValue(Tile* tile, UInt32 option)
+CMSettingFont* CMSettingFont::ClickValue(Tile*	pkTile, UInt32 option)
 {
 	switch (option)
 	{

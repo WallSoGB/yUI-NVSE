@@ -40,7 +40,7 @@ ModConfigurationMenu* ModConfigurationMenu::ReloadMenu()
 		CdeclCall(0x9FF8A0, "&ConfigurationMenu;", MENU_ID);
 	}
 
-	Tile* tile = InterfaceManager::GetSingleton()->menuRoot->InjectUIXML(MenuPath, true); // creates menu by itself
+	Tile*	pkTile = InterfaceManager::GetSingleton()->menuRoot->InjectUIXML(MenuPath, true); // creates menu by itself
 
 	const auto menu = GetSingleton();
 

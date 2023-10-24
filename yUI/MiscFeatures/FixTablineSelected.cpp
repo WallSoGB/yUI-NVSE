@@ -1,6 +1,6 @@
 #include <main.h>
-#include <Menu.h>
-#include <InterfaceManager.h>
+#include <Menu.hpp>
+#include <InterfaceManager.hpp>
 
 #include <SimpleINILibrary.h>
 

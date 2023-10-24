@@ -32,7 +32,7 @@ struct InputField
 		kInputType_Float
 	};
 
-	Tile* tile;
+	Tile*	pkTile;
 	std::string input;
 	bool isActive;
 	bool isCaretShown;
@@ -312,11 +312,11 @@ public:
 	virtual const char* GetTemplate() { return GetTemplateAlt(); }
 	virtual const char* GetTypeName() { return "None"; }
 
-	virtual CMSetting* Drag(Float32 value) { return this; };
-	virtual CMSetting* Default() { return this; };
-	virtual CMSetting* Display(Tile* tile) { return this; }
+	virtual CMSetting*	pkDrag(Float32 value) { return this; };
+	virtual CMSetting*	pkDefault() { return this; };
+	virtual CMSetting*	pkDisplay(Tile*	pkTile) { return this; }
 
-	virtual CMSetting* Click(Tile* tile) { return this; };
+	virtual CMSetting* Click(Tile*	pkTile) { return this; };
 
 	enum ClickType
 	{
@@ -328,7 +328,7 @@ public:
 		kDown
 	};
 
-	virtual CMSetting* ClickValue(Tile* tile, UInt32 option) { return this; };
+	virtual CMSetting* ClickValue(Tile*	pkTile, UInt32 option) { return this; };
 
 	virtual bool IsCategory() { return false; }
 
@@ -349,8 +349,8 @@ public:
 	const char* GetTemplate() override { return "SettingSubsettingTemplate"; }
 	const char* GetTypeName() override { return "Subsetting"; }
 
-	CMSettingCategory* Default() override;
-	CMSettingCategory* Click(Tile* tile) override;
+	CMSettingCategory*	pkDefault() override;
+	CMSettingCategory* Click(Tile*	pkTile) override;
 
 	bool IsCategory() override { return true; }
 
@@ -374,9 +374,9 @@ public:
 	CMValue GetPrev(const CMValue& value);
 	CMValue GetNext(const CMValue& value);
 
-	CMSettingChoice* Default() override { setting.Default(); return this; }
-	CMSettingChoice* Display(Tile* tile) override;
-	CMSettingChoice* ClickValue(Tile* tile, UInt32 option) override;
+	CMSettingChoice*	pkDefault() override { setting.Default(); return this; }
+	CMSettingChoice*	pkDisplay(Tile*	pkTile) override;
+	CMSettingChoice* ClickValue(Tile*	pkTile, UInt32 option) override;
 
 	void SaveJSON(JSON& elem) override;
 	void LoadJSON(const JSON& elem) override;
@@ -400,11 +400,11 @@ public:
 	CMValue GetPrev(const CMValue& value) const;
 	CMValue GetNext(const CMValue& value) const;
 
-	CMSettingSlider* Drag(Float32 value) override;
-	CMSettingSlider* Default() override { setting.Default(); return this; }
-	CMSettingSlider* Display(Tile* tile) override;
+	CMSettingSlider*	pkDrag(Float32 value) override;
+	CMSettingSlider*	pkDefault() override { setting.Default(); return this; }
+	CMSettingSlider*	pkDisplay(Tile*	pkTile) override;
 
-	CMSettingSlider* ClickValue(Tile* tile, UInt32 option) override;
+	CMSettingSlider* ClickValue(Tile*	pkTile, UInt32 option) override;
 
 	void SaveJSON(JSON& elem) override;
 	void LoadJSON(const JSON& elem) override;
@@ -423,9 +423,9 @@ public:
 	const char* GetTemplate() override { return "SettingControlTemplate"; }
 	const char* GetTypeName() override { return "SettingControl"; }
 
-	CMSettingControl* Default() override { keyboard.Default(); mouse.Default(); controller.Default(); return this; }
-	CMSettingControl* Display(Tile* tile) override;
-	CMSettingControl* ClickValue(Tile* tile, UInt32 option) override;
+	CMSettingControl*	pkDefault() override { keyboard.Default(); mouse.Default(); controller.Default(); return this; }
+	CMSettingControl*	pkDisplay(Tile*	pkTile) override;
+	CMSettingControl* ClickValue(Tile*	pkTile, UInt32 option) override;
 
 	void SaveJSON(JSON& elem) override;
 	void LoadJSON(const JSON& elem) override;
@@ -445,10 +445,10 @@ public:
 	static CMValue GetPrev(const CMValue& value);
 	static CMValue GetNext(const CMValue& value);
 	
-	CMSettingFont* Default() override { font.Default(); fontY.Default(); return this; }
-	CMSettingFont* Display(Tile* tile) override;
+	CMSettingFont*	pkDefault() override { font.Default(); fontY.Default(); return this; }
+	CMSettingFont*	pkDisplay(Tile*	pkTile) override;
 
-	CMSettingFont* ClickValue(Tile* tile, UInt32 option) override;
+	CMSettingFont* ClickValue(Tile*	pkTile, UInt32 option) override;
 
 	void SaveJSON(JSON& elem) override;
 	void LoadJSON(const JSON& elem) override;
@@ -532,10 +532,10 @@ public:
 
 	union
 	{
-		Tile* tiles[11];
+		Tile*	pkTiles[11];
 		struct
 		{
-			Tile* tileBackButton;
+			Tile*	pkTileBackButton;
 			Tile* menuTitle;
 
 		};
@@ -593,7 +593,7 @@ public:
 	class Description
 	{
 	public:
-		Tile* tile;
+		Tile*	pkTile;
 
 		void Set(const std::string& str) const
 		{

@@ -60,7 +60,7 @@ namespace UserInterface::VisualObjectives
 
 	Tile* CreateTileForVisualObjective(NiPoint3 target)
 	{
-		Tile* tile;
+		Tile*	pkTile;
 		if (!tilesFree.empty()) { const auto iter = tilesFree.begin(); tile = *iter; tilesFree.erase(iter); }
 		else tile = tileMain->GetChild("JVOContainer")->AddTileFromTemplate("JVOMarker");
 		tilesInUse[tile] = target;

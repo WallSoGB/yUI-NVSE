@@ -20,7 +20,7 @@ namespace SortingIcons::Icons
 		}
 	}
 
-	bool InjectTemplatesToMenu(TileMenu* tilemenu, const std::string& templateName) {
+	bool InjectTemplatesToMenu(TileMenu*	pkTilemenu, const std::string& templateName) {
 		if (const auto menu = tilemenu->menu; !menu->GetTemplateExists(templateName))
 		{
 			if (menu->id != kMenuType_Barter && menu->id != kMenuType_Container && menu->id != kMenuType_RepairServices) return false;
@@ -30,7 +30,7 @@ namespace SortingIcons::Icons
 		return true;
 	}
 
-	void InjectIconTile(const Icon* category, Tile* tile)
+	void InjectIconTile(const Icon* category, Tile*	pkTile)
 	{
 		if (!category->IsValid()) return;
 
@@ -85,13 +85,13 @@ namespace SortingIcons::Icons
 		text->Set(kTileValue_wrapwidth, text->Get(kTileValue_wrapwidth) - width, false);
 	}
 
-	void __fastcall InjectTileSetTileString(Tile* tile, const InventoryChanges* entry, MenuItemEntryList* list, const TileValueIDs tilevalue, const char* tileText, bool propagate)
+	void __fastcall InjectTileSetTileString(Tile*	pkTile, const InventoryChanges* entry, MenuItemEntryList* list, const TileValueIDs tilevalue, const char*	pkTileText, bool propagate)
 	{
 		tile->Set(tilevalue, tileText, propagate);
 		if (entry && entry->form && TryGetTypeOfForm(entry->form)) InjectIconTile(Icon::Get(Item::Get(entry->form)), tile);
 	}
 
-	void __fastcall TagImageSetStringValue(Tile* tile, InventoryChanges* entry, TileValueIDs tilevalue, char* src, char propagate)
+	void __fastcall TagImageSetStringValue(Tile*	pkTile, InventoryChanges* entry, TileValueIDs tilevalue, char* src, char propagate)
 	{
 		if (!tile) return;
 //		if (g_Categories.empty()) return;
@@ -107,7 +107,7 @@ namespace SortingIcons::Icons
 		tile->Set(tilevalue, category->IsValid() && !category->filename.empty() ? category->filename.c_str() : src, propagate);
 	}
 
-	void __fastcall TagRoseSetStringValue(Tile* tile, InventoryChanges* entry, TileValueIDs tilevalue, char* src, char propagate)
+	void __fastcall TagRoseSetStringValue(Tile*	pkTile, InventoryChanges* entry, TileValueIDs tilevalue, char* src, char propagate)
 	{
 		if (!tile) return;
 //		if (g_Categories.empty()) return;
@@ -125,7 +125,7 @@ namespace SortingIcons::Icons
 	}
 
 
-	void __fastcall TagPromptPropagateIntValue(Tile* tile, void* dummyedx, TileValueIDs id, signed int a3)
+	void __fastcall TagPromptPropagateIntValue(Tile*	pkTile, void* dummyedx, TileValueIDs id, signed int a3)
 	{
 		tile->Set(id, a3, true);
 

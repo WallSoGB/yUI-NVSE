@@ -12,7 +12,7 @@ std::unordered_map<std::string, UInt32> g_MCMChildOrder{
 	{"MCM_List", 16}, {"MCM_Scale", 17}, {"MCM_Options", 18}
 };
 
-int SortMCMChildren(Tile* tile1, Tile* tile2)
+int SortMCMChildren(Tile*	pkTile1, Tile*	pkTile2)
 {
 	const auto pos1 = g_MCMChildOrder[std::string(tile1->name.CStr())];
 	const auto pos2 = g_MCMChildOrder[std::string(tile2->name.CStr())];
@@ -25,7 +25,7 @@ std::unordered_map<std::string, UInt32> g_ValueChildOrder{
 	{"RGB", 25}, {"toggle_check", 0}, {"toggle", 1}, {"suffix", 2}, {"prefix", 3}, {"text", 4}
 };
 
-int SortValueChildren(Tile* tile1, Tile* tile2)
+int SortValueChildren(Tile*	pkTile1, Tile*	pkTile2)
 {
 	const auto pos1 = g_ValueChildOrder[std::string(tile1->name.CStr())];
 	const auto pos2 = g_ValueChildOrder[std::string(tile2->name.CStr())];

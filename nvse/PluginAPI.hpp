@@ -1,6 +1,6 @@
 #pragma once
-#include <CommandTable.h>
-#include <Utilities.hpp>
+//#include <CommandTable.h>
+#include <Utilities.h>
 
 namespace PluginAPI { class ArrayAPI; }
 
@@ -16,15 +16,38 @@ enum
 	kPluginOpcode_Debug = kNVSEOpcodeTest,
 };
 
-struct SEInterface
+enum
 {
-	UInt32		version;
-	UInt32		gameVersion;
-	UInt32		editorVersion;
-	UInt32		isEditor;
-	bool		(*RegisterCommand)(CommandInfo * info);	// returns true for success, false for failure
-	void		(*SetOpcodeBase)(UInt32 opcode);
-	void*		(*QueryInterface)(UInt32 id);
+	kInterface_Serialization = 0,
+	kInterface_Console,
+
+	// Added v0002
+	kInterface_Messaging,
+	kInterface_CommandTable,
+
+	// Added v0004
+	kInterface_StringVar,
+	kInterface_ArrayVar,
+	kInterface_Script,
+
+	// Added v0005 - version bumped to 3
+	kInterface_Data,
+	// Added v0006
+	kInterface_EventManager,
+	kInterface_LoggingInterface,
+
+	kInterface_Max
+};
+
+struct NVSEInterface
+{
+	UInt32			nvseVersion;
+	UInt32			runtimeVersion;
+	UInt32			editorVersion;
+	UInt32			isEditor;
+	bool			(*RegisterCommand)(CommandInfo * info);	// returns true for success, false for failure
+	void			(*SetOpcodeBase)(UInt32 opcode);
+	void*			(*QueryInterface)(UInt32 id);
 
 	// call during your Query or Load functions to get a PluginHandle uniquely identifying your plugin
 	// invalid if called at any other time, so call it once and save the result
@@ -33,49 +56,8 @@ struct SEInterface
 	// CommandReturnType enum defined in CommandTable.h
 	// does the same as RegisterCommand but includes return type; *required* for commands returning arrays
 	bool			(*RegisterTypedCommand)(CommandInfo * info, CommandReturnType retnType);
-	// returns a full path the the Oblivion directory
-	const char*		(*GetRuntimeDirectory)();
-};
-
-struct OBSEInterface : public SEInterface
-{
-	// added v0021
-	// returns true if a plugin with the given name is loaded
-	bool			(*GetPluginLoaded)(const char* pluginName);
-	// returns the version number of the plugin, or zero if it isn't loaded
-	UInt32			(*GetPluginVersion)(const char* pluginName);
-};
-
-struct FOSEInterface : public SEInterface
-{
-	// Allows checking for nogore edition
-	UInt32	isNogore;
-};
-
-struct NVSEInterface : public SEInterface
-{
-	enum
-	{
-		kInterface_Serialization = 0,
-		kInterface_Console,
-
-		// Added v0002
-		kInterface_Messaging,
-		kInterface_CommandTable,
-
-		// Added v0004
-		kInterface_StringVar,
-		kInterface_ArrayVar,
-		kInterface_Script,
-
-		// Added v0005 - version bumped to 3
-		kInterface_Data,
-		// Added v0006
-		kInterface_EventManager,
-		kInterface_LoggingInterface,
-
-		kInterface_Max
-	};
+	
+	const char*		(*GetRuntimeDirectory)(); // returns a full path the the game directory
 
 	UInt32			isNogore;
 };
@@ -249,7 +231,7 @@ struct NVSEMessagingInterface
 
 	UInt32	version;
 	bool	(* RegisterListener)(PluginHandle listener, const char* sender, EventCallback handler);
-	bool	(* Dispatch)(PluginHandle sender, UInt32 messageType, void * data, UInt32 dataLen, const char* receiver);
+	bool	(*	pkDispatch)(PluginHandle sender, UInt32 messageType, void * data, UInt32 dataLen, const char* receiver);
 };
 
 /**** array_var API **************************************************************************
@@ -824,7 +806,7 @@ struct NVSEEventManagerInterface
 		return pType;
 	}
 
-	enum EventFlags : UInt32
+	enum EnumventFlags : UInt32
 	{
 		kFlags_None = 0,
 
@@ -1090,6 +1072,59 @@ inline _CallFunctionAlt				CallFunctionAlt;
 inline _CompileScript				CompileScript;
 inline _CompileExpression			CompileExpression;
 
+struct FOSEInterface
+{
+	UInt32	foseVersion;
+	UInt32	runtimeVersion;
+	UInt32	editorVersion;
+	UInt32	isEditor;
+	bool	(* RegisterCommand)(CommandInfo * info);	// returns true for success, false for failure
+	void	(* SetOpcodeBase)(UInt32 opcode);
+	void *	(* QueryInterface)(UInt32 id);
+
+	// call during your Query or Load functions to get a PluginHandle uniquely identifying your plugin
+	// invalid if called at any other time, so call it once and save the result
+	PluginHandle	(* GetPluginHandle)();
+
+	// CommandReturnType enum defined in CommandTable.h
+	// does the same as RegisterCommand but includes return type; *required* for commands returning arrays
+	bool	(* RegisterTypedCommand)(CommandInfo * info, CommandReturnType retnType);
+	// returns a full path the the game directory
+	const char* (* GetRuntimeDirectory)();
+
+	// Allows checking for nogore edition
+	UInt32	isNogore;
+};
+
+struct OBSEInterface
+{
+	UInt32	obseVersion;
+	UInt32	oblivionVersion;
+	UInt32	editorVersion;
+	UInt32	isEditor;
+	bool	(* RegisterCommand)(CommandInfo * info);	// returns true for success, false for failure
+	void	(* SetOpcodeBase)(UInt32 opcode);
+	void *	(* QueryInterface)(UInt32 id);
+
+	// added in v0015, only call if obseVersion >= 15
+	// call during your Query or Load functions to get a PluginHandle uniquely identifying your plugin
+	// invalid if called at any other time, so call it once and save the result
+	PluginHandle	(* GetPluginHandle)();
+
+	// added v0018
+	// CommandReturnType enum defined in CommandTable.h
+	// does the same as RegisterCommand but includes return type; *required* for commands returning arrays
+	bool	(* RegisterTypedCommand)(CommandInfo * info, CommandReturnType retnType);
+	// returns a full path the the Oblivion directory
+	const char* (* GetOblivionDirectory)();
+
+	// added v0021
+	// returns true if a plugin with the given name is loaded
+	bool	(* GetPluginLoaded)(const char* pluginName);
+	// returns the version number of the plugin, or zero if it isn't loaded
+	UInt32	(* GetPluginVersion)(const char* pluginName);
+};
+
 struct FOSEMessagingInterface
 {
 	struct Message {
@@ -1159,5 +1194,5 @@ struct FOSEMessagingInterface
 
 	UInt32	version;
 	bool	(* RegisterListener)(PluginHandle listener, const char* sender, EventCallback handler);
-	bool	(* Dispatch)(PluginHandle sender, UInt32 messageType, void * data, UInt32 dataLen, const char* receiver);
+	bool	(*	pkDispatch)(PluginHandle sender, UInt32 messageType, void * data, UInt32 dataLen, const char* receiver);
 };

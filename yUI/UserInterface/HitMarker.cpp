@@ -48,7 +48,7 @@ namespace UserInterface::HitMarker
 	std::unordered_set<Tile*>			tilesFree;
 	std::unordered_set<Tile*>			tilesInUse;
 
-	bool ProcessTilesInUse(Tile* tile)
+	bool ProcessTilesInUse(Tile*	pkTile)
 	{
 		if (!tile) return false;
 		const auto val = tile->GetValue("_counter");
@@ -60,7 +60,7 @@ namespace UserInterface::HitMarker
 
 	Tile* CreateTileForHitMarker()
 	{
-		Tile* tile;
+		Tile*	pkTile;
 		if (tilesFree.empty()) tile = tileMain->GetChild("JHMContainer")->AddTileFromTemplate("JHMMarker");
 		else {
 			const auto iter = tilesFree.begin();

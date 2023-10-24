@@ -1,11 +1,11 @@
 #include <main.h>
-#include <Setting.h>
-#include <BaseProcess.h>
+#include <Bethesda/Setting.hpp>
+#include <Bethesda/BaseProcess.hpp>
+#include <Bethesda/TESObjectREFR.hpp>
+#include <Bethesda/Actor.hpp>
 
 #include <Safewrite.hpp>
 #include <SimpleINILibrary.h>
-
-#include "TESObjectREFR.h"
 
 namespace Patch::RestoreFO3Spread
 {

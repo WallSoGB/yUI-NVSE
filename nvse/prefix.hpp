@@ -61,6 +61,8 @@ typedef double				Float64;	//!< A 64-bit floating point value
 #define VERSION_CODE_SECONDARY(in)				((in >> 8) & 0xFFF)
 #define VERSION_CODE_SUB(in)					((in >> 0) & 0xFF)
 
+#define ASSERT_SIZE(cl, size) static_assert(sizeof(cl) == size)
+
 class ActiveEffect;
 class Actor;
 class ActorMover;

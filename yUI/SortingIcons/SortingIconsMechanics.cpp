@@ -153,12 +153,12 @@ namespace SortingIcons
 		return Set(form, assignedItem);
 	}
 
-	Keyring* Keyring::Set(Tile* tile, Keyring* key)
+	Keyring* Keyring::Set(Tile*	pkTile, Keyring* key)
 	{
 		return g_TileToKey[tile] = key;
 	}
 
-	Keyring* Keyring::Get(Tile* tile)
+	Keyring* Keyring::Get(Tile*	pkTile)
 	{
 		if (g_TileToKey.contains(tile)) return g_TileToKey[tile];
 
@@ -225,7 +225,7 @@ namespace SortingIcons::Keyrings
 		update = true;
     }
 
-	UInt32 __fastcall OpenKeyring(Tile* tile)
+	UInt32 __fastcall OpenKeyring(Tile*	pkTile)
 	{
 		if (!tile) {}
 		else if (g_TileToKey.contains(tile))
@@ -233,7 +233,7 @@ namespace SortingIcons::Keyrings
 		return *(UInt32*)0x011D9EB8;
 	}
 
-	UInt32 __fastcall CloseKeyring(Tile* tile)
+	UInt32 __fastcall CloseKeyring(Tile*	pkTile)
 	{
 		openTab = nullptr;
 		return *(UInt32*)0x011D9EB8;
@@ -306,7 +306,7 @@ namespace SortingIcons::Keyrings
 	}
 
 
-	bool __fastcall KeyringFilter(InventoryChanges* entry, Tile* tile)
+	bool __fastcall KeyringFilter(InventoryChanges* entry, Tile*	pkTile)
 	{
 		if (!entry || !entry->form) return true;
 
@@ -327,7 +327,7 @@ namespace SortingIcons::Keyrings
 	}
 
 	/*
-	void __fastcall HideNonKeysGetTile(InventoryMenu* invmenu, Tile* tile)
+	void __fastcall HideNonKeysGetTile(InventoryMenu* invmenu, Tile*	pkTile)
 	{
 		if (tile && tile->GetValue(kTileValue_user16)) openCategory = tile->GetValue(kTileValue_user16)->str; else openCategory = "";
 		invmenu->itemsList.Filter(KeyringHideNonKeys);
@@ -387,7 +387,7 @@ namespace SortingIcons::Keyrings
 		menu->itemsList.RestoreScrollPositionProxy(listIndex, currentValue);
 	}
 
-	void __fastcall KeyringPipBoyIconHook(Tile* tile, void* dummyEDX, eTileValue tilevalue, char* string, int propagate)
+	void __fastcall KeyringPipBoyIconHook(Tile*	pkTile, void* dummyEDX, eTileValue tilevalue, char* string, int propagate)
 	{
 		
 		std::string stringnew = string;
