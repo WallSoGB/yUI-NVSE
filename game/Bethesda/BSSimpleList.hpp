@@ -473,6 +473,8 @@ public:
 		return removed;
 	};
 
+	BSSimpleList<T_Data>* Head() const { return &m_item; }
+	BSSimpleList<T_Data>* Tail() const { return GetLastNode(); }
 };
 static_assert(sizeof(BSSimpleList<void*>) == 0x8);
 //template <class T> using BSSimpleList = TList<T>;

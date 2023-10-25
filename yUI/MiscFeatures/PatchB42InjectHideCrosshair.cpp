@@ -1,6 +1,5 @@
 #include <main.h>
-#include <Menu.h>
-
+#include <UserInterface.hpp>
 #include <SimpleINILibrary.h>
 
 namespace Patch::B42InjectHideCrosshair
@@ -20,15 +19,8 @@ namespace Patch::B42InjectHideCrosshair
 		ini.SaveFile(iniPath.c_str(), false);
 	}
 
-	void XilOn()
-	{
-		g_HUDMainMenu->tileReticleCenter->Set(kTileValue_visible, false);
-	}
-
-	void XilOff()
-	{
-		g_HUDMainMenu->tileReticleCenter->Set(kTileValue_visible, true);
-	}
+	void XilOn() { MyHUDMainMenu::Get().tileReticleCenter->Set(Tile::kValue_visible, false); }
+	void XilOff() { MyHUDMainMenu::Get().tileReticleCenter->Set(Tile::kValue_visible, true); }
 
 	void MainLoopDoOnce()
 	{

@@ -77,7 +77,7 @@ public:
 		};
 	};
 
-	EFilter					eFilter;					// 084
+	EnumFilter				eFilter;					// 084
 	ScrollPos				tabScrollPositions[6];	// 088, the scroll index for Weapons, Apparel, Aid, Misc, Ammo and the Keyring
 	MenuItemEntryList		itemsList;				// 0B8
 	HotKeyWheel				hotkeyWheel;			// 0E8

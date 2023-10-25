@@ -43,6 +43,7 @@ public:
 
 	__forceinline bool operator!=(const NiPointer& ptr) const { return (m_pObject != ptr.m_pObject); }
 };
+static_assert(sizeof(NiPointer<void*>) == 0x4);
 
 #define NiSmartPointer(className) \
     class className; \

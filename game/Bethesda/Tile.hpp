@@ -3,6 +3,7 @@
 #include "BSSimpleArray.hpp"
 #include "BSString.hpp"
 #include "BSSimpleList.hpp"
+#include "NiTList.hpp"
 
 //	Tile			
 //		TileRect		3C	ID=385
@@ -15,8 +16,10 @@
 //		HotRect	ID=38A
 //		Window	ID=38B
 
+class NiColorAlpha;
+
 // 0x38
-class Tile : public NiTList<Tile>
+class Tile : public NiTList<Tile*>
 {
 public:
 	enum EnumActionType : UInt32
@@ -180,6 +183,16 @@ public:
 
 		kValue_max,
 
+		kValue_parent	= 5001,
+		kValue_self		= 5002,
+		kValue_unk1		= 5004,
+		kValue_child	= 5005,
+		kValue_root		= 5006,
+		kValue_globals	= 5007,
+		kValue_unk2		= 5008,
+		kValue_grandparent = 5009,
+		kValue_tilemenu = 5010,
+
 		kValue_fadeout = 0x1772,
 	};
 
@@ -208,8 +221,8 @@ public:
 		virtual Float32	GetFloat();
 		virtual Value*	GetValue();
 
-		EActionType		eActionType;		// 04
-		Action*			pkNextAction;		// 08
+		EnumActionType		eActionType;		// 04
+		Action*				pkNextAction;		// 08
 	};
 
 	// 10
@@ -235,7 +248,7 @@ public:
 	// 14
 	struct Value
 	{
-		EValue			eID;				// 00
+		EnumValue		eID;				// 00
 		Tile*			pkParentTile;		// 04
 		Float32			fNumericalValue;	// 08
 		char*			pcStringValue;		// 0C
@@ -255,98 +268,37 @@ public:
 	UInt8						ucShouldPaintRed;	// 35
 	UInt8						pad35[2];			// 36
 
-	static UInt32	TraitNameToID(const char* traitName);
-	Value* GetValue(UInt32 typeID);
-	Value* GetValueName(const char* valueName);
-	Tile* GetChild(const char* childName);
-	Tile* GetComponent(const char* componentTile, const char** trait);
-	Tile* GetComponentTile(const char* componentTile);
-	Value* GetComponentValue(const char* componentPath);
-	char* GetComponentFullName(char* resStr);
+	__forceinline static EnumValue		TraitNameToID(const char* traitName) { return CdeclCall<EnumValue>(0x00A01860, traitName); }
 
-	void			Dump();
+	__forceinline Value*		Get(const EnumValue aeID) const { return ThisCall<Value*>(0xA01000, const_cast<Tile*>(this), aeID);};
+	__forceinline Value*		Get(const char* valueName) const { return Get(TraitNameToID(valueName)); }
 
-	Tile* GetChildAlt(const char* childName);
-	Value* GetComponentValueAlt(const char* componentPath);
+	// 0xA012D0 without critical section
+	__forceinline void			Set(const EnumValue aeID, const Float32 afValue, const bool abPropagate = true)
+	{ ThisCall<Value*>(0xA01000, this, aeID)->SetFloat(afValue, abPropagate); }
+	__forceinline void			Set(const char* apcID, const Float32 afValue, const bool abPropagate = true)
+	{ Set(TraitNameToID(apcID), afValue, abPropagate); }
 
-	std::string GetQualifiedName();
+	// 0xA0137F without critical section
+	__forceinline void			SetString(const EnumValue aeID, const char* apcValue, const bool abPropagate = true)
+	{ ThisCall<Value*>(0xA01000, this, aeID)->SetString(apcValue, abPropagate); }
+	__forceinline void			SetString(const char* apcID, const char* apcValue, const bool abPropagate = true)
+	{ SetString(TraitNameToID(apcID), apcValue, abPropagate); }
 
-	__forceinline static TileValueIDs	TraitNameToID(const char* traitName) { return CdeclCall<TileValueIDs>(0x00A01860, traitName); }
-	static const char*					TraitIDToName(TileValueIDs id);	// slow
-	__forceinline Value* __fastcall		GetValue(const TileValueIDs id) const;
-	Value*								GetValue(const char* valueName) const { return GetValue(TraitNameToID(valueName)); }
+	__forceinline void			SetGradual(const EnumValue aeID, const Float32 afStartValue, const Float32 afEndValue, const Float32 afSeconds, const UInt32 uiChangeMode = 0)
+	{ ThisCall(0xA07C60, this, aeID, afStartValue, afEndValue, afSeconds, uiChangeMode); }
+	__forceinline void			SetGradual(const char* apcID, const Float32 afStartValue, const Float32 afEndValue, const Float32 afSeconds, const UInt32 uiChangeMode = 0)
+	{ SetGradual(TraitNameToID(apcID), afStartValue, afEndValue, afSeconds, uiChangeMode); }
 
-	Tile*								GetNthChild(UInt32 index);
-	Tile*								GetChild(const std::string& childName) const;
-	Tile*								GetComponent(const std::string& componentPath);
+	__forceinline Menu*		GetParentMenu() { return ThisCall<Menu*>(0xA03C90, this); };
 
-	__forceinline Tile*					ReadXML(const std::filesystem::path& xmlPath) { return ThisCall<Tile*>(0xA01B00, this, xmlPath.generic_string().c_str()); };
-	__forceinline Tile*					InjectUIXML(const std::filesystem::path& str) { return exists(str) ? ReadXML(str) : nullptr; };
-	Tile*								InjectUIXML(const std::filesystem::path& xmlPath, bool ignoreUIO);
+	__forceinline void		HandleChange(const EnumValue id) { ThisCall<void>(0xA074D0, this, id); }
+	__forceinline Tile*		GetChildByID(const EnumValue id) { return ThisCall<Tile*>(0xA03EB0, this, id); }; // THANKS STEWIE
+	__forceinline Tile*		GetByName(const char* name) { return ThisCall<Tile*>(0xA03DA0, this, name); };
+	__forceinline Tile*		GetByTraitName(const char* traitName) { return CdeclCall<Tile*>(0xA08B20, this, traitName); };
 
-	__forceinline ValueCaster			Get(const TileValueIDs id) const { return GetValue(id); }
-	__forceinline ValueCaster			Get(const char* id) const { return Get(TraitNameToID(id)); };
+	bool					PlayTileSound(EnumValue id = kValue_clicksound) { return ThisCall<char>(0xA0B110, this, id); }
+	Tile*					ReadXML(const char* apcXMLPath) { return ThisCall<Tile*>(0xA01B00, this, apcXMLPath); };
 
-	__forceinline void					Set(const TileValueIDs id, const Float32 fltVal, const bool bPropagate = true)
-	{
-		Value* value;
-		if (value = GetValue(id); !value) value = ThisCall<Value*>(0xA01000, this, id);
-		value->SetFloat(fltVal, bPropagate);
-	}
-	__forceinline void					Set(const char* id, const Float32 fltVal, const bool bPropagate = true) { Set(TraitNameToID(id), fltVal, bPropagate); }
-
-	__forceinline void					Set(const TileValueIDs id, const std::string& strVal, const bool bPropagate = true)
-	{
-		Value* value;
-		if (value = GetValue(id); !value) value = ThisCall<Value*>(0xA01000, this, id);
-		value->SetString(strVal.c_str(), bPropagate);
-	}
-	__forceinline void					Set(const char* id, const std::string& strVal, const bool bPropagate = true)
-	{
-		Set(TraitNameToID(id), strVal, bPropagate);
-	}
-
-	__forceinline void					SetGradual(const TileValueIDs id, const Float32 startVal, const Float32 endVal, const Float32 seconds, const UInt32 changeMode = 0)
-	{
-		ThisCall(0xA07C60, this, id, startVal, endVal, seconds, changeMode);
-	}
-
-	__forceinline void					SetGradual(const char* id, const Float32 startVal, const Float32 endVal, const Float32 seconds, const UInt32 changeMode = 0)
-	{
-		SetGradual(TraitNameToID(id), startVal, endVal, seconds, changeMode);
-	}
-
-	__forceinline Menu*					GetParentMenu() { return ThisCall<Menu*>(0xA03C90, this); };
-	TileMenu*							GetTileMenu();
-	void __fastcall						PokeValue(TileValueIDs id);
-
-	__forceinline void					HandleChange(const TileValueIDs id) { ThisCall<void>(0xA074D0, this, id); }
-	__forceinline Tile*					GetChildByID(const TileValueIDs id) { return ThisCall<Tile*>(0xA03EB0, this, id); }; // THANKS STEWIE
-	__forceinline Tile*					LookUpRectByName(const char* name);
-
-	Tile*								AddTileFromTemplate(const char* templateName, const char* altName = nullptr);
-
-	Tile*								GetParentByID(const UInt32 id)
-	{
-		CdeclCall(0xA044F0); // enter tile critical section
-
-		Tile*	pkTile = this;
-		while (tile = tile->parent)
-		{
-			if (static_cast<UInt32>(tile->Get(kTileValue_id)) == id)
-			{
-				break;
-			}
-		}
-
-		CdeclCall(0xA04500); // leave tile critical section
-		return tile;
-	}
-
-	Tile*								GetByTraitName(const char* traitName) { return CdeclCall<Tile*>(0xA08B20, this, traitName); };
-
-	std::string							GetFullPath() const;
-
-	bool								PlayTileSound(TileValueIDs id = kTileValue_clicksound) { return ThisCall<char>(0xA0B110, this, id); }
 };
 static_assert(sizeof(Tile) == 0x38);

@@ -11,8 +11,7 @@ class TESObjectWEAP;
 class TESPackage;
 class TESPackageData;
 
-class WeaponInfo;
-class AmmoInfo;
+class InventoryEntryData;
 
 // 0x30
 class BaseProcess 
@@ -182,15 +181,15 @@ public:
 	virtual void			Unk_4F();
 	virtual void			Unk_50();
 	virtual void			Unk_51();
-	virtual WeaponInfo*		GetWeaponInfo();
-	virtual AmmoInfo*		GetAmmoInfo();
+	virtual InventoryEntryData* GetWeapon();
+	virtual InventoryEntryData* GetAmmo();
 	virtual void			Unk_54();
 	virtual void			Unk_55();
 	virtual void			Unk_56();
 	virtual void			Unk_57();
-	virtual void			ChangeWeapon();
+	virtual void			SetWeapon(InventoryEntryData* apkWeapon);
 	virtual void			Unk_59();
-	virtual void			UpdateAmmoInfo(AmmoInfo* apkAmmoInfo);
+	virtual void			SetAmmo(InventoryEntryData* apkAmmo);
 	virtual void			Unk_5B();
 	virtual void			Unk_5C();
 	virtual void			Unk_5D();	// Called by 5E with count itemExtraList item

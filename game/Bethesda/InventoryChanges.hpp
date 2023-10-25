@@ -1,10 +1,16 @@
 #pragma once
+#include "BSSimpleList.hpp"
 
-struct InventoryChanges
+class ExtraDataList;
+class TESBoundObject;
+
+class InventoryEntryData
 {
-	ExtendDataList*				extendData;		// 00
-	SInt32						countDelta;		// 04
-	TESForm*					form;			// 08
+public:
+
+	BSSimpleList<ExtraDataList*>*	pkExtraLists;		// 00
+	SInt32							iCountDelta;		// 04
+	TESBoundObject*					pkObject;			// 08
 
 	void						Free(bool bFreeList = false);
 	void						Cleanup();
@@ -60,60 +66,43 @@ struct InventoryChanges
 		return false;
 	}
 };
-static_assert(sizeof(InventoryChanges) == 0xC);
-
-struct InventoryChangesList : BSSimpleList<InventoryChanges*>
-{
-	InventoryChanges* FindForItem(TESForm* item);
-	void							Free(bool bFreeList);
-	static InventoryChangesList* Create(UInt32 refID, UInt32 count, ExtendDataList* pExtendDataList);
-};
-static_assert(sizeof(InventoryChangesList) == 0x8);
+static_assert(sizeof(InventoryEntryData) == 0xC);
 
 //typedef std::vector<ExtendDataList*> ExtendDataArray;
 
+class InventoryChanges
+{
+public:
+	BSSimpleList<InventoryEntryData*>*	pkEntryList;	// 000
+	TESObjectREFR*						pkOwner;		// 004
+	Float32								fTotalWgCurrent;
+	Float32								fTotalWgLast;	// armor in sse
+	UInt8								bChanged;		// 010	referenced in relation to scripts in container
+	UInt8								pad[3];
+
+	static Data* Create(TESObjectREFR* owner);
+
+	Float64								GetInventoryWeight();
+
+
+	void							Cleanup();	// clean up unneeded extra data from each EntryData
+	ExtendDataList* Add(TESForm* form, ExtraDataList* dataList = NULL);
+	bool							Remove(TESForm* form, ExtraDataList* dataList = NULL, bool bFree = false);
+	ExtraDataList* SetEquipped(TESForm* obj, bool bEquipped, bool bForce = false);
+	// get EntryData and ExtendData for all equipped objects, return num objects equipped
+	UInt32							GetAllEquipped(InventoryChangesArray& outEntryData);
+
+	static ExtraContainerChanges* GetForRef(TESObjectREFR* refr);
+};
+static_assert(sizeof(InventoryChanges) == 0x14);
 
 struct InventoryItemData
 {
-	SInt32								count;
-	InventoryChanges* entry;
+	SInt32				count;
+	InventoryEntryData*	entry;
 
-	InventoryItemData(SInt32 count, InventoryChanges* entry) : count(count), entry(entry) {}
+	InventoryItemData(SInt32 count, InventoryEntryData* entry) : count(count), entry(entry) {}
 };
 static_assert(sizeof(InventoryItemData) == 0x08);
 
 typedef std::vector<InventoryChanges*> InventoryChangesArray;
-
-struct AmmoInfo
-{
-	void* unk00;	// 00
-	UInt32	count;	// 04
-	TESAmmo* ammo;	// 08
-	UInt32	unk0C;	// 0C
-	UInt32	unk10;	// 10
-	UInt32	unk14;	// 14
-	UInt32	unk18;	// 18
-	UInt32	unk1C;	// 1C
-	UInt32	unk20;	// 20
-	UInt32	unk24;	// 24
-	UInt32	unk28;	// 28
-	UInt32	unk2C;	// 2C
-	UInt32	unk30;	// 30
-	UInt32	unk34;	// 34
-	UInt32	unk38;	// 38
-	UInt32	unk3C;	// 3C
-	UInt32	unk40;	// 40
-	TESObjectWEAP* weapon;	// 44
-};
-
-struct WeaponInfo
-{
-	ExtraDataList** xData;
-	UInt32			unk04;
-	TESObjectWEAP* weapon;
-
-	ExtraDataList* GetExtraData()
-	{
-		return xData ? *xData : NULL;
-	}
-};

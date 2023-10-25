@@ -3,7 +3,7 @@
 #include "ExtraDataList.hpp"
 
 class TESObjectREFR;
-class InventoryChangesList;
+class InventoryChanges;
 
 // 0x10
 class ExtraContainerChanges : public BSExtraData {
@@ -14,32 +14,7 @@ public:
 //	typedef std::vector<EntryData*> DataArray;
 //	typedef std::vector<ExtendDataList*> ExtendDataArray;
 
-	struct Data
-	{
-		InventoryChangesList*	inventoryChangesList;	// 000
-		TESObjectREFR*			owner;		// 004
-		Float32					totalWgCurrent;
-		Float32					totalWgLast;
-		UInt8					byte10;		// 010	referenced in relation to scripts in container
-		UInt8					pad[3];
-
-		static Data* Create(TESObjectREFR* owner);
-
-		Float64								GetInventoryWeight();
-
-
-		void							Cleanup();	// clean up unneeded extra data from each EntryData
-		ExtendDataList* Add(TESForm* form, ExtraDataList* dataList = NULL);
-		bool							Remove(TESForm* form, ExtraDataList* dataList = NULL, bool bFree = false);
-		ExtraDataList* SetEquipped(TESForm* obj, bool bEquipped, bool bForce = false);
-		// get EntryData and ExtendData for all equipped objects, return num objects equipped
-		UInt32							GetAllEquipped(InventoryChangesArray& outEntryData);
-
-		static ExtraContainerChanges* GetForRef(TESObjectREFR* refr);
-	};
-	static_assert(sizeof(Data) == 0x14);
-
-	Data* data;	// 00C
+	InventoryChanges* data;	// 00C
 
 	EntryData* GetByType(TESForm* type);
 

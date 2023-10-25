@@ -1,7 +1,5 @@
 #include <main.h>
-#include <Menu.hpp>
-#include <InterfaceManager.hpp>
-
+#include <UserInterface.hpp>
 #include <SimpleINILibrary.h>
 
 namespace Fix::TablineSelected
@@ -9,19 +7,19 @@ namespace Fix::TablineSelected
 	inline int enable = 1;
 
 	bool needToFix = false;
-	Tile* tabline = nullptr;
+	MyTile* tabline = nullptr;
 
 	void MainLoop()
 	{
-		if (CdeclCall<bool>(0x702360) && Menu::IsVisible(kMenuType_Inventory)) {
+		if (CdeclCall<bool>(0x702360) && Menu::IsVisible(Menu::EnumType::kType_Inventory)) {
 			if (needToFix) {
 				needToFix = false;
 				if (!tabline)
 				{
-					tabline = InventoryMenu::GetSingleton()->tile->GetChild("GLOW_BRANCH")->GetChild("IM_Tabline");
+					tabline = &MyInventoryMenu::Get()["GLOW_BRANCH"]["IM_Tabline"];
 					return;
 				}
-				for (const auto iter : tabline->children) iter->Set(kTileValue_mouseover, 0, false);
+				for (const auto iter : *tabline) iter->Set(Tile::kValue_mouseover, 0, false);
 			}
 		}
 		else needToFix = true;

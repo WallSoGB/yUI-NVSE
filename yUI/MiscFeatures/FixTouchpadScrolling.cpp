@@ -29,6 +29,7 @@ namespace Fix::TouchpadScrolling
 
 	SInt32 scrollWheel = 0;
 
+	class OSInputGlobals;
 
 	SInt32 __fastcall GetMousewheel(OSInputGlobals* osinput, void* dummyedx, int a2)
 	{

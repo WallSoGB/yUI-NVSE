@@ -172,6 +172,33 @@ public:
         return 0;
     };
 
+ 
+    class Iterator
+    {
+        NiTListItem<T_Data>* m_curr;
+
+    public:
+        Iterator	operator++()
+        {
+            m_curr = m_curr->m_pkNext;
+            return *this;
+        }
+        T_Data operator->() const { return m_curr->m_element; }
+        T_Data& operator*() const { return m_curr->m_element; }
+        Iterator& operator=(const Iterator& rhs)
+        {
+            m_curr = rhs.m_curr;
+            return *this;
+        }
+        bool		operator!=(const Iterator& rhs) { return m_curr && m_curr->m_element; }
+
+        Iterator() : m_curr(nullptr) {}
+        Iterator(NiTListItem<T_Data>* node) : m_curr(node) {}
+    };
+
+    Iterator begin() const { return Iterator(m_pkHead); }
+    Iterator end() const { return Iterator(); }
+
 protected:
     // 0x49FA80
     NiTListItem<T_Data>* NewItem() {

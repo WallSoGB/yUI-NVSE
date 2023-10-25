@@ -24,9 +24,9 @@ struct GradualSetTile
 	Float32			fEndValue;			// 04
 	UInt32			uiStartTimeMS;		// 08
 	Float32			fDurationMS;		// 0C
-	Tile::EValue	eValueID;			// 10
+	Tile::EnumValue	eValueID;			// 10
 	Tile*			pkTile;				// 14
-	EModes			eChangeMode;		// 18	0-4, see 0xA081B5
+	EnumModes		eChangeMode;		// 18	0-4, see 0xA081B5
 
 	__forceinline static BSSimpleList<GradualSetTile>* QueuedGradualSetFloat() { return reinterpret_cast<BSSimpleList<GradualSetTile>*>(0x11F3348); }
 };

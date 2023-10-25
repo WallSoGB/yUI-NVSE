@@ -2,28 +2,26 @@
 #include <Safewrite.hpp>
 
 #include <SimpleINILibrary.h>
-#include <Bethesda/ExtraDroppedItemList.hpp>
+#include <Gameplay.hpp>
 
 namespace Fix::DroppedItems
 {
 	inline int enable = 1;
 
-	TList<TESObjectREFR>::Node* iterDroppedItem;
+	BSSimpleList<TESObjectREFR*>* iterDroppedItem;
 
 	TESObjectREFR* __fastcall GetHead(ExtraDataList* extradatalist)
 	{
 		const auto xDropped = reinterpret_cast<ExtraDroppedItemList*>(extradatalist->GetByType(kExtraData_DroppedItemList));
 		if (!xDropped) return nullptr;
-		iterDroppedItem = xDropped->droppedItemList.Head();
+		iterDroppedItem = xDropped->kDroppedItemList.Head();
 		if (!iterDroppedItem) return nullptr;
-		return iterDroppedItem->data;
+		return iterDroppedItem->m_item;
 	}
 
 	TESObjectREFR* __fastcall GetNext()
 	{
-		iterDroppedItem = iterDroppedItem->next;
-		if (!iterDroppedItem) return nullptr;
-		return iterDroppedItem->data;
+		return (iterDroppedItem = iterDroppedItem->m_pkNext) ? iterDroppedItem->m_item : nullptr;
 	}
 
 	template <UInt32 retn> __declspec(naked) void HookGetNext()

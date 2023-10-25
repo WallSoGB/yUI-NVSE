@@ -3,7 +3,6 @@
 
 #include <SimpleINILibrary.h>
 
-
 namespace Patch::CharGenMenuSRemoval
 {
 	bool enable = false;

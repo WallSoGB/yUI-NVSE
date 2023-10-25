@@ -63,6 +63,9 @@ typedef double				Float64;	//!< A 64-bit floating point value
 
 #define ASSERT_SIZE(cl, size) static_assert(sizeof(cl) == size)
 
+#include "SafeWrite.hpp"
+#include "Utilities.hpp"
+/*
 class ActiveEffect;
 class Actor;
 class ActorMover;
@@ -457,3 +460,4 @@ struct VATSTargetBodyPartData;
 struct VATSTargetInfo;
 struct ValidBip01Names;
 struct hkCdBody;
+*/

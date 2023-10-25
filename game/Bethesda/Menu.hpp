@@ -1,16 +1,16 @@
 #pragma once
-
 #include "BSSimpleList.hpp"
 #include "NiTList.hpp"
 #include "BSString.hpp"
 #include "NiColor.hpp"
 
-#include "TileMenu.hpp"
-
-class TileMenu;
 class Tile;
+class TileMenu;
 class TileExtra;
+class TileText;
+class TileRect;
 
+#include "TileMenu.hpp"
 
 enum SpecialInputCode : UInt32
 {
@@ -51,45 +51,45 @@ public:
 
 	enum EnumType : UInt32
 	{
-		kMenuType_Min = 0x3E9,
-		kMenuType_Message = kMenuType_Min,
-		kMenuType_Inventory,
-		kMenuType_Stats,
-		kMenuType_HUDMain,
-		kMenuType_Loading = 0x3EF,
-		kMenuType_Container,
-		kMenuType_Dialog,
-		kMenuType_SleepWait = 0x3F4,
-		kMenuType_Start,
-		kMenuType_LockPick,
-		kMenuType_Quantity = 0x3F8,
-		kMenuType_Map = 0x3FF,
-		kMenuType_Book = 0x402,
-		kMenuType_LevelUp,
-		kMenuType_Repair = 0x40B,
-		kMenuType_RaceSex,
-		kMenuType_Credits = 0x417,
-		kMenuType_CharGen,
-		kMenuType_TextEdit = 0x41B,
-		kMenuType_Barter = 0x41D,
-		kMenuType_Surgery,
-		kMenuType_Hacking,
-		kMenuType_VATS,
-		kMenuType_Computers,
-		kMenuType_RepairServices,
-		kMenuType_Tutorial,
-		kMenuType_SpecialBook,
-		kMenuType_ItemMod,
-		kMenuType_LoveTester = 0x432,
-		kMenuType_CompanionWheel,
-		kMenuType_TraitSelect,
-		kMenuType_Recipe,
-		kMenuType_SlotMachine = 0x438,
-		kMenuType_Blackjack,
-		kMenuType_Roulette,
-		kMenuType_Caravan,
-		kMenuType_Trait = 0x43C,
-		kMenuType_Max = kMenuType_Trait,
+		kType_Min = 0x3E9,
+		kType_Message = kType_Min,
+		kType_Inventory,
+		kType_Stats,
+		kType_HUDMain,
+		kType_Loading = 0x3EF,
+		kType_Container,
+		kType_Dialog,
+		kType_SleepWait = 0x3F4,
+		kType_Start,
+		kType_LockPick,
+		kType_Quantity = 0x3F8,
+		kType_Map = 0x3FF,
+		kType_Book = 0x402,
+		kType_LevelUp,
+		kType_Repair = 0x40B,
+		kType_RaceSex,
+		kType_Credits = 0x417,
+		kType_CharGen,
+		kType_TextEdit = 0x41B,
+		kType_Barter = 0x41D,
+		kType_Surgery,
+		kType_Hacking,
+		kType_VATS,
+		kType_Computers,
+		kType_RepairServices,
+		kType_Tutorial,
+		kType_SpecialBook,
+		kType_ItemMod,
+		kType_LoveTester = 0x432,
+		kType_CompanionWheel,
+		kType_TraitSelect,
+		kType_Recipe,
+		kType_SlotMachine = 0x438,
+		kType_Blackjack,
+		kType_Roulette,
+		kType_Caravan,
+		kType_Trait = 0x43C,
+		kType_Max = kType_Trait,
 	};
 
 	// check 1 at 0xA0B174, 0x70D529, 0x70D592 :: set at 0x712224

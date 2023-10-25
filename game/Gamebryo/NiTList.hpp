@@ -1,5 +1,4 @@
 #pragma once
-
 #include "NiTPointerListBase.hpp"
 #include "NiTDefaultAllocator.hpp"
 
@@ -45,38 +44,7 @@ private:
 
 public:
 
-	class Iterator
-	{
-		Node* m_curr;
 
-	public:
-		Iterator	operator++()
-		{
-			m_curr = m_curr->next;
-			return *this;
-		}
-		Item* operator->() const { return m_curr->data; }
-		Item*& operator*() const { return m_curr->data; }
-		Iterator& operator=(const Iterator& rhs)
-		{
-			m_curr = rhs.m_curr;
-			return *this;
-		}
-		bool		operator!=(const Iterator& rhs) { return m_curr && m_curr->data; }
-
-		Iterator() : m_curr(nullptr) {}
-		Iterator(Node* node) : m_curr(node) {}
-		Iterator(DList& _list, Item* _item) : m_curr(&_list.first) { Find(_item); }
-		Iterator(DList* _list, Item* _item) : m_curr(&_list->first) { Find(_item); }
-	};
-
-	bool Empty() const { return !first; }
-	Node* Head() { return first; }
-	Node* Tail() { return last; }
-	UInt32 Count() const { return count; }
-
-	Iterator begin() const { return Iterator(first); }
-	Iterator end() const { return Iterator(); }
 
 	void ExchangeNodeData(Node* node1, Node* node2)
 	{
@@ -165,5 +133,7 @@ static_assert(sizeof(std::list<void*>) == 0xC);
 
 
 template <class T_Data> 
-class NiTList : public NiTPointerListBase<NiTDefaultAllocator<T_Data>, T_Data> {};
+class NiTList : public NiTPointerListBase<NiTDefaultAllocator<T_Data>, T_Data> {
+
+};
 static_assert(sizeof(NiTList<void*>) == 0xC);

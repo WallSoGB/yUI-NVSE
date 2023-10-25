@@ -5422,11 +5422,6 @@ Tile* Tile::InjectUIXML(const std::filesystem::path& xmlPath, const bool ignoreU
 	return InjectUIXML(xmlPath);
 }
 
-Tile* Tile::LookUpRectByName(const char* name)
-{
-	return ThisCall<Tile*>(0xA03DA0, this, name);
-}
-
 Tile* Tile::AddTileFromTemplate(const char* templateName, const char* altName)
 {
 	const auto tile = GetParentMenu()->AddTileFromTemplate(this, templateName, 0);

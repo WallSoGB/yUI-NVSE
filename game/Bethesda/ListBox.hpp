@@ -283,7 +283,7 @@ public:
 };
 static_assert(sizeof(ListBox<void*>) == 0x30);
 
-class MenuItemEntryList : public ListBox<InventoryChanges>
+class MenuItemEntryList : public ListBox<InventoryEntryData>
 {
 public:
 	void RestoreScrollPositionProxy(Float32 listIndex, Float32 scrollbarPos) { ThisCall(0x7832E0, this, listIndex, scrollbarPos); }

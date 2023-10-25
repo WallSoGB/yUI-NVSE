@@ -1,5 +1,4 @@
 #pragma once
-
 #include "NiAVObject.hpp"
 #include "NiTArray.hpp"
 

@@ -1,5 +1,4 @@
 #pragma once
-
 #include "NiMemObject.hpp"
 
 #define NiTDefaultAllocator DFALL

@@ -1,5 +1,4 @@
 #pragma once
-
 #include "bhkNiCollisionObject.hpp"
 #include "NiBound.hpp"
 #include "NiObjectNET.hpp"
