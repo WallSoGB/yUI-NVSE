@@ -740,7 +740,6 @@ copy "$(TargetPath)" "D:\Mod Organizer\Fallout New Vegas\mods\yUI\nvse\plugins"<
     <ClInclude Include="..\game\Bethesda\ScreenCustomSplatter.hpp" />
     <ClInclude Include="..\game\Bethesda\ScreenShot.hpp" />
     <ClInclude Include="..\game\Bethesda\ScreenSplatter.hpp" />
-    <ClInclude Include="..\game\Bethesda\Script.hpp" />
     <ClInclude Include="..\game\Bethesda\ScriptEffect.hpp" />
     <ClInclude Include="..\game\Bethesda\ScriptEventList.hpp" />
     <ClInclude Include="..\game\Bethesda\ScriptLocal.hpp" />
@@ -1231,6 +1230,15 @@ copy "$(TargetPath)" "D:\Mod Organizer\Fallout New Vegas\mods\yUI\nvse\plugins"<
     <ClInclude Include="..\game\Gamebryo\NiViewerStrings.hpp" />
     <ClInclude Include="..\game\Gamebryo\NiViewport.hpp" />
     <ClInclude Include="..\game\Gamebryo\NiVisibleArray.hpp" />
+    <ClInclude Include="..\game\Havok\hkaRaycastInterface.hpp" />
+    <ClInclude Include="..\game\Havok\hkBaseObject.hpp" />
+    <ClInclude Include="..\game\Havok\hkDiagonal.hpp" />
+    <ClInclude Include="..\game\Havok\hkMatrix3x4.hpp" />
+    <ClInclude Include="..\game\Havok\hkQuaternion.hpp" />
+    <ClInclude Include="..\game\Havok\hkReferencedObject.hpp" />
+    <ClInclude Include="..\game\Havok\hkSerializableCinfo.hpp" />
+    <ClInclude Include="..\game\Havok\hkTransform.hpp" />
+    <ClInclude Include="..\game\Havok\hkVector4.hpp" />
     <ClInclude Include="..\game\Obsidian\BGSDehydrationStage.hpp" />
     <ClInclude Include="..\game\Obsidian\BGSHungerStage.hpp" />
     <ClInclude Include="..\game\Obsidian\BGSSleepDeprevationStage.hpp" />
@@ -1257,6 +1265,7 @@ copy "$(TargetPath)" "D:\Mod Organizer\Fallout New Vegas\mods\yUI\nvse\plugins"<
     <ClInclude Include="..\game\Obsidian\TraitMenu.hpp" />
     <ClInclude Include="..\libraries\json.h" />
     <ClInclude Include="..\libraries\SimpleINILibrary.h" />
+    <ClInclude Include="..\nvse\CommandTable.hpp" />
     <ClInclude Include="..\nvse\Containers.hpp" />
     <ClInclude Include="..\nvse\dinput8.hpp" />
     <ClInclude Include="..\nvse\Formatter.hpp" />

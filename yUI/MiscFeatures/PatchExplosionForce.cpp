@@ -1,10 +1,8 @@
 #include <main.h>
 #include <Safewrite.hpp>
-
 #include <SimpleINILibrary.h>
 
-#include <RTTI.h>
-#include <TESObjectREFR.h>
+#if 0
 
 namespace Patch::ExplosionForce
 {
@@ -49,24 +47,11 @@ namespace Patch::ExplosionForce
 		}
 	}
 
-	void HandleINIs()
-	{
-		const auto iniPath = GetCurPath() / yUI_INI;
-		CSimpleIniA ini;
-		ini.SetUnicode();
-
-
-		if (ini.LoadFile(iniPath.c_str()) == SI_FILE) return;
-
-		enable = ini.GetOrCreate("General", "bFixExplosionPushForce", 1, "; fix force of the explosions to scale both with distance (like explosion damage) and with actual force of the explosion's baseform.");
-
-		ini.SaveFile(iniPath.c_str(), false);
-	}
-
-	extern void Init()
+	extern void Init(CSimpleIni& ini)
 	{
 		if (g_nvseInterface->isEditor) return;
-		HandleINIs();
+		enable = ini.GetOrCreate("General", "bFixExplosionPushForce", 1, "; fix force of the explosions to scale both with distance (like explosion damage) and with actual force of the explosion's baseform.");
 		PatchFixExplosionPushForce(enable);
 	}
 }
+#endif

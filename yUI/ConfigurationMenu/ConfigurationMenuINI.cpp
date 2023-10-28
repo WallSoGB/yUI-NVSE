@@ -2,10 +2,7 @@
 #include "ConfigurationMenu.h"
 #include <SimpleINILibrary.h>
 
-#include "GameData.h"
-#include "TESForm.h"
-#include "InterfaceManager.h"
-#include "Setting.h"
+#if 0
 
 inline std::map<CMSetting::IO::INI, CMValue> ini_map;
 
@@ -193,3 +190,4 @@ void CMSetting::IO::Default()
 {
 	Write(defaultValue);
 }
+#endif

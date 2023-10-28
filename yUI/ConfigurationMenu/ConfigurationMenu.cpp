@@ -2,6 +2,9 @@
 
 #include "Safewrite.hpp"
 #include "ConfigurationMenu.h"
+#include "SimpleINILibrary.h"
+
+#if 0
 
 namespace ConfigurationMenu
 {
@@ -48,7 +51,7 @@ namespace ConfigurationMenu
 
 	}
 
-	void Init()
+	void Init(CSimpleIni& ini)
 	{
 
 		SafeWrite8(0x71F1EC + (MENU_ID - 1001), 16); // use switch case for CreditsMenu
@@ -63,3 +66,5 @@ namespace ConfigurationMenu
 		mainLoop.emplace_back(MainLoop);
 	}
 }
+
+#endif

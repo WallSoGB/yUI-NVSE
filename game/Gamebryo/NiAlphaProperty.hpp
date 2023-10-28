@@ -9,7 +9,7 @@ public:
 	NiAlphaProperty();
 	virtual ~NiAlphaProperty();
 
-	enum AlphaFlags {
+	enum AlphaFlags : UInt16 {
 		ALPHA_BLEND_MASK = 0x0001,
 		SRC_BLEND_MASK = 0x001e,
 		SRC_BLEND_POS = 1,
@@ -50,22 +50,14 @@ public:
 	};
 
 
-	Bitfield16	m_usFlags;
+	AlphaFlags	m_eFlags;
 	UInt8		m_ucAlphaTestRef;
 
 	CREATE_OBJECT(NiAlphaProperty, 0xA5CEB0);
 
-	bool HasAlphaBlend() {
-		return m_usFlags.GetBit(ALPHA_BLEND_MASK);
-	}
-
-	bool HasAlphaTest() {
-		return m_usFlags.GetBit(TEST_ENABLE_MASK);
-	}
-
-	bool HasAlphaSorter() {
-		return m_usFlags.GetBit(ALPHA_NOSORTER_MASK);
-	}
+	bool HasAlphaBlend() { return m_eFlags & ALPHA_BLEND_MASK; }
+	bool HasAlphaTest() { return m_eFlags & TEST_ENABLE_MASK; }
+	bool HasAlphaSorter() { return m_eFlags & ALPHA_NOSORTER_MASK; }
 
 	UInt8 GetAlphaTestRef() {
 		return m_ucAlphaTestRef;
@@ -76,19 +68,21 @@ public:
 	}
 
 	void SetAlphaBlending(bool abBlend) {
-		m_usFlags.SetBit(ALPHA_BLEND_MASK, abBlend);
+		m_eFlags = (AlphaFlags)(abBlend ? m_eFlags | ALPHA_BLEND_MASK : m_eFlags & ~ALPHA_BLEND_MASK);
 	}
 
 	void SetAlphaTesting(bool abTest) {
-		m_usFlags.SetBit(TEST_ENABLE_MASK, abTest);
+		m_eFlags = (AlphaFlags)(abTest ? m_eFlags | TEST_ENABLE_MASK : m_eFlags & ~TEST_ENABLE_MASK);
 	}
 
 	void SetSrcBlendMode(AlphaFunction aeSrcBlend) {
-		m_usFlags.SetField(aeSrcBlend, SRC_BLEND_MASK, ALPHA_BLEND_MASK);
+		m_eFlags = (AlphaFlags)(aeSrcBlend ? m_eFlags | SRC_BLEND_MASK : m_eFlags & ~SRC_BLEND_MASK);
+		m_eFlags = (AlphaFlags)(aeSrcBlend ? m_eFlags | ALPHA_BLEND_MASK : m_eFlags & ~ALPHA_BLEND_MASK);
 	}
 
-	void SetDestBlendMode(AlphaFunction eDestBlend) {
-		m_usFlags.SetField(eDestBlend, DEST_BLEND_MASK, DEST_BLEND_POS);
+	void SetDestBlendMode(AlphaFunction aeDestBlend) {
+		m_eFlags = (AlphaFlags)(aeDestBlend ? m_eFlags | DEST_BLEND_MASK : m_eFlags & ~DEST_BLEND_MASK);
+		m_eFlags = (AlphaFlags)(aeDestBlend ? m_eFlags | DEST_BLEND_POS : m_eFlags & ~DEST_BLEND_POS);
 	}
 
 	void SetTestRef(UInt8 aucRef) {
@@ -96,7 +90,8 @@ public:
 	}
 
 	void SetTestMode(TestFunction aeTestFunc) {
-		m_usFlags.SetField(aeTestFunc, TEST_FUNC_MASK, TEST_FUNC_POS);
+		m_eFlags = (AlphaFlags)(aeTestFunc ? m_eFlags | TEST_FUNC_MASK : m_eFlags & ~TEST_FUNC_MASK);
+		m_eFlags = (AlphaFlags)(aeTestFunc ? m_eFlags | TEST_FUNC_POS : m_eFlags & ~TEST_FUNC_POS);
 	}
 };
 

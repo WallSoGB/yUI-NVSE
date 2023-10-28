@@ -19,6 +19,11 @@ class NiSpecularProperty;
 class NiSpecularProperty;
 class NiStencilProperty;
 
+typedef LPDIRECT3DDEVICE9 D3DDevicePtr;
+typedef LPDIRECT3DVERTEXDECLARATION9 NiD3DVertexDeclaration;
+typedef LPDIRECT3DVERTEXSHADER9 NiD3DVertexShaderHandle;
+typedef LPDIRECT3DPIXELSHADER9 NiD3DPixelShaderHandle;
+
 class NiD3DRenderState : public NiRefObject {
 public:
 	NiD3DRenderState();

@@ -6,7 +6,7 @@ class TESObjectREFR;
 
 NiSmartPointer(BSFadeNode);
 
-enum EnumNUM_LOD_MULT : UInt32 {
+enum ENUM_LOD_MULT : UInt32 {
 	LOD_MULT_NONE = 0x0,
 	LOD_MULT_OBJECTS = 0x1,
 	LOD_MULT_ITEMS = 0x2,

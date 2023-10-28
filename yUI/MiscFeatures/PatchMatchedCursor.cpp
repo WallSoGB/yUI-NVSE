@@ -1,7 +1,6 @@
 #include <main.h>
-#include <InterfaceManager.h>
-#include <Tile.h>
 #include <Safewrite.hpp>
+#include <UserInterface.hpp>
 
 #include <SimpleINILibrary.h>
 
@@ -10,15 +9,15 @@ namespace Patch::MatchedCursor
 {
 	bool enable = false;
 
-	void __fastcall CursorTileSetStringValue(Tile*	pkTile, void* dummyEDX, TileValueIDs tilevalue, char* src, char propagate)
+	void __fastcall CursorTileSetStringValue(Tile*	pkTile, void* dummyEDX, Tile::EnumValue tilevalue, char* src, char propagate)
 	{
-		tile->Set(kTileValue_zoom, -1, propagate);
-		tile->Set(kTileValue_systemcolor, 1, propagate);
+		pkTile->Set(Tile::kValue_zoom, -1, propagate);
+		pkTile->Set(Tile::kValue_systemcolor, 1, propagate);
 	}
 
-	void __fastcall CursorTileSetIntValue(Tile*	pkTile, void* dummyEDX, TileValueIDs tilevalue, int value)
+	void __fastcall CursorTileSetIntValue(Tile*	pkTile, void* dummyEDX, Tile::EnumValue tilevalue, int value)
 	{
-		tile->Set(kTileValue_visible, value, true);
+		pkTile->Set(Tile::kValue_visible, value, true);
 		ThisCall(0xA0B350, InterfaceManager::GetSingleton()->cursor, 1, 0);
 	}
 
@@ -36,24 +35,10 @@ namespace Patch::MatchedCursor
 		}
 	}
 
-	void HandleINIs()
-	{
-		const auto iniPath = GetCurPath() / yUI_INI;
-		CSimpleIniA ini;
-		ini.SetUnicode();
-
-
-		if (ini.LoadFile(iniPath.c_str()) == SI_FILE) return;
-
-		enable = ini.GetOrCreate("General", "bMatchingCursor", 0, "; match cursor color to HUD color");
-
-		ini.SaveFile(iniPath.c_str(), false);
-	}
-
-	extern void Init()
+	extern void Init(CSimpleIni& ini)
 	{
 		if (g_nvseInterface->isEditor) return;
-		HandleINIs();
+		enable = ini.GetOrCreate("General", "bMatchingCursor", 0, "; match cursor color to HUD color");
 		Patch(enable);
 	}
 }

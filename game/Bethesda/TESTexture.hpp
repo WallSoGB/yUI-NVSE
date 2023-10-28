@@ -1,7 +1,6 @@
 #pragma once
 #include "BaseFormComponent.hpp"
 #include "BSString.hpp"
-// Complete
 
 // 0xC
 class TESTexture : public BaseFormComponent {

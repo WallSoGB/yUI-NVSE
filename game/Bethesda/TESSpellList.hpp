@@ -23,18 +23,5 @@ public:
 
 	BSSimpleList<SpellItem*>	pkSpellList;			// 004
 	BSSimpleList<SpellItem*>	pkLeveledSpellList;		// 00C
-
-	UInt32	GetSpellCount() const {
-		return pkSpellList.Count();
-	}
-
-	// return the nth spell
-	SpellItem* GetNthSpell(SInt32 whichSpell) const
-	{
-		return spellList.GetNthItem(whichSpell);
-	}
-
-	// removes all spells and returns how many spells were removed
-	//UInt32 RemoveAllSpells();
 };
 static_assert(sizeof(TESSpellList) == 0x14);

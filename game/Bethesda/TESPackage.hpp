@@ -343,7 +343,7 @@ public:
 	static const char* StringForObjectCode(UInt8 objCode);
 	static UInt8 ObjectCodeForString(const char* objString);
 	static bool IsValidObjectCode(UInt8 o) { return o < kObjectType_Max; }
-	static const char* StringForProcedureCode(EnumProcedureCode proc);
+	static const char* StringForProcedureCode(EnumProcedureType proc);
 
 	void				SetTarget(TESObjectREFR* refr);
 	void				SetTarget(TESForm* baseForm, UInt32 count);
@@ -360,8 +360,8 @@ public:
 	static const char*	StringForObjectCode(EnumObjectType objCode);
 	static UInt8		ObjectCodeForString(const char* objString);
 	static bool			IsValidObjectCode(UInt8 o) { return o < kObjectType_Max; }
-	static const char*	StringForProcedureCode(EnumProcedure proc);
-	static const char*	StringForProcedureCode(EnumProcedure proc, bool bRemovePrefix);
+	static const char*	StringForProcedureCode(EnumProcedureType proc);
+	static const char*	StringForProcedureCode(EnumProcedureType proc, bool bRemovePrefix);
 
 };
 static_assert(sizeof(TESPackage) == 0x80);

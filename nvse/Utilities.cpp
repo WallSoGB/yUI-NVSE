@@ -1,12 +1,17 @@
 #include <Utilities.hpp>
 
-#include "ConsoleManager.h"
-#include "InterfaceManager.h"
-#include "GameData.h"
-#include "Script.h"
-
 #include <cstdlib>
 #include <utility>
+
+std::filesystem::path GetCurPath()
+{
+	char buffer[MAX_PATH] = { 0 };
+	GetModuleFileName(nullptr, buffer, MAX_PATH);
+	const std::string::size_type pos = std::string(buffer).find_last_of("\\/");
+	return std::string(buffer).substr(0, pos);
+}
+
+#if 0
 
 ScopedLock::ScopedLock(CriticalSection& critSection) : m_critSection(critSection)
 {
@@ -823,13 +828,6 @@ __declspec(naked) UInt32 __fastcall StrHashCI(const char* inKey)
 	}
 }
 
-std::filesystem::path GetCurPath()
-{
-	char buffer[MAX_PATH] = { 0 };
-	GetModuleFileName(nullptr, buffer, MAX_PATH);
-	const std::string::size_type pos = std::string(buffer).find_last_of("\\/");
-	return std::string(buffer).substr(0, pos);
-}
 
 bool ends_with(std::string const& value, std::string const& ending)
 {
@@ -1037,3 +1035,5 @@ std::string DecompileScriptToFolder(const std::string& scriptName, Script* scrip
 	os << buffer;
 	return std::format("Decompiled script to '{}'", dirName.string());
 }
+
+#endif

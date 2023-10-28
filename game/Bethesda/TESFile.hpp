@@ -13,19 +13,13 @@ struct ChunkAndFormType {
 };
 
 #if RUNTIME
-static const UInt32 _ModInfo_GetNextChunk = 0x004726B0; // args: none retn: UInt32 subrecordType (third call in TESObjectARMO_LoadForm)
-static const UInt32 _ModInfo_GetChunkData = 0x00472890;	// args: void* buf, UInt32 bufSize retn: bool readSucceeded (fifth call in TESObjectARMO_LoadForm)
-static const UInt32 _ModInfo_Read32 = 0x004727F0;	// args: void* buf retn: void (find 'LPER', then next call, still in TESObjectARMO_LoadForm)
-static const UInt32 _ModInfo_HasMoreSubrecords = 0x004726F0;	// Last call before "looping" to GetNextChunk in TESObjectARMO_LoadForm.
-static const UInt32 _ModInfo_InitializeForm = 0x00472F60;	// args: TESForm* retn: void (second call in TESObjectARMO_LoadForm)
-
 // addresses of static ModInfo members holding type info about currently loading form
 static UInt32* s_ModInfo_CurrentChunkTypeCode = (UInt32*)0x011C54F4;
 static UInt32* s_ModInfo_CurrentFormTypeEnum = (UInt32*)0x011C54F0;
 // in last call (SetStaticFieldsAndGetFormTypeEnum) of first call (ModInfo__GetFormInfoTypeID) from _ModInfo_InitializeForm
-		//		s_ModInfo_CurrentChunkTypeCode is first cmp
-		//		s_ModInfo_CurrentChunkTypeEnum is next mov
-static const ChunkAndFormType* s_ModInfo_ChunkAndFormTypes = (const ChunkAndFormType*)0x01187008;	// Array used in the loop in SetStaticFieldsAndGetFormTypeEnum, starts under dd offset aNone
+//		s_ModInfo_CurrentChunkTypeCode is first cmp
+//		s_ModInfo_CurrentChunkTypeEnum is next mov
+static ChunkAndFormType* s_ModInfo_ChunkAndFormTypes = (ChunkAndFormType*)0x01187008;	// Array used in the loop in SetStaticFieldsAndGetFormTypeEnum, starts under dd offset aNone
 #endif
 
 struct ChunkHeader {
@@ -33,6 +27,7 @@ struct ChunkHeader {
 	UInt16	size : 2;
 };
 
+// 0x42C
 struct TESFile {
 	TESFile();
 	~TESFile();
@@ -858,17 +853,10 @@ struct TESFile {
 
 	bool IsLoaded() const { return true; }
 
-#if RUNTIME
-	/*** used by TESForm::LoadForm() among others ***/
-	MEMBER_FN_PREFIX(TESFile);
-	DEFINE_MEMBER_FN(GetNextChunk, UInt32, _ModInfo_GetNextChunk);	// returns chunk type
-	DEFINE_MEMBER_FN(GetChunkData, bool, _ModInfo_GetChunkData, UInt8* buf, UInt32 bufSize); // max size, not num to read
-	DEFINE_MEMBER_FN(Read32, void, _ModInfo_Read32, void* out);
-	DEFINE_MEMBER_FN(HasMoreSubrecords, bool, _ModInfo_HasMoreSubrecords);
-#endif
+	__forceinline UInt32 GetNextChunk() { return ThisCall<UInt32>(0x4726B0, this); };	// returns chunk type
+	__forceinline bool GetChunkData(UInt8* buf, UInt32 bufSize) { return ThisCall<bool>(0x472890, buf, bufSize); }; // max size, not num to read
+	__forceinline void Read32(void* out) { ThisCall(0x4727F0, this, out); };
+	__forceinline bool HasMoreSubrecords() { return ThisCall<bool>(0x4726F0, this); };
 };
-
-ASSERT_SIZE(WIN32_FIND_DATA, 0x140);
-ASSERT_SIZE(TESFile, 0x42C);
-
-typedef TESFile ModInfo;
+static_assert(sizeof(WIN32_FIND_DATA) == 0x140);
+static_assert(sizeof(TESFile) == 0x42C);

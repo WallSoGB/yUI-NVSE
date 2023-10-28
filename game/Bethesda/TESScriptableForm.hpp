@@ -10,7 +10,7 @@ public:
 	TESScriptableForm();
 	~TESScriptableForm();
 
-	Script* pkScript;		// 004
+	Script* pkScript;	// 004
 	bool	bResolved;	// 008	called during LoadForm, so scripts do not wait for TESForm_InitItem to be resolved
 	UInt8	pad[3];		// 009
 

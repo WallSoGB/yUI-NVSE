@@ -1,11 +1,8 @@
 #include "ConfigurationMenu.h"
-
 #include "dinput8.hpp"
 #include "functions.h"
-#include "Setting.h"
-#include "InterfaceManager.h"
-#include "Safewrite.hpp"
 
+#if 0
 
 /*
 int g_bShownTweaksMenuReloadWarning = false;
@@ -1116,3 +1113,4 @@ void InputField::Update()
 		}
 	}
 }
+#endif

@@ -1,12 +1,7 @@
 #include <main.h>
-
 #include <SimpleINILibrary.h>
 
-#include <Menu.hpp>
-#include <Setting.hpp>
-#include <PlayerCharacter.hpp>
-#include <HighProcess.hpp>
-#include <TESObjectWEAP.hpp>
+#if 0
 
 namespace UserInterface::DynamicCrosshair
 {
@@ -247,3 +242,5 @@ namespace UserInterface::DynamicCrosshair
 		HandleINI();
 	}
 }
+
+#endif

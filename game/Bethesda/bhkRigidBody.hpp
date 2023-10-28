@@ -1,9 +1,10 @@
 #include "bhkEntity.hpp"
-#include "hkVector4.hpp"
-#include "hkQuaternion.hpp"
-#include "hkTransform.hpp"
-#include "hkDiagonal.hpp"
 #include "BSSimpleList.hpp"
+
+class hkVector4;
+class hkQuaternion;
+class hkTransform;
+class hkDiagonal;
 
 class bhkRigidBody : public bhkEntity
 {
@@ -22,5 +23,4 @@ public:
 
     BSSimpleList<UInt32> Actions;
 };
-
-ASSERT_SIZE(bhkRigidBody, 0x1C);
+static_assert(sizeof(bhkRigidBody) == 0x1C);

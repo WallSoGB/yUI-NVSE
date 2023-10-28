@@ -4,6 +4,8 @@
 #include <functions.h>
 #include <SimpleINILibrary.h>
 
+#if 0
+
 namespace SortingIcons
 {
 	void HandleINI()
@@ -89,3 +91,5 @@ namespace SortingIcons
 		if (bIcons) mainLoopDoOnce.emplace_back(Icons::InjectTemplates);
 	}
 }
+
+#endif

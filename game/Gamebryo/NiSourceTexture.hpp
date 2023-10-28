@@ -1,13 +1,14 @@
 #pragma once
-
 #include "NiTexture.hpp"
 #include "NiPersistentSrcTextureRendererData.hpp"
 #include "NiPixelData.hpp"
 #include "NiFile.hpp"
+#include "NiSmartPointer.hpp"
+
+;
 
 NiSmartPointer(NiSourceTexture);
 NiRTTIAddress(NiSourceTexture, 0x11F444C);
-
 
 class NiSourceTexture : public NiTexture {
 public:

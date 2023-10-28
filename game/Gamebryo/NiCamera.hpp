@@ -1,5 +1,4 @@
 #pragma once
-
 #include "NiAVObject.hpp"
 #include "NiRect.hpp"
 #include "NiFrustum.hpp"

@@ -4,6 +4,15 @@
 
 #include <deque>
 
+class DIHookControl;
+class PlayerCharacter;
+class ActorValueOwner;
+class TESDataHandler;
+class HUDMainMenu;
+class Actor;
+class TESObjectREFR;
+class TESForm;
+
 inline PluginHandle					g_pluginHandle			= kPluginHandle_Invalid;
 
 inline NVSEInterface*				g_nvseInterface			= nullptr;
@@ -24,10 +33,10 @@ inline HUDMainMenu*					g_HUDMainMenu			= nullptr;
 
 inline static bool bMainLoopDoOnce = false;
 
-inline std::vector<void(*)()>		pluginLoad;
-inline std::vector<void(*)()>		deferredInit;
-inline std::vector<void(*)()>		mainLoop;
-inline std::vector<void(*)()>		mainLoopDoOnce;
+inline std::vector<void(*)()>	pluginLoad;
+inline std::vector<void(*)()>	deferredInit;
+inline std::vector<void(*)()>	mainLoop;
+inline std::vector<void(*)()>	mainLoopDoOnce;
 
 inline std::vector<void(*)()>		onRender;
 inline std::vector<void(*)(Actor*)>	onHit;

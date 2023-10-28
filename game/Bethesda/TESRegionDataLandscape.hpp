@@ -1,6 +1,8 @@
 #pragma once
 #include "TESRegionData.hpp"
 
+class TESTexture;
+
 // 0xC
 class TESRegionDataLandscape : public TESRegionData {
 public:

@@ -1,5 +1,49 @@
 #pragma once
 #include "Menu.hpp"
+#include "ListBox.hpp"
+#include "TESCondition.hpp"
+#include <BSSoundHandle.hpp>
+
+class Script;
+class BGSNote;
+class BGSTerminal;
+
+struct TERMINAL_MENU_ITEM
+{
+	BSStringT entryText;
+	BSStringT resultText;
+	Script *resScript;
+	UInt8 restOfScript[78];
+	TESCondition conditions;
+	BGSNote* displayNote;
+	BGSTerminal* subMenu;
+	UInt8 entryFlags;
+	UInt8 pad75[3];
+};
+static_assert(sizeof(TERMINAL_MENU_ITEM) == 0x78);
+
+struct __declspec(align(4)) HackingText
+{
+	enum HackingTextFlags
+	{
+		kDisplaysCharacterByCharacter = 0x1,
+		kBlinks = 0x2,
+	};
+
+	BSStringT str;
+	Tile *tileText;
+	Tile::Value *tileValueVisibility;
+	UInt32 displayRate;
+	UInt32 flashOnDuration;
+	UInt32 flashOffDuration;
+	UInt32 nextDisplayTime;
+	UInt32 nextBlinkTime;
+	char *currentlyDisplayedText;
+	UInt8 flags28;
+	UInt8 isTextRemaining;
+	UInt8 gap2A[2];
+};
+static_assert(sizeof(HackingText) == 0x2C);
 
 // 0FC
 class ComputersMenu : public Menu
@@ -45,8 +89,8 @@ public:
 	Tile*	pkTile_computers_background;
 	Tile*	pkTile_computers_display_zone_text;
 	Tile*	pkTile_computers_separator;
-	ListBox<MenuEntry> terminalMenuItemsListBox;
-	TList<void> subMenuBGSTerminals;
+	ListBox<TERMINAL_MENU_ITEM> terminalMenuItemsListBox;
+	BSSimpleList<BGSTerminal*> subMenuBGSTerminals;
 	UInt32 time0A0;
 	Tile::Value* isComputersCursorVisible;
 	BGSTerminal* targetRefBaseForm;
@@ -57,9 +101,9 @@ public:
 	UInt8 byte0C0;
 	UInt8 isRenderingSubmenu;
 	UInt8 gap0C2[2];
-	Sound UIHackingFanHumLP;
-	Sound UIHackingCharScroll;
-	Sound UIHackingCharEnter;
+	BSSoundHandle UIHackingFanHumLP;
+	BSSoundHandle UIHackingCharScroll;
+	BSSoundHandle UIHackingCharEnter;
 	DList<HackingText>* hackingTexts;
 	UInt32 playNoteAudioCallback;
 	UInt32 showNoteTextCallback;

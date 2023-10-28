@@ -1,11 +1,9 @@
 #include "SortingIcons.h"
-
-#include <Setting.h>
-#include <Tile.h>
-#include <InterfaceManager.h>
 #include <functions.h>
 
 #include <Safewrite.hpp>
+
+#if 0
 
 namespace SortingIcons
 {
@@ -991,3 +989,5 @@ namespace SortingIcons::Patch
 	//	WriteRelJump(0x78232C, 0x782362);
 	}
 }
+
+#endif

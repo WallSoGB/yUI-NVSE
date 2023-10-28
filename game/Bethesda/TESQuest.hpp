@@ -5,12 +5,15 @@
 #include "TESCondition.hpp"
 
 class BGSQuestObjective;
-struct ScriptEventList;
 
 struct VariableInfo;
 
 // 0x6C
-class TESQuest : public TESForm, public TESScriptableForm, public TESIcon, public TESFullName
+class TESQuest :
+	public TESForm,
+	public TESScriptableForm,
+	public TESIcon,
+	public TESFullName
 {
 public:
 	TESQuest();

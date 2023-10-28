@@ -69,4 +69,4 @@ public:
 	CREATE_OBJECT(NiTexturingProperty, 0xA6AD40)
 };
 
-ASSERT_SIZE(NiTexturingProperty, 0x30)
+ASSERT_SIZE(NiTexturingProperty, 0x30);

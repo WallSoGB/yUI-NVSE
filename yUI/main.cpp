@@ -1,13 +1,10 @@
 #include <main.h>
-#include <TESObjectREFR.h>
-#include <GameData.h>
-#include <Menu.h>
 
 void InitSingletons()
 {
-	g_player = PlayerCharacter::GetSingleton();
-	g_TESDataHandler = TESDataHandler::GetSingleton();
-	g_HUDMainMenu = HUDMainMenu::GetSingleton();
+//	g_player = PlayerCharacter::GetSingleton();
+//	g_TESDataHandler = TESDataHandler::GetSingleton();
+//	g_HUDMainMenu = HUDMainMenu::GetSingleton();
 }
 
 void InitLog(std::filesystem::path path = "")
@@ -80,7 +77,7 @@ bool NVSEPlugin_Load(const NVSEInterface* nvse)
 	g_nvseInterface = const_cast<NVSEInterface*>(nvse);
 	g_messagingInterface = static_cast<NVSEMessagingInterface*>(nvse->QueryInterface(kInterface_Messaging));
 	g_messagingInterface->RegisterListener(g_pluginHandle, "NVSE", MessageHandler);
-
+	
 	Inits();
 
 	if (nvse->isEditor)	return true;

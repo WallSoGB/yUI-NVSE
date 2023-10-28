@@ -8,4 +8,4 @@ struct NiViewport
 	float m_bottom;
 };
 
-ASSERT_SIZE(NiViewport, 0x10)
+ASSERT_SIZE(NiViewport, 0x10);

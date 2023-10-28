@@ -23,4 +23,4 @@ public:
 	NiNodeList	m_kUnaffectedNodeList;
 };
 
-ASSERT_SIZE(NiDynamicEffect, 0xC4)
+ASSERT_SIZE(NiDynamicEffect, 0xC4);

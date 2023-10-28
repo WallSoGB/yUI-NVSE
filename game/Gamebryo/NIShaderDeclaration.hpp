@@ -112,4 +112,4 @@ public:
 	virtual bool RemoveEntry(UInt32 uiEntry, UInt32 uiStream = 0);
 };
 
-ASSERT_SIZE(NiShaderDeclaration, 0x8)
+ASSERT_SIZE(NiShaderDeclaration, 0x8);

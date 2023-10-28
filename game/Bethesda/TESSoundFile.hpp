@@ -9,6 +9,6 @@ public:
 
 	virtual void	Set(const char* str);
 
-	BSStringT	path;	// 4
+	BSStringT	kSoundPath;	// 4
 };
 static_assert(sizeof(TESSoundFile) == 0xC);

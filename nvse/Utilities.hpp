@@ -18,6 +18,9 @@
 #include <intrin.h>
 #include <Logging.hpp>
 
+class Script;
+class TESForm;
+
 // thread-safe template versions of ThisStdCall()
 template <typename T_Ret = UInt32, typename ...Args>
 __forceinline T_Ret ThisCall(UInt32 _addr, void* _this, Args ...args)
@@ -103,24 +106,6 @@ bool GetNVSEConfigOption_UInt32(const char * section, const char * key, UInt32 *
 
 // all of the weirdness with the _GetType function is because you can't declare a static const pointer
 // inside the class definition. inlining automatically makes the function call go away since it's a const
-
-#define MEMBER_FN_PREFIX(className)	\
-	typedef className _MEMBER_FN_BASE_TYPE
-
-#define DEFINE_MEMBER_FN_LONG(className, functionName, retnType, address, ...)		\
-	typedef retnType (className::* _##functionName##_type)(__VA_ARGS__);			\
-																					\
-	inline _##functionName##_type * _##functionName##_GetPtr()					\
-	{																				\
-		static const UInt32 _address = address;										\
-		return (_##functionName##_type *)&_address;									\
-	}
-
-#define DEFINE_MEMBER_FN(functionName, retnType, address, ...)	\
-	DEFINE_MEMBER_FN_LONG(_MEMBER_FN_BASE_TYPE, functionName, retnType, address, __VA_ARGS__)
-
-#define CALL_MEMBER_FN(obj, fn)	\
-	((*(obj)).*(*((obj)->_##fn##_GetPtr())))
 
 
 // ConsolePrint() limited to 512 chars; use this to print longer strings to console
@@ -318,72 +303,6 @@ std::string& ToLower(std::string&& data);
 std::string& StripSpace(std::string&& data);
 
 bool StartsWith(const char* left, const char* right);
-
-template <typename T, typename S, typename F>
-std::vector<T*> Filter(const S& s, const F& f)
-{
-	std::vector<T*> vec;
-	for (auto& i : s)
-	{
-		if (f(i))
-			vec->push_back(&i);
-	}
-	return vec;
-}
-
-template <typename T, typename V, typename F>
-std::vector<T> MapTo(const V& v, const F& f)
-{
-	std::vector<T> vec;
-	for (auto& i : v)
-	{
-		vec.emplace_back(f(i));
-	}
-	return vec;
-}
-
-
-template <typename T, const UInt32 ConstructorPtr = 0, typename... Args>
-T* New(Args &&... args)
-{
-	auto* alloc = GameHeapAlloc(sizeof(T));
-	if constexpr (ConstructorPtr)
-	{
-		ThisStdCall(ConstructorPtr, alloc, std::forward<Args>(args)...);
-	}
-	else
-	{
-		memset(alloc, 0, sizeof(T));
-	}
-	return static_cast<T*>(alloc);
-}
-
-template <typename T, const UInt32 DestructorPtr = 0, typename... Args>
-void Delete(T* t, Args &&... args)
-{
-	if constexpr (DestructorPtr)
-	{
-		ThisStdCall(DestructorPtr, t, std::forward<Args>(args)...);
-	}
-	GameHeapFree(t);
-}
-
-template <typename T>
-using game_unique_ptr = std::unique_ptr<T, std::function<void(T*)>>;
-
-template <typename T, const UInt32 DestructorPtr = 0>
-game_unique_ptr<T> MakeUnique(T* t)
-{
-	return game_unique_ptr<T>(t, [](T* t2) { Delete<T, DestructorPtr>(t2); });
-}
-
-template <typename T, const UInt32 ConstructorPtr = 0, const UInt32 DestructorPtr = 0, typename... ConstructorArgs>
-game_unique_ptr<T> MakeUnique(ConstructorArgs &&... args)
-{
-	auto* obj = New<T, ConstructorPtr>(std::forward(args)...);
-	return MakeUnique<T, DestructorPtr>(obj);
-}
-
 char* stristr(const char* str1, const char* str2);
 
 

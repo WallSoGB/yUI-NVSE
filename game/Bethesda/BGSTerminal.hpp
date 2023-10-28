@@ -3,7 +3,6 @@
 #include "TESCondition.hpp"
 
 class BGSNote;
-struct ScriptEventList;
 
 // 0xA8
 class BGSTerminal : public TESObjectACTI {

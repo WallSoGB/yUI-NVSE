@@ -1694,9 +1694,6 @@
     <ClInclude Include="..\game\Bethesda\ScreenSplatter.hpp">
       <Filter>CommonLib\Bethesda</Filter>
     </ClInclude>
-    <ClInclude Include="..\game\Bethesda\Script.hpp">
-      <Filter>CommonLib\Bethesda</Filter>
-    </ClInclude>
     <ClInclude Include="..\game\Bethesda\ScriptEventList.hpp">
       <Filter>CommonLib\Bethesda</Filter>
     </ClInclude>
@@ -3443,6 +3440,36 @@
     <ClInclude Include="..\nvse\Utilities.hpp">
       <Filter>nvse</Filter>
     </ClInclude>
+    <ClInclude Include="..\game\Havok\hkaRaycastInterface.hpp">
+      <Filter>CommonLib\Havok</Filter>
+    </ClInclude>
+    <ClInclude Include="..\game\Havok\hkBaseObject.hpp">
+      <Filter>CommonLib\Havok</Filter>
+    </ClInclude>
+    <ClInclude Include="..\game\Havok\hkDiagonal.hpp">
+      <Filter>CommonLib\Havok</Filter>
+    </ClInclude>
+    <ClInclude Include="..\game\Havok\hkMatrix3x4.hpp">
+      <Filter>CommonLib\Havok</Filter>
+    </ClInclude>
+    <ClInclude Include="..\game\Havok\hkQuaternion.hpp">
+      <Filter>CommonLib\Havok</Filter>
+    </ClInclude>
+    <ClInclude Include="..\game\Havok\hkReferencedObject.hpp">
+      <Filter>CommonLib\Havok</Filter>
+    </ClInclude>
+    <ClInclude Include="..\game\Havok\hkSerializableCinfo.hpp">
+      <Filter>CommonLib\Havok</Filter>
+    </ClInclude>
+    <ClInclude Include="..\game\Havok\hkTransform.hpp">
+      <Filter>CommonLib\Havok</Filter>
+    </ClInclude>
+    <ClInclude Include="..\game\Havok\hkVector4.hpp">
+      <Filter>CommonLib\Havok</Filter>
+    </ClInclude>
+    <ClInclude Include="..\nvse\CommandTable.hpp">
+      <Filter>nvse</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="exports.def" />
@@ -3477,6 +3504,9 @@
     </Filter>
     <Filter Include="CommonLib\Gamebryo">
       <UniqueIdentifier>{ea92b46e-2139-4924-b357-8bd1207bbc78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CommonLib\Havok">
+      <UniqueIdentifier>{f752db78-058e-46d5-a843-5bd2495233ad}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

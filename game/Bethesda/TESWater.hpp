@@ -1,5 +1,4 @@
 #pragma once
-
 #include "BSRenderedTexture.hpp"
 #include "BSShaderAccumulator.hpp"
 #include "BSSimpleList.hpp"
@@ -10,7 +9,7 @@
 #include "BSSoundHandle.hpp"
 #include "TESForm.hpp"
 #include "TESObjectREFR.hpp"
-#include "PerfCounter.hpp"
+#include "BSSoundHandle.hpp"
 
 class TESWaterForm;
 class WadingWaterData;
@@ -200,6 +199,5 @@ public:
 
 	TESObjectREFR* AddLODWater(NiAVObject* apLODWater, TESWorldSpace* apWorldSpace, NiNode* apWaterLODRoot, BSMultiBoundNode* apBound, bool abLODWaterHeight);
 };
-
-ASSERT_SIZE(TESWater, 0xA0);
+static_assert(sizeof(TESWater) == 0xA0);
 ASSERT_SIZE(TESWater::WaterGroup, 0xB0);

@@ -7,6 +7,7 @@
 class NiD3DPass;
 class BSShaderProperty;
 
+// 0x6C
 class BSShader : public NiD3DDefaultShader {
 public:
 	enum ShaderType {
@@ -111,5 +112,4 @@ public:
 		NiColorA Color;
 	};
 };
-
-ASSERT_SIZE(BSShader, 0x6C);
+static_assert(sizeof(BSShader) == 0x6C);

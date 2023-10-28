@@ -9,7 +9,7 @@ public:
 	NiStencilProperty();
 	~NiStencilProperty();
 
-	enum {
+	enum Flags : UInt16 {
 		ENABLE_MASK = 0x1,
 		FAILACTION_MASK = 0xE,
 		FAILACTION_POS = 0x1,
@@ -31,18 +31,19 @@ public:
 		DRAW_MAX = 0x4,
 	};
 
-	Bitfield16 m_usFlags;
+	Flags m_eFlags;
 	UInt32 m_uiRef;
 	UInt32 m_uiMask;
 
 	CREATE_OBJECT(NiStencilProperty, 0xA6F410);
 
 	bool IsEnabled() {
-		return m_usFlags.GetBit(ENABLE_MASK);
+		return m_eFlags & ENABLE_MASK;
 	}
 
 	void SetDrawMode(NiStencilProperty::DrawMode aeDraw) {
-		m_usFlags.SetField(aeDraw, DRAWMODE_MASK, DRAWMODE_POS);
+		m_eFlags = (Flags)(aeDraw ? m_eFlags | DRAWMODE_MASK : m_eFlags & ~DRAWMODE_MASK);
+		m_eFlags = (Flags)(aeDraw ? m_eFlags | DRAWMODE_POS : m_eFlags & ~DRAWMODE_POS);
 	}
 };
 

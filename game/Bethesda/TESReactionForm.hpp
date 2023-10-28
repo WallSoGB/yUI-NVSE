@@ -12,7 +12,7 @@ public:
 
 	struct Reaction
 	{
-		enum
+		enum EnumReaction
 		{
 			kNeutral = 0,
 			kEnemy,
@@ -20,9 +20,9 @@ public:
 			kFriend
 		};
 
-		TESFaction* pkFaction;
-		SInt32		iModifier;
-		UInt32		uiReaction;
+		TESFaction*		pkFaction;
+		SInt32			iModifier;
+		EnumReaction	eReaction;
 	};
 
 	BSSimpleList<Reaction*>	kReactionList;		// 4

@@ -3,29 +3,14 @@
 #include "NiTList.hpp"
 #include "BSString.hpp"
 #include "NiColor.hpp"
+#include "TileMenu.hpp"
 
 class Tile;
 class TileMenu;
 class TileExtra;
+class TileImage;
 class TileText;
 class TileRect;
-
-#include "TileMenu.hpp"
-
-enum SpecialInputCode : UInt32
-{
-	kInputCode_Backspace	= 0x80000000,
-	kInputCode_ArrowLeft	= 0x80000001,
-	kInputCode_ArrowRight	= 0x80000002,
-	kInputCode_ArrowUp		= 0x80000003,
-	kInputCode_ArrowDown	= 0x80000004,
-	kInputCode_Home			= 0x80000005,
-	kInputCode_End			= 0x80000006,
-	kInputCode_Delete		= 0x80000007,
-	kInputCode_Enter		= 0x80000008,
-	kInputCode_PageUp		= 0x80000009,
-	kInputCode_PageDown		= 0x8000000A
-};
 
 enum MenuSpecialKeyboardInputCode
 {
@@ -158,7 +143,7 @@ public:
 	__forceinline Tile*			AddTileFromTemplate(Tile* destTile, const char* templateName, UInt32 arg3 = 0)	{ return ThisCall<Tile*>(0xA1DDB0, this, destTile, templateName, arg3); }
 	bool						GetTemplateExists(const std::string& templateName) const;
 
-	__forceinline void			RegisterTile(Tile*	pkTile, bool noAppendToMenuStack) { ThisCall(0xA1DC70, this, tile, noAppendToMenuStack); };
+	__forceinline void			RegisterTile(Tile* apkTile, bool abNoAppendToMenuStack) { ThisCall(0xA1DC70, this, apkTile, abNoAppendToMenuStack); };
 	__forceinline void			Open(bool noFadeIn = false) { ThisCall(0xA1DC20, this, noFadeIn); }; // fade in
 	__forceinline void			Close() { pkRootTile->Set(Tile::kValue_fadeout, 1); ThisCall(0xA1D910, this); } // fade out
 
@@ -176,9 +161,9 @@ public:
 	static bool					RefreshItemsListForm(TESForm* form = nullptr);
 	static void					RefreshItemsListQuick();
 
-	static void  SetTileFade(Tile*	pkTile, bool startToFinish = true, Float32 duration = 0.25)
+	void  SetTileFade(Tile*	pkTile, bool startToFinish = true, Float32 duration = 0.25)
 	{
-		tile->SetGradual("_alpha", startToFinish ? 0 : 255.0, !startToFinish ? 0 : 255.0, duration);
+		pkRootTile->SetGradual("_alpha", startToFinish ? 0 : 255.0, !startToFinish ? 0 : 255.0, duration);
 	}
 };
 static_assert(sizeof(Menu) == 0x28);
@@ -209,33 +194,6 @@ enum MenuSoundCode
 
 struct EventCallbackScripts;
 
-struct HotKeyWheel
-{
-	TileRect*	parent;
-	TileRect*	hotkeys[8];
-	UInt8		byte24;
-	UInt8		gap25[3];
-	UInt32		selectedHotkey;
-	UInt32		selectedHotkeyTrait;
-	UInt32		selectedTextTrait;
-
-	void SetVisible(bool isVisible) { ThisCall(0x701760, this, isVisible); };
-};
-
-
-
-struct MenuEntry
-{
-	String entryText;
-	String resultText;
-	Script resScript;
-	ConditionList conditions;
-	BGSNote* displayNote;
-	BGSTerminal* subMenu;
-	UInt8 entryFlags;
-	UInt8 pad75[3];
-};
-static_assert(sizeof(MenuEntry) == 0x78);
 
 
 
@@ -266,9 +224,8 @@ class NiPointLight;
 
 
 
-
-
+/*
 static BSSimpleArray<StartMenu::UserOption*>* g_settingsMenuOptions = (BSSimpleArray<StartMenu::UserOption*>*)0x11DAB50;
 void MenuButton_DownloadsClick();
 
-Tile::Value* StringToTilePath(const std::string& componentPath);
+Tile::Value* StringToTilePath(const std::string& componentPath);*/

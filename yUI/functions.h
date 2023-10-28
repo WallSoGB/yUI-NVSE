@@ -1,9 +1,7 @@
 #pragma once
 #include <string>
 
-#include <InventoryChanges.h>
-#include <OSDepend.h>
-#include <NiTypes.h>
+#if 0
 
 namespace CraftingComponents
 {
@@ -61,3 +59,5 @@ UInt32 GetControl(UInt32 whichControl, UInt32 type = OSInputGlobals::kControlTyp
 void SetNativeHandlerFunctionBool(bool trueorfalse);
 bool ToggleVanityWheel(bool toggle);
 std::string GetStringForButton(UInt32 button);
+
+#endif

@@ -22,5 +22,4 @@ public:
 	float	m_fFar;
 	bool	m_bOrtho;
 };
-
-ASSERT_SIZE(NiFrustum, 0x1C);
+static_assert(sizeof(NiFrustum) == 0x1C);

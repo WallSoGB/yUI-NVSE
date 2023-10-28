@@ -2,6 +2,7 @@
 #include "NiTPointerListBase.hpp"
 #include "NiTDefaultAllocator.hpp"
 
+/*
 template <typename Item> struct DListNode
 {
 	DListNode* next;
@@ -130,6 +131,7 @@ public:
 };
 static_assert(sizeof(DList<void*>) == 0xC);
 static_assert(sizeof(std::list<void*>) == 0xC);
+*/
 
 
 template <class T_Data> 

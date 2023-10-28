@@ -1,8 +1,9 @@
 #include "SortingIcons.h"
 
 #include <main.h>
-#include <TESObjectREFR.h>
 #include <PluginAPI.hpp>
+
+#if 0
 
 namespace SortingIcons::Commands
 {
@@ -68,3 +69,5 @@ namespace SortingIcons::Commands
 		return true;
 	}
 }
+
+#endif

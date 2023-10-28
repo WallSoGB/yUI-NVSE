@@ -21,8 +21,6 @@
 #include "NiD3DShaderInterface.hpp"
 #include "NiPoint2.hpp"
 
-#include <PerfCounter.hpp>
-
 class NiMaterialDescriptor;
 struct NiViewport;
 
@@ -345,7 +343,7 @@ public:
 	void*															unkB50[12];
 
 	// Debug counters
-	static PerfCounter RenderCounter;
+//	static PerfCounter RenderCounter; <-- don't have this
 
 	static bool	  bTrackMeshData;
 	static UInt32 uiIndexedPrimitiveCount;

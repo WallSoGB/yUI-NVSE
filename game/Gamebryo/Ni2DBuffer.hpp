@@ -1,5 +1,4 @@
 #pragma once
-
 #include "NiObject.hpp"
 #include "NiPixelFormat.hpp"
 #include "NiRect.hpp"

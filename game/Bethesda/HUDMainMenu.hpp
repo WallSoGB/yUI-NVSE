@@ -201,7 +201,7 @@ public:
 
 	UInt32						unk184;				// 184
 	Float32						flt188;				// 188
-	BSSimpleList<QueuedMessage>		queuedMessages;		// 18C
+	BSSimpleList<QueuedMessage*>		queuedMessages;		// 18C
 	UInt32						uiCurrMsgStartTime;	// 194
 	BSSimpleArray<SubtitleData>	subtitlesArr;		// 198
 	SubtitleData* pCurrentSubtitle;	// 1A8
@@ -235,7 +235,7 @@ public:
 	UInt8					byte255;				// 255
 	UInt8					byte256;				// 256
 	UInt8					byte257;				// 257
-	BSSimpleList<QueuedQuestText>	queuedQuestTextList;	// 258
+	BSSimpleList<QueuedQuestText*>	queuedQuestTextList;	// 258
 	UInt8					bIsQuestAddedTextVisible;//260
 	UInt8					bIsQuestStagesTextVisible;//261
 	UInt8					pad262[2];				// 262
@@ -243,16 +243,12 @@ public:
 	BSSimpleList<UInt32>			list26C;				// 26C
 	Float32					fHUDShake;				// 274
 
-	static HUDMainMenu* GetSingleton() { return *(HUDMainMenu**)(0x11D96C0); }
-	static void __cdecl SetQuestUpdateText(char* src, bool a2, bool a3) { CdeclCall(0x77A5B0, src, a2, a3); }
-	static float GetOpacity() { return *(float*)0x11D979C; };
-	static bool	 IsUsingScope() { return GetSingleton() && GetSingleton()->bIsForceFirstPerson; };
-
 	void RemoveQueuedQuestAndLocationUpdates();
 	void RemoveCrippledLimbIndicator();
 
 	__forceinline static HUDMainMenu*	GetSingleton() { return *reinterpret_cast<HUDMainMenu**>(0x11D96C0); }
 	__forceinline static void			SetQuestUpdateText(char* src, bool a2, bool a3) { CdeclCall(0x77A5B0, src, a2, a3); }
 	__forceinline static Float32		GetOpacity() { return *reinterpret_cast<Float32*>(0x11D979C); };
+	static bool	 IsUsingScope() { return GetSingleton() && GetSingleton()->bIsForceFirstPerson; };
 };
 static_assert(sizeof(HUDMainMenu) == 0x278);

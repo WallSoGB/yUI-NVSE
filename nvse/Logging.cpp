@@ -12,8 +12,6 @@
 #include <string>
 #include <thread>
 
-#include <ConsoleManager.h>
-
 class LoggerManager {
 public:
 
@@ -118,9 +116,9 @@ namespace Logger
 
 		LoggerManager::GetSingleton().addDestination("console", [prefix](const std::string& msg, LogLevel level)
 			{
-				if ((level & LogLevel::Console))
-					if (const auto console = ConsoleManager::GetSingleton())
-						console << prefix + ": " + msg;
+//				if ((level & LogLevel::Console))
+//					if (const auto console = ConsoleManager::GetSingleton())
+//						console << prefix + ": " + msg;
 			});
 	}
 

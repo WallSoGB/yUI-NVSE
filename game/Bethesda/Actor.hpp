@@ -308,7 +308,7 @@ public:
 	bool								IsHostileCompassTarget() const;
 
 	Float32								GetHitDataValue(UInt32 valueType) const;
-	Float32								GetActorValue(ActorValueInfo::EActorValueCode avcode);
+	Float32								GetActorValue(EnumActorValueCode avcode);
 	bool								GetLineOfSight(TESObjectREFR* actor) { return ThisCall<bool>(0x88B880, this, 0, actor, 1, 0, 0); }
 	Float64								GetMaxCarryWeight() { return ThisCall<Float64>(0x8A0C20, this); }
 	__forceinline void					PlayPickupPutdownSounds(TESForm* item, char isPickup, char isEquip) { ThisCall(0x8ADED0, this, item, isPickup, isEquip); }

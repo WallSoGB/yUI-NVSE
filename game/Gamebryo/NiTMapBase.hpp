@@ -24,7 +24,7 @@ public:
         m_kAllocator.m_uiCount = 0;
 
         UInt32 uiSize = sizeof(NiTMapItem<T_Key, T_Data>*) * m_uiHashSize;
-        m_ppkHashTable = (NiTMapItem<T_Key, T_Data>)NiAlloc(uiSize);
+        m_ppkHashTable = (NiTMapItem<T_Key, T_Data>**)NiAlloc(uiSize);
         memset(m_ppkHashTable, 0, m_uiHashSize * sizeof(NiTMapItem<T_Key, T_Data>*));
     };
     virtual                             ~NiTMapBase();
@@ -44,10 +44,8 @@ public:
     bool GetAt(T_Key key, T_Data& dataOut) {
         UInt32 hashIndex = KeyToHashIndex(key);
         NiTMapItem<T_Key, T_Data>* item = m_ppkHashTable[hashIndex];
-        while (item)
-        {
-            if (IsKeysEqual(item->m_key, key))
-            {
+        while (item) {
+            if (IsKeysEqual(item->m_key, key)) {
                 dataOut = item->m_val;
                 return true;
             }

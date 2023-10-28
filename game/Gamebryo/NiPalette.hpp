@@ -31,4 +31,4 @@ public:
 	CREATE_OBJECT(NiPalette, 0xA8B220)
 };
 
-ASSERT_SIZE(NiPalette, 0x24)
+ASSERT_SIZE(NiPalette, 0x24);

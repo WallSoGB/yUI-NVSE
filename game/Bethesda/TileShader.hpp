@@ -2,7 +2,9 @@
 
 #include "BSShader.hpp"
 
-class TileShader : public BSShader {
+// 0x90
+class TileShader : public BSShader
+{
 public:
 	virtual void Func_79();
 	virtual void InitVertexShaders();
@@ -15,5 +17,4 @@ public:
 	NiD3DPixelShaderPtr			spPixelShaders[3];
 	NiD3DShaderDeclarationPtr	spShaderDeclarations[2]; // 1 for vertex colors
 };
-
-ASSERT_SIZE(TileShader, 0x90);
+static_assert(sizeof(TileShader) == 0x90);

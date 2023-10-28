@@ -1,6 +1,7 @@
 #include <main.h>
 #include <functions.h>
 
+#if 0
 namespace UserInterface::EventLayer
 {
 	void OnRender() { for (const auto& i : onRender) i(); }
@@ -65,3 +66,4 @@ namespace UserInterface::EventLayer
 		mainLoopDoOnce.emplace_back(MainLoopDoOnce);
 	}
 }
+#endif

@@ -4,8 +4,8 @@
 #include <unordered_set>
 
 #include "dinput8.hpp"
-#include "GameData.h"
-#include "Menu.h"
+
+#if 0
 
 
 namespace CraftingComponents
@@ -466,3 +466,4 @@ std::string GetStringForButton(UInt32 button)
 	default: return std::to_string(button);
 	}
 }
+#endif

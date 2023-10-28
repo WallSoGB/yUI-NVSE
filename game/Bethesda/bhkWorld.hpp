@@ -1,7 +1,6 @@
 #pragma once
-
 #include "bhkSerializable.hpp"
-#include "hkVector4.hpp"
+#include "Havok\hkVector4.hpp"
 #include "NiAVObject.hpp"
 
 class TESTrapListener;
@@ -55,5 +54,4 @@ public:
 	UInt32 unk98;
 	UInt32 unk9C;
 };
-
-STATIC_ASSERT(sizeof(bhkWorld) == 0xA0);
+static_assert(sizeof(bhkWorld) == 0xA0);

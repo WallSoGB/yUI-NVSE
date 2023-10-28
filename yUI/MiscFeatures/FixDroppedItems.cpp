@@ -1,8 +1,7 @@
 #include <main.h>
 #include <Safewrite.hpp>
-
-#include <SimpleINILibrary.h>
 #include <Gameplay.hpp>
+#include <SimpleINILibrary.h>
 
 namespace Fix::DroppedItems
 {
@@ -12,7 +11,7 @@ namespace Fix::DroppedItems
 
 	TESObjectREFR* __fastcall GetHead(ExtraDataList* extradatalist)
 	{
-		const auto xDropped = reinterpret_cast<ExtraDroppedItemList*>(extradatalist->GetByType(kExtraData_DroppedItemList));
+		const auto xDropped = reinterpret_cast<ExtraDroppedItemList*>(extradatalist->GetExtra(BSExtraData::kExtraData_DroppedItemList));
 		if (!xDropped) return nullptr;
 		iterDroppedItem = xDropped->kDroppedItemList.Head();
 		if (!iterDroppedItem) return nullptr;
@@ -53,24 +52,10 @@ namespace Fix::DroppedItems
 		}
 	}
 
-	void HandleINIs()
-	{
-		const auto iniPath = GetCurPath() / yUI_INI;
-		CSimpleIniA ini;
-		ini.SetUnicode();
-
-
-		if (ini.LoadFile(iniPath.c_str()) == SI_FILE) return;
-
-		enable = ini.GetOrCreate("General", "bFixDroppedItems", 1, "; fix the issue where Container Menu would display only a single dropped item at a time");
-
-		ini.SaveFile(iniPath.c_str(), false);
-	}
-
-	extern void Init()
+	extern void Init(CSimpleIni& ini)
 	{
 		if (g_nvseInterface->isEditor) return;
-		HandleINIs();
+		enable = ini.GetOrCreate("General", "bFixDroppedItems", 1, "; fix the issue where Container Menu would display only a single dropped item at a time");
 		Patch(enable);
 	}
 }

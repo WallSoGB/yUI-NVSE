@@ -2,8 +2,7 @@
 #include <functions.h>
 #include <SimpleINILibrary.h>
 
-#include <Menu.h>
-#include <Tile.h>
+#if 0
 
 namespace UserInterface::HitIndicator
 {
@@ -242,3 +241,5 @@ namespace UserInterface::HitIndicator
 		HandleINI();
 	}
 }
+
+#endif

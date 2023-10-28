@@ -196,7 +196,7 @@ public:
         Iterator(NiTListItem<T_Data>* node) : m_curr(node) {}
     };
 
-    Iterator begin() const { return Iterator(m_pkHead); }
+    Iterator begin() const { return Iterator(this); }
     Iterator end() const { return Iterator(); }
 
 protected:

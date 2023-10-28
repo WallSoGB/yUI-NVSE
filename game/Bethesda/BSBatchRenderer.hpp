@@ -1,13 +1,11 @@
 #pragma once
-
 #include "NiObject.hpp"
 #include "NiTMap.hpp"
 #include "BSRenderPass.hpp"
 #include "BSSimpleList.hpp"
-#include "tList.hpp"
 #include "NiNode.hpp"
 #include "PersistentPassList.hpp"
-#include <PerfCounter.hpp>
+//#include <PerfCounter.hpp> <-- don't have that
 
 class BSShader;
 
@@ -63,7 +61,7 @@ public:
 	RenderPassTypes passStart;
 	RenderPassTypes passEnd;
 	DWORD* textureBlendStagesList;
-	tList<UInt16> lCurrentPass;
+	BSSimpleList<UInt16*> lCurrentPass;
 	UInt32 uiSomeCounter;
 	bool bAutoClearPasses;
 	BSBatchRenderer::GeometryGroup* pGeometryGroupsA[13];
@@ -73,7 +71,7 @@ public:
 
 	static RenderPassTypes uiRenderPassToIgnore;
 	static bool bShowOnlySelectedPass;
-	static PerfCounter renderPassImmediatelyCounter;
+//	static PerfCounter renderPassImmediatelyCounter; <-- don't have that
 
 	static BSBatchRenderer* Create(UInt32 auiMaxPass, UInt32 aeBatchRendererCreationType);
 

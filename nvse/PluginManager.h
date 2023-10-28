@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#if 0
 class PluginManager
 {
 public:
@@ -74,3 +75,4 @@ extern PluginManager	g_pluginManager;
 
 extern CommandInfo kCommandInfo_IsPluginInstalled;
 extern CommandInfo kCommandInfo_GetPluginVersion;
+#endif

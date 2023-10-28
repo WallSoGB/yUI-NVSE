@@ -1,10 +1,9 @@
 #include "main.h"
-#include "Menu.h"
-#include "PluginAPI.hpp"
 #include <string>
 
 #include "ConfigurationMenu.h"
-#include "GameData.h"
+
+#if 0
 
 class CMMCMMod
 {
@@ -781,3 +780,5 @@ void WriteMCMHooks()
 {
 	Cmd::WriteHooks();
 }
+
+#endif

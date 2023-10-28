@@ -1,6 +1,7 @@
 #pragma once
-//#include <CommandTable.h>
+#include <CommandTable.hpp>
 #include <Utilities.hpp>
+
 
 namespace PluginAPI { class ArrayAPI; }
 
@@ -9,6 +10,7 @@ typedef UInt32	PluginHandle;	// treat this as an opaque type
 #define SET_OPCODE_BASE(base)		g_nvseInterface->SetOpcodeBase(##base)
 #define REG_CMD(name)				g_nvseInterface->RegisterCommand(&kCommandInfo_ ##name)
 #define REG_CMD_STR(name)			g_nvseInterface->RegisterTypedCommand(&kCommandInfo_##name, kRetnType_String)
+
 
 enum
 {
@@ -806,7 +808,7 @@ struct NVSEEventManagerInterface
 		return pType;
 	}
 
-	enum EnumventFlags : UInt32
+	enum EnumEventFlags : UInt32
 	{
 		kFlags_None = 0,
 
@@ -875,7 +877,7 @@ struct NVSEEventManagerInterface
 	// Same as script function RemoveEventHandler but for native functions
 	bool			(*RemoveNativeEventHandler)(const char* eventName, NativeEventHandler func);
 
-	bool			(*RegisterEventWithAlias)(const char* name, const char* alias, UInt8 numParams, ParamType* paramTypes, EventFlags flags);
+	bool			(*RegisterEventWithAlias)(const char* name, const char* alias, UInt8 numParams, ParamType* paramTypes, EnumEventFlags flags);
 
 	// If passed as non-null, will be called after all handlers have been dispatched.
 	// The "ThreadSafe" dispatch functions can delay the dispatch by a frame, hence why this callback is needed.
@@ -1196,3 +1198,176 @@ struct FOSEMessagingInterface
 	bool	(* RegisterListener)(PluginHandle listener, const char* sender, EventCallback handler);
 	bool	(*	pkDispatch)(PluginHandle sender, UInt32 messageType, void * data, UInt32 dataLen, const char* receiver);
 };
+
+
+
+// size 0x58? Nothing initialized beyond 0x50.
+struct ScriptBuffer
+{	
+	template <typename tData> struct Node
+	{
+		tData		* data;
+		Node<tData>	* next;
+	};
+
+	enum RuntimeMode
+	{
+		kEditor = 0,
+		kGameConsole = 1,
+	};
+
+	ScriptBuffer();
+	~ScriptBuffer();
+
+	const char* scriptText;		// 000
+	UInt32			textOffset;			// 004 
+	RuntimeMode		runtimeMode;		// 008
+	String			scriptName;			// 00C
+	UInt32			errorCode;			// 014
+	bool			partialScript;		// 018
+	UInt8			pad019[3];			// 019
+	UInt32			curLineNumber;		// 01C
+	UInt8			* scriptData;		// 020 pointer to 0x4000-byte array
+	UInt32			dataOffset;			// 024
+	UInt32			unk028;				// 028
+	UInt32			numRefs;			// 02C
+	UInt32			unk030;				// 030
+	UInt32			varCount;			// 034 script->varCount
+	UInt8			scriptType;			// 038 script->type
+	UInt8			unk039;				// 039 script->unk35
+	UInt8			unk03A[2];
+	VariableInfo	vars;		// 03C
+	Script::RefVariable	refVars;	// 044 probably ref vars
+	Script*			currentScript;				// 04C num lines?
+	Node<ScriptLineBuffer>	lines;		// 050
+	// nothing else initialized
+
+	// convert a variable or form to a RefVar, add to refList if necessary
+	Script::RefVariable* ResolveRef(const char* refName);
+	UInt32	GetRefIdx(Script::RefVariable* ref);
+	UInt32	GetVariableType(VariableInfo* varInfo, Script::RefVariable* refVar);
+};
+
+
+// represents the currently executing script context
+class ScriptRunner
+{
+public:
+	static const UInt32	kStackDepth = 10;
+
+	enum
+	{
+		kStackFlags_IF = 1 << 0,
+		kStackFlags_ELSEIF = 1 << 1,
+		/* ELSE and ENDIF modify the above flags*/
+	};
+
+	TESObjectREFR*		containingObj;		/*00*/  // set when executing scripts on inventory objects
+	TESForm*			callingRefBaseForm;	/*04*/ 
+	ScriptEventList*	eventList;			/*08*/ 
+	UInt32				unk0C;				/*0C*/ 
+	UInt32				unk10;				/*10*/  // pointer? set to NULL before executing an instruction
+	Script*				script;				/*14*/ 
+	UInt32				unk18;				/*18*/ // set to 6 after a failed expression evaluation
+	UInt32				unk1C;				/*1C*/ // set to Expression::errorCode
+	UInt32				ifStackDepth;		/*20*/ 
+	UInt32				ifStack[kStackDepth];		/*24*/ // stores flags
+	UInt32				unk4C[(0xA0 - 0x4C) >> 2];	/*4C*/ 
+	UInt8				invalidReferences;	/*A0*/ // set when the dot operator fails to resolve a reference (inside the error message handler)
+	UInt8				unkA1;				/*A1*/// set when the executing CommandInfo's 2nd flag bit (+0x25) is set
+	UInt16				padA2;				/*A2*/ 
+};
+static_assert(sizeof(ScriptRunner) == 0xA4);
+
+// unk1 = 0
+// unk2 = 0
+// callback = may be NULL apparently
+// unk4 = 0
+// unk5 = 0x17 (why?)
+// unk6 = 0
+// unk7 = 0
+// then buttons
+// then NULL
+
+void ShowCompilerError(ScriptLineBuffer* lineBuf, const char* fmt, ...);
+
+// 41C
+struct ScriptLineBuffer
+{
+	static const UInt32	kBufferSize = 0x200;
+
+	UInt32				lineNumber;			// 000 counts blank lines too
+	char				paramText[0x200];	// 004 portion of line text following command
+	UInt32				paramTextLen;		// 204
+	UInt32				lineOffset;			// 208
+	UInt8				dataBuf[0x200];		// 20C
+	UInt32				dataOffset;			// 40C
+	UInt32				cmdOpcode;			// 410 not initialized. Opcode of command being parsed
+	UInt32				callingRefIndex;	// 414 not initialized. Zero if cmd not invoked with dot syntax
+	UInt32				errorCode;			// 418
+
+	// these write data and update dataOffset
+	bool Write(const void* buf, UInt32 bufsize);
+	bool WriteFloat(double buf);
+	bool WriteString(const char* buf);
+	bool Write32(UInt32 buf);
+	bool Write16(UInt16 buf);
+	bool WriteByte(UInt8 buf);
+};
+
+ScriptEventList* EventListFromForm(TESForm* form);
+class BaseExtraList;
+typedef bool (* _MarkBaseExtraListScriptEvent)(TESForm* target, BaseExtraList* extraList, UInt32 eventMask);
+extern const _MarkBaseExtraListScriptEvent MarkBaseExtraListScriptEvent;
+
+typedef void (_cdecl * _DoCheckScriptRunnerAndRun)(TESObjectREFR* refr, BaseExtraList* extraList);
+extern const _DoCheckScriptRunnerAndRun DoCheckScriptRunnerAndRun;
+
+struct ExtractedParam
+{
+	// float/double types are kept as pointers
+	// this avoids problems with storing invalid floats/doubles in to the fp registers which has a side effect
+	// of corrupting data
+
+	enum
+	{
+		kType_Unknown = 0,
+		kType_String,		// str
+		kType_Imm32,		// imm
+		kType_Imm16,		// imm
+		kType_Imm8,			// imm
+		kType_ImmDouble,	// immDouble
+		kType_Form,			// form
+	};
+
+	UInt8	type;
+	bool	isVar;	// if true, data is stored in var, otherwise it's immediate
+
+	union
+	{
+		// immediate
+		UInt32			imm;
+		const double	* immDouble;
+		TESForm			* form;
+		struct
+		{
+			const char	* buf;
+			UInt32		len;
+		} str;
+
+		// variable
+		struct 
+		{
+			ScriptLocal				* var;
+			ScriptEventList			* parent;
+		} var;
+	} data;
+};
+
+
+UInt32 GetDeclaredVariableType(const char* varName, const char* scriptText);	// parses scriptText to determine var type
+Script* GetScriptFromForm(TESForm* form);
+CommandInfo* GetEventCommandInfo(UInt16 opcode);
+
+// Gets the real script data ptr, as it can be a pointer to a buffer on the stack in case of vanilla expressions in set and if statements
+UInt8* GetScriptDataPosition(Script* script, void* scriptDataIn, const UInt32* opcodeOffsetPtrIn);

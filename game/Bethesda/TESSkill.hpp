@@ -4,13 +4,15 @@
 #include "TESDescription.hpp"
 
 // 60
-class TESSkill : public TESForm {
+class TESSkill :
+	public TESForm,
+	public TESDescription,
+	public TESTexture
+{
 public:
 	TESSkill();
 	~TESSkill();
 
-	TESDescription	kDescription;
-	TESTexture		kTexture;
 	UInt32			unk2C;
 	UInt32			unk30;
 	UInt32			unk34;

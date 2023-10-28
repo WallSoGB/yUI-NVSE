@@ -5,9 +5,7 @@
 
 #include <dinput8.hpp>
 
-#include <Menu.h>
-#include <GameData.h>
-#include <InterfaceManager.h>
+#if 0
 
 #include "SortingIcons/SortingIcons.h"
 
@@ -850,3 +848,5 @@ namespace UserInterface::LootMenu
 		HandleINI();
 	}
 }
+
+#endif

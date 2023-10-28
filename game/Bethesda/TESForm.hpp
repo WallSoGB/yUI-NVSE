@@ -1,14 +1,16 @@
 #pragma once
-
 #include "BaseFormComponent.hpp"
 #include "TESFullName.hpp"
 #include "BSString.hpp"
 #include "BSSimpleList.hpp"
 #include "NiTList.hpp"
 #include "TESFile.hpp"
+#include "NiTPointerMap.hpp"
 
 #define IS_ID(form, type) (form->typeID == kType_##type)
 #define NOT_ID(form, type) (form->typeID != kType_##type)
+
+class TESLeveledList;
 
 // 0x18
 class TESForm : public BaseFormComponent 
@@ -189,11 +191,7 @@ public:
 	virtual bool		Unk_30();		// returns false
 	virtual void		MarkForDelete(bool abDeleted);	// 00000020 then calls Fn12 MarkAsModified
 	virtual void		SetAltered(bool abAltered);	// 00000002 with a lot of housekeeping
-#if RUNTIME
 	virtual void		SetQuestItem(bool abQuestIem);
-#else
-	virtual bool		Unk_33();
-#endif
 	virtual void		SetTalkedToPC(bool abTalkedTo);
 	virtual void		SetHavokDeath(bool abDied);
 	virtual void		SetNeedToChangeProcess(bool abChange);	// 00020000
@@ -202,12 +200,7 @@ public:
 	virtual bool		IsBoundObject();
 	virtual bool		IsObject();
 	virtual bool		IsMagicItem(); // EnchantmentItem, SpellItem, IngredientItem, AlchemyItem
-#if RUNTIME
 	virtual bool		IsReference() const;
-#else
-	virtual bool		Unk_3C();
-	bool GetIsReference() const { return typeID == kType_TESObjectREFR; }
-#endif
 	virtual bool		IsArmorAddon();
 	virtual bool		IsActorBase();
 	virtual bool		IsMobileObject() const;
@@ -232,20 +225,20 @@ public:
 
 	enum EnumFlags : UInt32
 	{
-		kFormFlags_Unk00000002			= 0x00000002,
-		kFormFlags_Initialized			= 0x00000008,	// set by TESForm::InitItem()
-		kFormFlags_Deleted				= 0x00000020,	// refr removed from .esp or savegame
-		kFormFlags_Taken				= kFormFlags_Deleted | kFormFlags_Unk00000002,
-		kFormFlags_CastShadows			= 0x00000200,
-		kFormFlags_Persistent			= 0x00000400,	//shared bit with kFormFlags_QuestItem
-		kFormFlags_QuestItem			= 0x00000400,
-		kFormFlags_IsPermanent			= 0x00000800,
-		kFormFlags_DontSaveForm			= 0x00004000,	// TODO: investigate
-		kFormFlags_Temporary			= 0x00004000,
-		kFormFlags_Compressed			= 0x00040000,
-		kFormFlags_IgnoreFriendlyHits	= 0x00100000,
-		kFormFlags_Destroyed			= 0x00800000,
-		kChanged_Inventory				= 0x08000000,
+		kFlags_Unk00000002			= 0x00000002,
+		kFlags_Initialized			= 0x00000008,	// set by TESForm::InitItem()
+		kFlags_Deleted				= 0x00000020,	// refr removed from .esp or savegame
+		kFlags_Taken				= kFlags_Deleted | kFlags_Unk00000002,
+		kFlags_CastShadows			= 0x00000200,
+		kFlags_Persistent			= 0x00000400,	//shared bit with kFlags_QuestItem
+		kFlags_QuestItem			= 0x00000400,
+		kFlags_IsPermanent			= 0x00000800,
+		kFlags_DontSaveForm			= 0x00004000,	// TODO: investigate
+		kFlags_Temporary			= 0x00004000,
+		kFlags_Compressed			= 0x00040000,
+		kFlags_IgnoreFriendlyHits	= 0x00100000,
+		kFlags_Destroyed			= 0x00800000,
+		kChanged_Inventory			= 0x08000000,
 	};
 
 	enum
@@ -282,7 +275,7 @@ public:
 	EnumJIPFormFlags	eJIPFormFlags2;		// 006
 	EnumJIPFormFlags	eJIPFormFlags3;		// 007
 
-	EnumFlags			eFlags;					// 008
+	EnumFlags			eFlags;				// 008
 	union
 	{
 		UInt32	uiRefID;					// 00C
@@ -293,46 +286,15 @@ public:
 		};
 	};
 
-	struct EditorData {
-		BSStringT		kEditorID;			// 00
-		UInt32			uiMasterFormID;		// 08 - Version control 1 (looks to be a refID inside the Version Control master)
-		UInt32			uiRevision;			// 0C
-	};
-	// 10
-
-#ifdef EDITOR
-	EditorData	kEditorData;			// +10
-#endif
-
 	BSSimpleList<TESFile*> kMods;			// 010 ModReferenceList in Oblivion
-	// 018 / 028
-
-	// Looks like there is another DWord here, used as a byte: LastLoaded or Active or Selected ?
-
-	TESForm*		TryGetREFRParent() const;
-	UInt8			GetModIndex() const;
-	TESFullName*	GetFullName() const;
-	const char*		GetTheName() const;
-	std::string		GetStringRepresentation() const;
-
-	bool IsWeapon() { return eTypeID == kType_TESObjectWEAP; }
-	bool IsArmor() { return eTypeID == kType_TESObjectARMO; }
-
-	// adds a new form to the game (from CloneForm or LoadForm)
-	void DoAddForm(TESForm* newForm, bool bPersist = true, bool record = true) const;
-	// return a new base form which is the clone of this form
-	TESForm* CloneForm(bool bPersist = true) const;
-	bool     IsInventoryObject() const;
-
-	bool FormMatches(TESForm* toMatch) const;
-
 
 	TESForm*					TryGetREFRParent() const;
+	UInt8						GetModIndex() const;
 	TESFullName*				GetFullName();
 	const char*					GetTheName();
+	std::string					GetStringRepresentation() const;
 	bool						IsCloned() const { return ucModIndex == 0xFF; }
 	Script*						GetScript();
-	bool						GetScriptAndEventList(Script*& script, ScriptEventList*& eventList);
 	bool						IsItemPlayable();
 	UInt32						GetItemValue();
 	float						GetWeight();
@@ -342,22 +304,28 @@ public:
 	const char*					RefToString();
 	TESLeveledList*				GetLvlList();
 	void						SetJIPFlag(UInt8 jipFlag, bool bSet);
-	bool						IsQuestItem2() const	{ return eFlags & kFormFlags_QuestItem; };
-	bool						IsDisabled() const	{ return eFlags & kFormFlags_IsPermanent; };
-	bool						IsDeleted() const { return eFlags & kFormFlags_Deleted; };
+	bool						IsQuestItem2() const	{ return eFlags & kFlags_QuestItem; };
+	bool						IsDisabled() const	{ return eFlags & kFlags_IsPermanent; };
+	bool						IsTaken() const { return eFlags & kFlags_Taken; }
+	bool						IsPersistent() const { return eFlags & kFlags_Persistent; }
+	bool						IsTemporary() { return eFlags & kFlags_Temporary; }
+	bool						IsDeleted() const { return eFlags & kFlags_Deleted; }
+	bool						IsDestroyed() { return eFlags & kFlags_Destroyed; }
+
 	bool						IsInteractionDisabled() const { return eJIPFormFlags2 & kJIPFormFlag2_NoPCActivation; };
 	static void					DoAddForm(TESForm* newForm, bool bPersist = true, bool record = true);
 	TESForm*					CloneForm(bool bPersist = true) const;
-	bool						IsInventoryObject() { return CdeclCall<char>(0x00481F30, eTypeID); }
+	bool						IsInventoryObject() const { return CdeclCall<char>(0x00481F30, eTypeID); }
 	bool						IsInventoryObjectAlt(); 
 	bool						IsCreated() const { return ucModIndex == 0xFF; }
 	__forceinline bool			CanContainItems() const { return eTypeID == kType_TESObjectCONT || eTypeID == kType_TESNPC || eTypeID == kType_TESCreature; }
 	__forceinline bool			IsActivator() const { return eTypeID == kType_TESObjectACTI; }
+	bool						IsWeapon() { return eTypeID == kType_TESObjectWEAP; }
+	bool						IsArmor() { return eTypeID == kType_TESObjectARMO; }
 
-
-	__forceinline static NiTPointerMap<TESForm>* GetAll() { return *reinterpret_cast<NiTPointerMap<TESForm>**>(0x11C54C0); }
+	__forceinline static NiTPointerMap<UInt32, TESForm*>* GetAll() { return *reinterpret_cast<NiTPointerMap<UInt32, TESForm*>**>(0x11C54C0); }
 	__forceinline static TESForm* GetByID(const char* editorID) { return CdeclCall<TESForm*>(0x483A00, editorID); };
-	__forceinline static TESForm* GetByID(UInt32 refID) { return GetAll()->Lookup(refID); };
+	__forceinline static TESForm* GetByID(UInt32 refID) { return *GetAll()->Lookup(refID); };
 	static TESForm* GetByID(const char* mod, UInt32 refID);
 	static TESForm* GetByID(const char* mod, const char* refID);
 };

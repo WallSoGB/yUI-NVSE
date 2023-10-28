@@ -22,6 +22,18 @@ public:
 		BM_ButtonB						= 0x13,
 		BM_ListBox						= 0x17,
 	};
+
+	enum Filter : SInt32
+	{
+		kAllItems,
+		kWeapons,
+		kArmor,
+		kAid,
+		kMisc,
+		kAmmo,
+		kMAX = kAmmo,
+	};
+
 	union
 	{
 		Tile*	pkTile[22];
@@ -58,14 +70,14 @@ public:
 	UInt32								uiMerchantGold;	// 090
 	Float32								fBuyValueMult;	// 094
 	Float32								fSellValueMult;	// 098
-	UInt32								uiLeftFilter;	// 09C
-	UInt32								uiRightFilter;	// 0A0
+	Filter								eLeftFilter;	// 09C
+	Filter								eRightFilter;	// 0A0
 	UInt32								uiMenuSoundID;	// 0A4
-	MenuItemEntryList					kLeftItems;		// 0A8
-	MenuItemEntryList					kRightItems;	// 0D8
-	MenuItemEntryList*					kCurrentItems;	// 108
-	BSSimpleList<InventoryChanges*>		kLeftBarter;	// 10C
-	BSSimpleList<InventoryChanges*>		kRightBarter;	// 114
+	ListBox<ItemChange*>				kLeftItems;		// 0A8
+	ListBox<ItemChange*>				kRightItems;	// 0D8
+	ListBox<ItemChange*>*				kCurrentItems;	// 108
+	BSSimpleList<ItemChange*>			kLeftBarter;	// 10C
+	BSSimpleList<ItemChange*>			kRightBarter;	// 114
 	UInt32								unk11C;			// 11C
 
 	static BarterMenu* GetSingleton() { return *reinterpret_cast<BarterMenu**>(0x11D8FA4); }

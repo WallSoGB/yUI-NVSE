@@ -1,4 +1,5 @@
 #pragma once
+#include "d3d9types.h"
 
 class NiPixelFormat {
 public:
@@ -81,5 +82,4 @@ public:
 	UInt32				m_uiExtraData;
 	NiComponentSpec		m_akComponents[4];
 };
-
 ASSERT_SIZE(NiPixelFormat, 0x044);

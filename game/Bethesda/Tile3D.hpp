@@ -1,5 +1,6 @@
 #pragma once
 #include "BSString.hpp"
+#include "Tile.hpp";
 
 // 0x50
 class Tile3D : Tile

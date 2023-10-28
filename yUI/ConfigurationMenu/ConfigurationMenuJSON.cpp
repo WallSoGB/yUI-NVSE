@@ -1,7 +1,7 @@
 #include "ConfigurationMenu.h"
-
 #include "json.h"
-#include <InterfaceManager.h>
+
+#if 0
 
 class JSON : public nlohmann::basic_json<> { friend nlohmann::basic_json<>; };
 
@@ -340,3 +340,5 @@ void CMSettingFont::LoadJSON(const JSON& elem)
 	font.Write(CMValue(JSON(elem[GetID()]["font"])));
 	fontY.Write(CMValue(JSON(elem[GetID()]["fontY"])));
 }
+
+#endif

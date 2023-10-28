@@ -1,5 +1,5 @@
 #pragma once
-#include <Menu.h>
+class Tile;
 
 namespace SortingIcons
 {

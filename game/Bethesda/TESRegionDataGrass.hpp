@@ -9,6 +9,6 @@ public:
 	TESRegionDataGrass();
 	~TESRegionDataGrass();
 
-	TESRegionGrassObjectList* TESRegionGrassObjectList;
+	TESRegionGrassObjectList* kRegionGrassObjectList;
 };
 static_assert(sizeof(TESRegionDataGrass) == 0xC);

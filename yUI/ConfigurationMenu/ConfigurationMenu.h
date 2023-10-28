@@ -1,7 +1,7 @@
 #pragma once
 
+#if 0
 #include "Utilities.hpp"
-#include "Menu.h"
 
 #include <set>
 #include <map>
@@ -765,3 +765,5 @@ public:
 
 	void UpdateEscape();
 };
+
+#endif

@@ -1,10 +1,11 @@
 #include <main.h>
 
-#include <SimpleINILibrary.h>
-
 #include <functions.h>
 #include <Safewrite.hpp>
 
+#include <SimpleINILibrary.h>
+
+#if 0
 namespace Fix::TouchpadScrolling
 {
 	inline int enable = 1;
@@ -12,20 +13,6 @@ namespace Fix::TouchpadScrolling
 
 	UInt32 keyUp = 264;
 	UInt32 keyDown = 265; 
-
-	void HandleINIs()
-	{
-		const auto iniPath = GetCurPath() / yUI_INI;
-		CSimpleIniA ini;
-		ini.SetUnicode();
-
-		if (ini.LoadFile(iniPath.c_str()) == SI_FILE) return;
-
-		enable = ini.GetOrCreate("General", "bFixTouchpadScrolling", 1, "; fix the issue where New Vegas wouldn't recognize touchpad scrolling");
-		scrollValue = ini.GetOrCreate("Touchpad Scrolling", "iScrollValue", 120, "; value by which game scrolls up or down per one scroll event");
-
-		ini.SaveFile(iniPath.c_str(), false);
-	}
 
 	SInt32 scrollWheel = 0;
 
@@ -56,10 +43,13 @@ namespace Fix::TouchpadScrolling
 		}
 	}
 
-	extern void Init()
+	extern void Init(CSimpleIni& ini)
 	{
 		if (g_nvseInterface->isEditor) return;
-		HandleINIs();
+
+		enable = ini.GetOrCreate("General", "bFixTouchpadScrolling", 1, "; fix the issue where New Vegas wouldn't recognize touchpad scrolling");
+		scrollValue = ini.GetOrCreate("Touchpad Scrolling", "iScrollValue", 120, "; value by which game scrolls up or down per one scroll event");
 		Patch(enable);
 	}
 }
+#endif 

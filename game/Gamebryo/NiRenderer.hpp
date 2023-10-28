@@ -26,7 +26,7 @@ public:
 		CLEAR_ALL = CLEAR_BACKBUFFER | CLEAR_STENCIL | CLEAR_ZBUFFER
 	};
 
-	enum EnumFrameState
+	enum FrameState
 	{
 		FRAMESTATE_OUTSIDE_FRAME = 0x0,
 		FRAMESTATE_INSIDE_FRAME = 0x1,
@@ -55,8 +55,8 @@ public:
 	char unk120[95];
 	NiCriticalSection m_kSourceDataCriticalSection;
 	char unk1AC[92];
-	NiRenderer::EFrameState m_eSavedFrameState;
-	NiRenderer::EFrameState m_eFrameState;
+	NiRenderer::FrameState m_eSavedFrameState;
+	NiRenderer::FrameState m_eFrameState;
 	UInt32 m_uiFrameID;
 	bool m_bRenderTargetGroupActive;
 	bool m_bBatchRendering;
@@ -81,5 +81,4 @@ public:
 
 	static void DisplayFrame();
 };
-
-ASSERT_SIZE(NiRenderer, 0x280)
+ASSERT_SIZE(NiRenderer, 0x280);

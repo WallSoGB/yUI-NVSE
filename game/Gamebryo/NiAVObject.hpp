@@ -10,6 +10,7 @@
 class NiCullingProcess;
 class NiNode;
 class NiCamera;
+class NiDX9Renderer;
 
 NiSmartPointer(NiAVObject);
 
@@ -185,7 +186,7 @@ public:
 
 
 
-	void Update(NiUpdateData& arData = g_defaultUpdateData);
+//	void Update(NiUpdateData& arData = g_defaultUpdateData); <-- don't have this
 	NiNode* GetParent();
 	const NiNode* GetParent() const;
 	NiProperty* GetProperty(UInt32 iType);

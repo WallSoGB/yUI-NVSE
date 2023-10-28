@@ -1,10 +1,8 @@
 #include "SortingIcons.h"
-#include <Tile.h>
 #include <functions.h>
-
-#include <InterfaceManager.h>
-
 #include <Safewrite.hpp>
+
+#if 0
 
 namespace SortingIcons::Icons
 {
@@ -237,3 +235,5 @@ namespace SortingIcons::Patch
 		}
 	}
 }
+
+#endif

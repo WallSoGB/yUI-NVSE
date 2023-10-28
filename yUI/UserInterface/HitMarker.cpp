@@ -1,8 +1,9 @@
 #include <main.h>
-
-#include <TESForm.h>
-#include <Menu.h>
 #include <SimpleINILibrary.h>
+#include <UserInterface.hpp>
+#include <Gameplay.hpp>
+
+#if 0
 
 namespace UserInterface::HitMarker
 {
@@ -39,29 +40,29 @@ namespace UserInterface::HitMarker
 	UInt32		dynamic			= 0;
 	UInt32		maxTiles		= 25;
 
-	Tile*		tileMain		= nullptr;
+	MyTile*		tileMain		= nullptr;
 
 	SInt64		visible			= 0;
 	UInt32		depth			= 0;
 
 	std::map<TESObjectREFR*, UInt32>	hitMarkers;
-	std::unordered_set<Tile*>			tilesFree;
-	std::unordered_set<Tile*>			tilesInUse;
+	std::unordered_set<MyTile*>			tilesFree;
+	std::unordered_set<MyTile*>			tilesInUse;
 
-	bool ProcessTilesInUse(Tile*	pkTile)
+	bool ProcessTilesInUse(MyTile* tile)
 	{
 		if (!tile) return false;
-		const auto val = tile->GetValue("_counter");
+		const auto val = tile->Get("_counter");
 		if (!val) return false;
-		if (val->num < 1) return true;
+		if (val->fNumericalValue < 1) return true;
 		tilesFree.emplace(tile);
 		return false;
 	}
 
-	Tile* CreateTileForHitMarker()
+	MyTile* CreateTileForHitMarker()
 	{
-		Tile*	pkTile;
-		if (tilesFree.empty()) tile = tileMain->GetChild("JHMContainer")->AddTileFromTemplate("JHMMarker");
+		MyTile* tile;
+		if (tilesFree.empty()) tile = tileMain["JHMContainer"].AddTileFromTemplate("JHMMarker");
 		else {
 			const auto iter = tilesFree.begin();
 			tile = *iter;
@@ -229,3 +230,5 @@ namespace UserInterface::HitMarker
 		HandleINI();
 	}
 }
+
+#endif

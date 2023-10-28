@@ -17,6 +17,7 @@
 //		Window	ID=38B
 
 class NiColorAlpha;
+class Menu;
 
 // 0x38
 class Tile : public NiTList<Tile*>
@@ -294,8 +295,8 @@ public:
 
 	__forceinline void		HandleChange(const EnumValue id) { ThisCall<void>(0xA074D0, this, id); }
 	__forceinline Tile*		GetChildByID(const EnumValue id) { return ThisCall<Tile*>(0xA03EB0, this, id); }; // THANKS STEWIE
-	__forceinline Tile*		GetByName(const char* name) { return ThisCall<Tile*>(0xA03DA0, this, name); };
-	__forceinline Tile*		GetByTraitName(const char* traitName) { return CdeclCall<Tile*>(0xA08B20, this, traitName); };
+	__forceinline Tile*		GetChildByName(const char* name) { return ThisCall<Tile*>(0xA03DA0, this, name); };
+	__forceinline Tile*		GetChildByTraitName(const char* traitName) { return CdeclCall<Tile*>(0xA08B20, this, traitName); };
 
 	bool					PlayTileSound(EnumValue id = kValue_clicksound) { return ThisCall<char>(0xA0B110, this, id); }
 	Tile*					ReadXML(const char* apcXMLPath) { return ThisCall<Tile*>(0xA01B00, this, apcXMLPath); };

@@ -1,4 +1,4 @@
-#include <Containers.h>
+/*
 #include <Utilities.hpp>
 
 String::String() : m_data(NULL), m_dataLen(0), m_bufLen(0) {}
@@ -212,4 +212,4 @@ void String::RemoveLastChar()
 {
 	if (!m_data || !m_dataLen) return;
 	m_data[--m_dataLen] = '\0';
-}
+}*/

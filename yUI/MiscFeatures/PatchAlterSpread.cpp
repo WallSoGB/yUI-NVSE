@@ -1,28 +1,11 @@
 #include <main.h>
-#include <Bethesda/Setting.hpp>
-#include <Bethesda/BaseProcess.hpp>
-#include <Bethesda/TESObjectREFR.hpp>
-#include <Bethesda/Actor.hpp>
-
 #include <Safewrite.hpp>
 #include <SimpleINILibrary.h>
 
+#if 0
 namespace Patch::RestoreFO3Spread
 {
 	inline bool g_AlterSpread = false;
-
-	void HandleINIs()
-	{
-		CSimpleIniA ini;
-		ini.SetUnicode();
-
-		const auto iniPath = GetCurPath() / yUI_INI;
-		if (ini.LoadFile(iniPath.c_str()) == SI_FILE) return;
-
-		g_AlterSpread = ini.GetOrCreate("General", "iAlterSpread", 1, "; restore gamesettings controlling the spread value on weapon forms.");
-
-		ini.SaveFile(iniPath.c_str(), false);
-	}
 
 	Float32 __fastcall GetMinSpread(Actor* actor);
 	template <UInt32 retn> __declspec(naked) void RestoreMinSpreadHook() {
@@ -136,10 +119,11 @@ namespace Patch::RestoreFO3Spread
 		}
 	}
 
-	extern void Init()
+	extern void Init(CSimpleIni& ini)
 	{
 		if (g_nvseInterface->isEditor) return;
-		HandleINIs();
+		g_AlterSpread = ini.GetOrCreate("General", "iAlterSpread", 1, "; restore gamesettings controlling the spread value on weapon forms.");
 		patchRestoreSpreadGameSettings(g_AlterSpread);
 	}
 }
+#endif

@@ -1,14 +1,16 @@
 #pragma once
-
 #include "IMemoryHeap.hpp"
 #include "ScrapHeap.hpp"
 #include "NiTMap.hpp"
 
 class BSExtraData;
-struct ExtraDataList;
+class ExtraDataList;
 class NiNode;
 class ScriptLocals;
 class TESObjectREFR;
+class TESForm;
+class Script;
+class ScriptLocals;
 
 enum Context
 {
@@ -66,29 +68,29 @@ enum Context
 // Stolen from JIP
 struct TLSData {
 
-	UInt32			unk000;				// 000
-	UInt32			unk004;				// 004
-	ExtraDataList*	pLastXtraList;		// 008
-	UInt32			unk00C;				// 00C
-	BSExtraData*	xDatas[0x93];	// 010
-	bool			byte25C;			// 25C
-	bool			byte25D;			// 25C
-	NiNode*			pLastNiNode;		// 260
-	TESObjectREFR*  pLastNiNodeREFR;	// 264
-	bool			bConsoleMode;		// 268
-	UInt32			unk26C[4];			// 26C
-	TESForm*		pLastRefVar;		// 27C
-	SInt32			iLastVarIndex;		// 280
-	ScriptLocals*	pLastEventList;		// 284
-	Script*			pLastScript;		// 288
+	UInt32			unk000;					// 000
+	UInt32			unk004;					// 004
+	ExtraDataList*	pLastXtraList;			// 008
+	UInt32			unk00C;					// 00C
+	BSExtraData*	xDatas[0x93];			// 010
+	bool			byte25C;				// 25C
+	bool			byte25D;				// 25C
+	NiNode*			pLastNiNode;			// 260
+	TESObjectREFR*  pLastNiNodeREFR;		// 264
+	bool			bConsoleMode;			// 268
+	UInt32			unk26C[4];				// 26C
+	TESForm*		pLastRefVar;			// 27C
+	SInt32			iLastVarIndex;			// 280
+	ScriptLocals*	pLastEventList;			// 284
+	Script*			pLastScript;			// 288
 	UInt32			activateRecursionDepth;	// 28C
-	UInt32			unk290;				// 290
-	UInt32			uiFlags;			// 294
+	UInt32			unk290;					// 290
+	UInt32			uiFlags;				// 294
 	bool			bUnk298;
 	UInt32			unk29C[6];
 	UInt32			uiHeapIndex;			// 2B4
-	UInt32			unk2B8;				// 2B8
-	UInt32			uiAccumulatorCount;				// 2BC
+	UInt32			unk2B8;					// 2B8
+	UInt32			uiAccumulatorCount;		// 2BC
     UInt32          unk2C0;
 
 	static TLSData* GetTLSData();
@@ -100,18 +102,18 @@ struct TLSData {
 static_assert(sizeof(TLSData) == 0x2C4);
 
 struct MemoryManager {
-    bool bInitialized;
-    UInt16 usNumHeaps;
-    UInt16 usNumPhysicalHeaps;
-    IMemoryHeap** ppHeaps;
-    IMemoryHeap* pHeapsByContextA[66];
+    bool			bInitialized;
+    UInt16			usNumHeaps;
+    UInt16			usNumPhysicalHeaps;
+    IMemoryHeap**	ppHeaps;
+    IMemoryHeap*	pHeapsByContextA[66];
     NiTMap<UInt32, ScrapHeap*> kHeapMap; // BSMapBase
-    DWORD dword124;
-    bool byte128;
-    bool byte129;
-    DWORD dword12C;
-    DWORD dword130;
-    DWORD dword134;
+    DWORD	dword124;
+    bool	byte128;
+    bool	byte129;
+    DWORD	dword12C;
+    DWORD	dword130;
+    DWORD	dword134;
 
 
     static MemoryManager* GetSingleton();

@@ -1,7 +1,7 @@
 #include "SortingIcons.h"
-
-#include <GameData.h>
 #include <json.h>
+
+#if 0
 
 using namespace SortingIcons;
 using namespace Files;
@@ -287,3 +287,5 @@ void Files::HandleJSON(const std::filesystem::path& path)
 		Log(logLevel) << std::format("JSON error: {}", e.what());
 	}
 }
+
+#endif

@@ -1,12 +1,8 @@
 #include <main.h>
-#include <BaseProcess.h>
-#include <RTTI.h>
-
 #include <Safewrite.hpp>
 #include <SimpleINILibrary.h>
 
-#include "TESForm.h"
-#include "TESObjectREFR.h"
+#if 0
 
 namespace Patch::ArmedUnarmed
 {
@@ -21,7 +17,6 @@ namespace Patch::ArmedUnarmed
 
 		if (ini.LoadFile(iniPath.c_str()) == SI_FILE) return;
 
-		g_ArmedUnarmed = ini.GetOrCreate("General", "bArmedUnarmed", 1, "; Allow for Melee and Unarmed weapons to use ammo and shoot projectiles");
 
 		ini.SaveFile(iniPath.c_str(), false);
 	}
@@ -219,10 +214,12 @@ namespace Patch::ArmedUnarmed
 		}
 	}
 
-	extern void Init()
+	extern void Init(CSimpleIni& ini)
 	{
 		if (g_nvseInterface->isEditor) return;
-		HandleINIs();
+		g_ArmedUnarmed = ini.GetOrCreate("General", "bArmedUnarmed", 1, "; Allow for Melee and Unarmed weapons to use ammo and shoot projectiles");
+		patchArmedUnarmed(g_ArmedUnarmed);
 	}
 
 }
+#endif

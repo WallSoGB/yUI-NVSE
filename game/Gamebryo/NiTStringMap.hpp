@@ -23,9 +23,9 @@ public:
 template <class T_Data>
 class NiTStringMap : public NiTStringTemplateMap<NiTMap<const char*, T_Data>, T_Data> {
 };
-STATIC_ASSERT(sizeof(NiTStringMap<UInt32>) == 0x14);
+static_assert(sizeof(NiTStringMap<UInt32>) == 0x14);
 
 template <class T_Data>
 class NiTStringPointerMap : public NiTStringTemplateMap<NiTPointerMap<const char*, T_Data>, T_Data> {
 };
-STATIC_ASSERT(sizeof(NiTStringPointerMap<UInt32>) == 0x14);
+static_assert(sizeof(NiTStringPointerMap<UInt32>) == 0x14);

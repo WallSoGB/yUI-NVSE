@@ -1,7 +1,9 @@
 #include <main.h>
 #include <UserInterface.hpp>
+
 #include <SimpleINILibrary.h>
 
+#if 0
 namespace Fix::TablineSelected
 {
 	inline int enable = 1;
@@ -25,23 +27,11 @@ namespace Fix::TablineSelected
 		else needToFix = true;
 	}
 
-	void HandleINIs()
-	{
-		const auto iniPath = GetCurPath() / yUI_INI;
-		CSimpleIniA ini;
-		ini.SetUnicode();
-
-		if (ini.LoadFile(iniPath.c_str()) == SI_FILE) return;
-
-		enable = ini.GetOrCreate("General", "bFixTablineSelected", 1, "; fix the issue where Inventory Menu tabline shows up with buttons already selected");
-
-		ini.SaveFile(iniPath.c_str(), false);
-	}
-
-	extern void Init()
+	extern void Init(CSimpleIni& ini)
 	{
 		if (g_nvseInterface->isEditor) return;
-		HandleINIs();
+		enable = ini.GetOrCreate("General", "bFixTablineSelected", 1, "; fix the issue where Inventory Menu tabline shows up with buttons already selected");
 		if (enable) mainLoop.emplace_back(MainLoop);
 	}
 }
+#endif

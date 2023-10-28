@@ -9,6 +9,6 @@ public:
 	TESRaceForm();
 	~TESRaceForm();
 
-	TESRace* race;	// 04
+	TESRace* pkRace;	// 04
 };
 static_assert(sizeof(TESRaceForm) == 0x8);

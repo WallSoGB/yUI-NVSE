@@ -2,7 +2,7 @@
 
 #include "NiProperty.hpp"
 #include "NiColor.hpp"
-
+;
 NiSmartPointer(NiMaterialProperty);
 
 class NiMaterialProperty : public NiProperty {
@@ -22,5 +22,4 @@ public:
 
 	CREATE_OBJECT(NiMaterialProperty, 0xA756D0)
 };
-
-ASSERT_SIZE(NiMaterialProperty, 0x4C)
+ASSERT_SIZE(NiMaterialProperty, 0x4C);

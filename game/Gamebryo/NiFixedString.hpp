@@ -20,4 +20,4 @@ public:
 	bool operator==(const char* pcString);
 };
 
-ASSERT_SIZE(NiFixedString, 0x4)
+ASSERT_SIZE(NiFixedString, 0x4);

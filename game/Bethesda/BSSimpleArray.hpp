@@ -1,19 +1,19 @@
 #pragma once
 
-template <typename T> class BSSimpleArray 
+template <typename T_Data> class BSSimpleArray 
 {
 public:
 	virtual			~BSSimpleArray();
-	virtual T*		Allocate(UInt32);
+	virtual T_Data*	Allocate(UInt32);
 	virtual void*	FreeArg(UInt32);
 	virtual void*	Resize4BytesMemebers(UInt32);
 
-	T*		pData;
+	T_Data*		pData;
 	UInt32	uiSize;
 	UInt32	uiAllocSize;
 
 	// this only compiles for pointer types
-	T operator[](UInt32 idx) { return idx < uiSize ? pData[idx] : NULL; }
+	T_Data operator[](UInt32 idx) { return idx < uiSize ? pData[idx] : NULL; }
 
 	UInt32 GetSize() { return uiSize; }
 	UInt32 GetAllocSize() { return uiAllocSize; }
@@ -24,7 +24,7 @@ public:
 	protected:
 		friend BSSimpleArray;
 
-		T*			pData;
+		T_Data*		pData;
 		UInt32		count;
 
 	public:
@@ -35,8 +35,8 @@ public:
 			pData++;
 		}
 
-		Item& operator*() const { return *pData; }
-		Item& operator->() const { return *pData; }
+		T_Data& operator*() const { return *pData; }
+		T_Data& operator->() const { return *pData; }
 		bool operator!=(const Iterator& rhs) { return pData != rhs.pData; }
 
 		Iterator() : pData(nullptr), count(0) {}
@@ -48,6 +48,6 @@ public:
 	Iterator begin() const { return Iterator(); }
 	Iterator end() const { return Iterator(this); }
 
-	void Append(T* item) { ThisCall(0x7CB2E0, this, item); }
+	void Append(T_Data* item) { ThisCall(0x7CB2E0, this, item); }
 };
 static_assert(sizeof(BSSimpleArray<void*>) == 0x10);

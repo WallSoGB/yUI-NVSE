@@ -16,7 +16,13 @@
 
 class BGSVoiceType;
 
-class TESRace : public TESForm {
+class TESRace :
+	public TESForm,
+	public TESFullName,
+	public TESDescription,
+	public TESSpellList,
+	public TESReactionForm
+{
 public:
 	// 2
 	struct SkillMod
@@ -34,16 +40,11 @@ public:
 	TESRace();
 	~TESRace();
 
-	TESFullName			kFullName;				// 018
-	TESDescription		kDescription;			// 024
-	TESSpellList		kSpellList;				// 02C
-	TESReactionForm		kReaction;				// 040
-
 	SkillMod			kSkillMods[7];			// 050
 	UInt8				pad05E[2];				// 05E
 	Float32				fHeight[2];				// 060 male/female
 	Float32				fWeight[2];				// 068 male/female
-	ERaceFlags			eRaceFlags;			// 070
+	EnumRaceFlags		eRaceFlags;				// 070
 
 	TESAttributes		kBaseAttributes[2];		// 074 male/female
 	BSSimpleList<TESHair*>	kHairs;				// 08C

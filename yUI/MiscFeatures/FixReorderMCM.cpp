@@ -1,6 +1,6 @@
 #include <main.h>
-#include <Tile.h>
-#include <Menu.h>
+
+#if 0
 #include <SimpleINILibrary.h>
 
 inline int g_FixReorderMCM = 1;
@@ -62,26 +62,14 @@ void FixReorderMCM()
 	else fixReorderMCM = true;
 }
 
-void HandleINIs()
-{
-	CSimpleIniA ini;
-	ini.SetUnicode();
-	auto iniPath = GetCurPath() / yUI_INI;
-	if (ini.LoadFile(iniPath.c_str()) == SI_FILE) return;
-	g_FixReorderMCM = ini.GetOrCreate("General", "bFixReorderMCM", 1, "; fix the issues where MCM is incompatible with newest xNVSE features like Get/SetUIFloatAlt commands and inline expressions. This is fixed by reordering MCM's .xml in-code to work with these commands and hooking deprecated commands to work through Get/SetUIFloatAlt.");
-	if (ini.SaveFile(iniPath.c_str(), false) == SI_FILE) return;
-
-	iniPath = GetCurPath() / R"(\Data\Config\MCMFix.ini)";
-	if (ini.LoadFile(iniPath.c_str()) == SI_FILE) return;
-	if (!g_FixReorderMCM) g_FixReorderMCM = ini.GetLongValue("General", "bFixReorderMCM", 0);
-	if (ini.SaveFile(iniPath.c_str(), false) == SI_FILE) return;
-}
-
 namespace Fix::ReorderMCM
 {
-	void Init()
+	void Init(CSimpleIni& ini)
 	{
 		if (g_FixReorderMCM) FixReorderMCM();
+//		g_FixReorderMCM = ini.GetOrCreate("General", "bFixReorderMCM", 1, "; fix the issues where MCM is incompatible with newest xNVSE features like Get/SetUIFloatAlt commands and inline expressions. This is fixed by reordering MCM's .xml in-code to work with these commands and hooking deprecated commands to work through Get/SetUIFloatAlt.");
 		mainLoop.emplace_back(FixReorderMCM);
 	}
 }
+
+#endif

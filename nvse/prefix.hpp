@@ -17,6 +17,7 @@
 
 #include <winsock2.h>
 #include <Windows.h>
+#include <d3d9.h>
 
 #ifndef __NVSE_VERSION_H__
 #define __NVSE_VERSION_H__
@@ -62,6 +63,20 @@ typedef double				Float64;	//!< A 64-bit floating point value
 #define VERSION_CODE_SUB(in)					((in >> 0) & 0xFF)
 
 #define ASSERT_SIZE(cl, size) static_assert(sizeof(cl) == size)
+#define ASSERT_OFFSET(a, b, c) static_assert(offsetof(a, b) == c, "Wrong member offset!")
+#define CREATE_OBJECT(CLASS, ADDRESS) static CLASS* CreateObject() { return StdCall<CLASS*>(ADDRESS); }
+
+typedef LPDIRECT3DRESOURCE9 D3DResourcePtr;
+typedef LPDIRECT3DDEVICE9 D3DDevicePtr;
+typedef LPDIRECT3DSURFACE9 D3DSurfacePtr;
+typedef LPDIRECT3DBASETEXTURE9 D3DBaseTexturePtr;
+typedef LPDIRECT3DTEXTURE9 D3DTexturePtr;
+typedef LPDIRECT3DVERTEXBUFFER9 D3DVertexBufferPtr;
+typedef LPDIRECT3DINDEXBUFFER9 D3DIndexBufferPtr;
+
+typedef LPDIRECT3DVERTEXDECLARATION9 NiD3DVertexDeclaration;
+typedef LPDIRECT3DVERTEXSHADER9 NiD3DVertexShaderHandle;
+typedef LPDIRECT3DPIXELSHADER9 NiD3DPixelShaderHandle;
 
 #include "SafeWrite.hpp"
 #include "Utilities.hpp"

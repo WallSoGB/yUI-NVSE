@@ -1,5 +1,4 @@
 #pragma once
-
 #include "BSNiNode.hpp"
 #include "BSMultiBound.hpp"
 
@@ -9,7 +8,9 @@ NiRTTIAddress(BSMultiBoundNode, 0x1202E74);
 class BSCullingProcess;
 class BSOcclusionPlane;
 
-class BSMultiBoundNode : public BSNiNode {
+// 0xB4
+class BSMultiBoundNode : public BSNiNode
+{
 public:
 	BSMultiBoundNode();
 	~BSMultiBoundNode();
@@ -25,5 +26,4 @@ public:
 	bool VisibleAgainstActiveOccluders(NiPoint3 akViewPoint, BSCullingProcess* apCuller, BSOcclusionPlane* apOccluder);
 	static void __fastcall OnVisibleEx(BSMultiBoundNode* apThis, void*, BSCullingProcess* apCuller);
 };
-
-ASSERT_SIZE(BSMultiBoundNode, 0xB4);
+static_assert(sizeof(BSMultiBoundNode) == 0xB4);

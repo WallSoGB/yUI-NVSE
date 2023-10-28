@@ -20,4 +20,4 @@ public:
 	ListItem*	m_pProjShadowList;
 };
 
-ASSERT_SIZE(NiDynamicEffectState, 0x18)
+ASSERT_SIZE(NiDynamicEffectState, 0x18);

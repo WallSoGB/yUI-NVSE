@@ -37,5 +37,4 @@ public:
 
 	CREATE_OBJECT(NiPersistentSrcTextureRendererData, 0xA982D0)
 };
-
-ASSERT_SIZE(NiPersistentSrcTextureRendererData, 0x94)
+ASSERT_SIZE(NiPersistentSrcTextureRendererData, 0x94);

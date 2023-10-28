@@ -5,7 +5,7 @@
 #include "NiSourceTexture.hpp"
 #include "NiColor.hpp"
 #include "NiCamera.hpp"
-
+;
 class SceneGraph;
 class TileMenu;
 class ShadowSceneNode;
@@ -49,7 +49,7 @@ public:
 	ShadowSceneNode*			pkShadowScene;
 	NiPointer<NiCameraPtr>		spCamera;
 
-	UInt8		ucIsInitialized;
+	UInt8		bIsInitialized;
 	UInt8		byte029;
 	UInt8		byte02A;
 	UInt8		gap02B;

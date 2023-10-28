@@ -17,4 +17,4 @@ public:
 	static void __fastcall LoadBinaryEx(NiExtraData* apThis, void*, NiStream* kStream);
 };
 
-ASSERT_SIZE(NiExtraData, 0xC)
+ASSERT_SIZE(NiExtraData, 0xC);

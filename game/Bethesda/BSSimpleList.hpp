@@ -25,32 +25,6 @@ template <typename Item> struct TListNode
 		return nullptr;
 	}
 
-	TListNode* RemoveNext()
-	{
-		TListNode* pNext = next;
-		next = next->next;
-		GameHeapFree(pNext);
-		return next;
-	}
-
-	TListNode<Item>* Append(Item* _data)
-	{
-		const auto newNode = static_cast<TListNode*>(GameHeapAlloc(sizeof(TListNode)));
-		newNode->data = _data;
-		newNode->next = next;
-		next = newNode;
-		return newNode;
-	}
-
-	TListNode<Item>* Insert(Item* _data)
-	{
-		const auto newNode = static_cast<TListNode*>(GameHeapAlloc(sizeof(TListNode)));
-		newNode->data = data;
-		data = _data;
-		newNode->next = next;
-		next = newNode;
-		return newNode;
-	}
 };
 
 template <class Item> class TList
@@ -354,6 +328,8 @@ template <class T_Data> class BSSimpleList
 public:
 
 	enum {
+		eListCount = -3,
+		eListEnd = -2,
 		eListInvalid = -1,
 	};
 
@@ -414,39 +390,95 @@ public:
 		return count;
 	}
 
-	bool contains(const T_Data& item) const
+	bool contains(const T_Data& am_item) const
 	{
-		for (const auto iter : this) if (iter == item) return true;
+		for (const auto iter : this) if (iter == am_item) return true;
 		return false;
 	}
 
 	BSSimpleList<T_Data>* GetLastNode() const
 	{
-		BSSimpleList<T_Data>* node = nullptr;
-		while (node : this) {}
+		auto node = Head();
+		while (node->m_pkNext) node = node->m_pkNext;
 		return node;
+	}
+
+	BSSimpleList<T_Data>* GetNthNode(SInt32 index) const
+	{
+		if (index < 0) return nullptr;
+
+		auto node = Head();
+
+		do
+		{
+			if (!index) return node;
+			index--;
+			node = node->m_pkNext;
+		} while (node);
+
+		return nullptr;
 	}
 
 	std::forward_list<T_Data> GetAsSTD() { return reinterpret_cast<std::forward_list<T_Data>>(*this); }
 
-	SInt32 AddAt(T_Data item, const SInt32 index)
+	BSSimpleList<T_Data>* RemoveMe()
 	{
-		if (!item) return eListInvalid;
+		if (m_pkNext)
+		{
+			BSSimpleList<T_Data>* pkNext = m_pkNext;
+			m_item = m_pkNext->m_item;
+			m_pkNext = m_pkNext->m_pkNext;
+			GameHeapFree(pkNext);
+			return this;
+		}
+		m_item = NULL;
+		return nullptr;
+	}
+
+	BSSimpleList<T_Data>* RemoveNext()
+	{
+		BSSimpleList<T_Data>* pkNext = m_pkNext;
+		m_pkNext = m_pkNext->m_pkNext;
+		GameHeapFree(pkNext);
+		return m_pkNext;
+	}
+
+	BSSimpleList<T_Data>* Append(T_Data am_item)
+	{
+		const auto newNode = static_cast<BSSimpleList<T_Data>*>(GameHeapAlloc(sizeof(BSSimpleList<T_Data>)));
+		newNode->m_item = am_item;
+		newNode->m_pkNext = m_pkNext;
+		m_pkNext = newNode;
+		return newNode;
+	}
+
+	BSSimpleList<T_Data>* Insert(T_Data am_item)
+	{
+		const auto newNode = static_cast<BSSimpleList<T_Data>*>(GameHeapAlloc(sizeof(BSSimpleList<T_Data>)));
+		newNode->m_item = m_item;
+		m_item = am_item;
+		newNode->m_pkNext = m_pkNext;
+		m_pkNext = newNode;
+		return newNode;
+	}
+
+	SInt32 AddAt(T_Data am_item, const SInt32 index)
+	{
 		if (!index)
 		{
-			if (first.data) first.Insert(item);
-			else first.data = item;
+			if (m_item) Insert(am_item);
+			else m_item = am_item;
 		}
 		else if (eListEnd == index)
 		{
-			if (Node* node = GetLastNode(&index); node->data) node->Append(item);
-			else node->data = item;
+			if (auto node = GetLastNode(&index); node && node->m_item) node->Append(am_item);
+			else node->m_item = am_item;
 		}
 		else
 		{
-			Node* node = GetNthNode(index);
+			auto node = GetNthNode(index);
 			if (!node) return eListInvalid;
-			node->Insert(item);
+			node->Insert(am_item);
 		}
 		return index;
 	}
@@ -456,25 +488,25 @@ public:
 		T_Data removed = NULL;
 		if (idx <= 0)
 		{
-			removed = first.data;
-			first.RemoveMe();
+			removed = m_item;
+			RemoveMe();
 		}
 		else
 		{
-			Node* node = Head();
-			while (node->next && --idx)
-				node = node->next;
+			auto node = Head();
+			while (node->m_pkNext && --idx)
+				node = node->m_pkNext;
 			if (!idx)
 			{
-				removed = node->next->data;
+				removed = node->m_pkNext->m_item;
 				node->RemoveNext();
 			}
 		}
 		return removed;
 	};
 
-	BSSimpleList<T_Data>* Head() const { return &m_item; }
-	BSSimpleList<T_Data>* Tail() const { return GetLastNode(); }
+	BSSimpleList<T_Data>* Head() { return this; }
+	BSSimpleList<T_Data>* Tail() { return GetLastNode(); }
 };
 static_assert(sizeof(BSSimpleList<void*>) == 0x8);
 //template <class T> using BSSimpleList = TList<T>;

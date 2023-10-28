@@ -17,7 +17,7 @@ public:
 	UInt32					eType; // BSTextureManager::RenderTargetTypes
 	NiRenderedTexturePtr	spRenderedTextures[4];
 
-	bool SaveTexture(const char* path, const D3DXIMAGE_FILEFORMAT aeFormat);
+//	bool SaveTexture(const char* path, const D3DXIMAGE_FILEFORMAT aeFormat); <-- don't have this one
 
 	static BSRenderedTexture* Create(BSStringT* apName, const UInt32 uiWidth, const UInt32 uiHeight,
 		NiTexture::FormatPrefs* kPrefs, Ni2DBuffer::MultiSamplePreference eMSAAPref,
@@ -29,9 +29,9 @@ public:
 
 	NiRenderedTexture* GetTexture(const UInt32 uiIndex);
 
-	NiRenderTargetGroup* GetRenderTargetGroup();
+//	NiRenderTargetGroup* GetRenderTargetGroup();
 
-	LPDIRECT3DBASETEXTURE9 GetD3DTexture(const UInt32 auiIndex, bool abRenderTarget);
+//	IDirect3DBaseTexture9* GetD3DTexture(const UInt32 auiIndex, bool abRenderTarget);
 
 	void SetOffScreenRenderTargetGroup(UInt32 auiClearMode);
 

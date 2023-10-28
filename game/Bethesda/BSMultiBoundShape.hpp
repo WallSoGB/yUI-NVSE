@@ -23,4 +23,4 @@ public:
 	BSMBCullResult kCullResult;
 };
 
-ASSERT_SIZE(BSMultiBoundShape, 0xC)
+ASSERT_SIZE(BSMultiBoundShape, 0xC);

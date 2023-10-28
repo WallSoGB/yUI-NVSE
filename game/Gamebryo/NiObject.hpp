@@ -1,5 +1,4 @@
 #pragma once
-
 #include "NiRefObject.hpp"
 #include "NiRTTI.hpp"
 #include "NiTArray.hpp"
@@ -88,5 +87,4 @@ public:
 		return apObject->IsExactKindOf(pkRTTI);
 	}
 };
-
-ASSERT_SIZE(NiObject, 0x8);
+static_assert(sizeof(NiObject) == 0x8);

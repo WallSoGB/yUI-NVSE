@@ -1,5 +1,9 @@
 #pragma once
 #include "Menu.hpp"
+#include "ListBox.hpp"
+#include "BSSoundHandle.hpp"
+
+class ItemChange;
 
 // 10C
 class ContainerMenu : public Menu		// 1008
@@ -8,7 +12,7 @@ public:
 	ContainerMenu();
 	~ContainerMenu();
 
-	enum Mode
+	enum Mode : UInt32
 	{
 		kNormal = 0x1,
 		kPickpocket,
@@ -35,7 +39,7 @@ public:
 		CM_list_template_container = 0x14,
 	};
 
-	enum FilterCategory
+	enum Filter : SInt32
 	{
 		kAllItems,
 		kWeapons,
@@ -46,45 +50,52 @@ public:
 		kMAX = kAmmo,
 	};
 
-	TileImage*			tile028;		// 028
-	TileText*			itemsTitle;		// 02C
-	TileImage*			tile030;		// 030
-	TileText*			tileInventoryWeight;		// 034
-	TileImage*			tile038;		// 038
-	TileImage*			tile03C;		// 03C
-	TileText*			containerTitle;	// 040
-	TileImage*			tile044;		// 044
-	TileImage*			tile048;		// 048
-	TileImage*			tile04C;		// 04C
-	TileImage*			takeAllTile;	// 050
-	TileImage*			tile054;		// 054
-	TileImage*			tile058;		// 058
-	TileRect*			tile05C;		// 05C
-	TileRect*			tile060;		// 060
-	TileRect*			tile064;		// 064
-	TileRect*			tile068;		// 068
-	TileRect*			tile06C;		// 06C
-	TileRect*			tile070;		// 070
-	TESObjectREFR*		containerRef;	// 074
-	TList<void>			list078;		// 078
-	UInt32				mode;			// 080
-	UInt32				valueTransfered;// 084
-	UInt8				hasPickedPocket;// 088
-	UInt8				hasFailedPickpocket;	// 089
-	UInt8				pad08A;			// 08A
-	UInt8				pad08B;			// 08B
-	SInt32				leftFilter;		// 08C
-	SInt32				rightFilter;	// 090
-	UInt32				menuSoundID;	// 094
-	MenuItemEntryList	leftItems;		// 098
-	MenuItemEntryList	rightItems;		// 0C8
-	MenuItemEntryList*	currentItems;	// 0F8
-	UInt32				unk0FC;			// 0FC
-	Sound				menuSound;		// 100
+	union
+	{
+		Tile*					pkTiles[19];
+		struct
+		{
+			TileImage*			pkTile028;			// 028
+			TileText*			itemsTitle;			// 02C
+			TileImage*			pkTile030;			// 030
+			TileText*			pkTileInventoryWeight;	// 034
+			TileImage*			pkTile038;			// 038
+			TileImage*			pkTile03C;			// 03C
+			TileText*			containerTitle;		// 040
+			TileImage*			pkTile044;			// 044
+			TileImage*			pkTile048;			// 048
+			TileImage*			pkTile04C;			// 04C
+			TileImage*			takeAllTile;		// 050
+			TileImage*			pkTile054;			// 054
+			TileImage*			pkTile058;			// 058
+			TileRect*			pkTile05C;			// 05C
+			TileRect*			pkTile060;			// 060
+			TileRect*			pkTile064;			// 064
+			TileRect*			pkTile068;			// 068
+			TileRect*			pkTile06C;			// 06C
+			TileRect*			pkTile070;			// 070
+		};
+	};
+	TESObjectREFR*				pkContainer;		// 074
+	BSSimpleList<void*>			list078;			// 078
+	Mode						eMode;				// 080
+	UInt32						uiValueTransfered;	// 084
+	UInt8						bHasPickedPocket;	// 088
+	UInt8						bHasFailedPickpocket;	// 089
+	UInt8						pad08A;				// 08A
+	UInt8						pad08B;				// 08B
+	Filter						eLeftFilter;		// 08C
+	Filter						eRightFilter;		// 090
+	UInt32						uiMenuSoundID;		// 094
+	ListBox<ItemChange*>		kLeftItems;			// 098
+	ListBox<ItemChange*>		kRightItems;		// 0C8
+	ListBox<ItemChange*>*		pkCurrentItems;		// 0F8
+	UInt32						unk0FC;				// 0FC
+	BSSoundHandle				kMenuSound;			// 100
 
 	static ContainerMenu*		GetSingleton() { return *reinterpret_cast<ContainerMenu**>(0x11D93F8); }
-	static InventoryChanges*	GetSelection() { return *reinterpret_cast<InventoryChanges**>(0x11D93FC); }
-	static void					SetSelection(InventoryChanges* entry) { *reinterpret_cast<InventoryChanges**>(0x11D93FC) = entry; }
+	static ItemChange*			GetSelection() { return *reinterpret_cast<ItemChange**>(0x11D93FC); }
+	static void					SetSelection(ItemChange* entry) { *reinterpret_cast<ItemChange**>(0x11D93FC) = entry; }
 	__forceinline void 			Refresh(TESForm* form = nullptr) { ThisCall(0x75C280, form); }
 
 };

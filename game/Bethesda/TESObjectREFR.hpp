@@ -5,13 +5,15 @@
 
 class ExtraScript;
 class NiNode;
-struct ScriptEventList;
 class TESContainer;
 class TESSound;
 struct AnimData;
 struct BipedAnim;
 class NiGeometry;
 class ExtraDroppedItemList;
+class ValidBip01Names;
+class ExtraLockData;
+class hkpRigidBody;
 
 struct LoadedRefData {
 	TESObjectREFR* pCurrentWaterType;
@@ -23,7 +25,8 @@ struct LoadedRefData {
 	NiNode* niNode18;
 };
 
-class TESObjectREFR : public TESForm {
+class TESObjectREFR : public TESForm
+{
 public:
 
 	TESObjectREFR();
@@ -98,42 +101,32 @@ public:
 	virtual void				Unk_8E();
 	virtual void				GetExtraDataAnimNoteReceiver();
 
-	enum {
-		kFlags_Unk00000002 = 0x00000002,
-		kFlags_Deleted = 0x00000020,		// refr removed from .esp or savegame
-		kFlags_Persistent = 0x00000400,		//shared bit with kFormFlags_QuestItem
-		kFlags_Temporary = 0x00004000,
-		kFlags_Taken = kFlags_Deleted | kFlags_Unk00000002,
-
-		kChanged_Inventory = 0x08000000,
-	};
-
 #ifdef EDITOR
 	EditorData	editorData;			// +04
 #endif
-	TESChildCell* pChildCell;
-	TESSound* pLoopSound;
-	TESForm* pObjectReference;
-	NiPoint3 Rotation;
-	NiPoint3 Position;
-	float fRefScale;
-	TESObjectCELL* pParentCell;
-	ExtraDataList ExtraList;
-	LoadedRefData* pLoadedData;
+	TESChildCell*	pkChildCell;
+	TESSound*		pkLoopSound;
+	TESForm*		pkObjectReference;
+	NiPoint3		kRotation;
+	NiPoint3		kPosition;
+	Float32			fRefScale;
+	TESObjectCELL*	pkParentCell;
+	ExtraDataList	kExtraList;
+	LoadedRefData*	pkLoadedData;
 
 	ExtraScript* GetExtraScript() const;
 	ScriptEventList* GetEventList() const;
 
-	bool IsTaken() const { return (iFormFlags & kFlags_Taken) != 0; }
-	bool IsPersistent() const { return (iFormFlags & kFlags_Persistent) != 0; }
-	bool IsTemporary() { return (iFormFlags & kFlags_Temporary) ? true : false; }
-	bool IsDeleted() const { return (iFormFlags & kFlags_Deleted) ? true : false; }
+	bool IsTaken() const { return (eFlags & kFlags_Taken) != 0; }
+	bool IsPersistent() const { return (eFlags & kFlags_Persistent) != 0; }
+	bool IsTemporary() { return (eFlags & kFlags_Temporary) ? true : false; }
+	bool IsDeleted() const { return (eFlags & kFlags_Deleted) ? true : false; }
 
 	bool Update3D();
 	bool Update3D_v1c();	// Less worse version as used by some modders
 	TESContainer* GetContainer();
 	bool IsMapMarker();
-	bool GetInventoryItems(InventoryItemsMap& invItems);
+//	bool GetInventoryItems(InventoryItemsMap& invItems);
 	ExtraDroppedItemList* GetDroppedItems();
 	bool GetVisibleWhenDistant();
 
@@ -143,7 +136,7 @@ public:
 
 	const char* GetModelPath();
 
-	__forceinline TESObjectCELL* GetParentCell() const { return pParentCell; }
+	__forceinline TESObjectCELL* GetParentCell() const { return pkParentCell; }
 
 	static TESObjectREFR* FindReferenceFor3D(NiAVObject* apObject) {
 		return CdeclCall<TESObjectREFR*>(0x56F930, apObject);
@@ -154,29 +147,10 @@ public:
 
 	bool HandleActivation();
 
-	ScriptEventList*		GetEventList() const;
-
-	bool					IsTaken() const { return flags & kFormFlags_Taken; }
-	bool					IsPersistent() const { return flags & kFormFlags_Persistent; }
-	bool					IsTemporary() { return flags & kFormFlags_Temporary; }
-	bool					IsDeleted() const { return flags & kFormFlags_Deleted; }
-	bool					IsDestroyed() { return flags & kFormFlags_Destroyed; }
-
-	NiPoint3*				PosVector() { return (NiPoint3*)&pos; }
-	NiPoint2*				PosXY() { return (CoordXY*)&pos; }
-
-	bool					Update3D();
-	bool					Update3D_v1c();	// Less worse version as used by some modders
-	TESContainer*			GetContainer();
-	bool					IsMapMarker();
-	bool					GetInventoryItems(InventoryItemsMap &invItems);
-
-	static TESObjectREFR*	Create(bool bTemp = false);
 
 	SInt32					GetItemCount(TESForm* form) { return ThisCall<SInt32>(0x575610, this, form); };
 	void					AddItemAlt(TESForm* item, UInt32 count, float condition, bool doEquip);
 	bool					GetInventoryItems(UInt8 typeID);
-	TESObjectCELL*			GetParentCell() const { return parentCell; };
 	TESWorldSpace*			GetParentWorld() { return ThisCall<TESWorldSpace*>(0x575D70, this); };
 	bool __fastcall			GetInSameCellOrWorld(const TESObjectREFR* target) const;
 	Float32 __vectorcall	GetDistance(TESObjectREFR* target);

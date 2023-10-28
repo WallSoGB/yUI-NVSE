@@ -1,9 +1,8 @@
 #pragma once
-
 #include "bhkRefObject.hpp"
-#include "hkSerializableCinfo.hpp"
 
 class bhkWorld;
+class hkSerializableCinfo;
 
 class bhkSerializable : public bhkRefObject {
 public:
@@ -25,5 +24,4 @@ public:
 
 	hkSerializableCinfo* pInfo;
 };
-
-ASSERT_SIZE(bhkSerializable, 0x10);
+static_assert(sizeof(bhkSerializable) == 0x10);

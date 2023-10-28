@@ -18,4 +18,4 @@ public:
 	void*	m_pvRendererData;
 };
 
-ASSERT_SIZE(NiLight, 0xF0)
+ASSERT_SIZE(NiLight, 0xF0);

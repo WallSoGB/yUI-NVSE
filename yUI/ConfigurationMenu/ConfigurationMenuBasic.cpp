@@ -1,8 +1,7 @@
 #include "ConfigurationMenu.h"
-#include "ConsoleManager.h"
-
 #include "functions.h"
-#include "InterfaceManager.h"
+
+#if 0
 
 bool IsControllerConnected() { return *(UInt8*)0x11D8C50 || *(UInt8*)0x11D8A84 == 0; }
 
@@ -400,3 +399,5 @@ void ModConfigurationMenu::Update()
 
 	UpdateEscape();
 }
+
+#endif

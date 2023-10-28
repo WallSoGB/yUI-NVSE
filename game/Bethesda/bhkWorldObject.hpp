@@ -1,5 +1,4 @@
 #pragma once
-
 #include "bhkSerializable.hpp"
 
 class bhkMigrationWorld;
@@ -16,5 +15,4 @@ public:
 
 	UInt32 uiBodyFlags;
 };
-
-ASSERT_SIZE(bhkWorldObject, 0x14)
+static_assert(sizeof(bhkWorldObject) == 0x14);

@@ -1,4 +1,5 @@
 #include "PluginManager.h"
+/*
 #include "CommandTable.h"
 //#include "common/IDirectoryIterator.h"
 #include "ParamInfos.h"
@@ -19,6 +20,8 @@
 #else
 #include "Hooks_Script.h"
 #endif
+*/
+#if 0
 
 PluginManager	g_pluginManager;
 
@@ -946,3 +949,4 @@ CommandInfo kCommandInfo_GetPluginVersion =
 	NULL,
 	NULL
 };
+#endif

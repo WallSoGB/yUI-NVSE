@@ -1,6 +1,4 @@
 #pragma once
-
-#include "Defines.hpp"
 #include "NiTArray.hpp"
 
 class NiVBBlock;

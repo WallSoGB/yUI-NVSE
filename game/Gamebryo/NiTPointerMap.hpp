@@ -4,7 +4,9 @@
 #include "NiTPointerAllocator.hpp"
 
 template <class T_Key, class T_Data>
-class NiTPointerMap : public NiTMapBase<NiTPointerAllocator<size_t>, T_Key, T_Data> {
+class NiTPointerMap : public NiTMapBase<NiTPointerAllocator<size_t>, T_Key, T_Data> 
+{
+public:
     NiTPointerMap(UInt32 uiHashSize = 37) : NiTMapBase<NiTPointerAllocator<size_t>, T_Key, T_Data>(uiHashSize) {}
     ~NiTPointerMap() { NiTMapBase<NiTPointerAllocator<size_t>, T_Key, T_Data>::RemoveAll(); };
 

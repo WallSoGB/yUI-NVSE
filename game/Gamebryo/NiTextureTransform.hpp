@@ -3,6 +3,7 @@
 #include "NiMemObject.hpp"
 #include "NiPoint2.hpp"
 #include "NiMatrix3.hpp"
+; // something is missing ;
 
 class NiTextureTransform : public NiMemObject {
 public:

@@ -1,6 +1,8 @@
 #pragma once
 #include "Tile.hpp"
 
+class TileShaderProperty;
+
 // 0x48
 class TileImage : public Tile
 {

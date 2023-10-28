@@ -1,12 +1,8 @@
 #include <main.h>
-
-#include <TESForm.h>
-#include <Menu.h>
 #include <SimpleINILibrary.h>
-
-#include "functions.h"
 #include "dinput8.hpp"
-#include "RTTI.h"
+
+#if 0
 
 namespace UserInterface::WeaponHweel
 {
@@ -274,3 +270,5 @@ namespace UserInterface::WeaponHweel
 		HandleINI();
 	}
 }
+
+#endif

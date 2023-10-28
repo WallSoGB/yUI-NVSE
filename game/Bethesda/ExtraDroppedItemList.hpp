@@ -1,6 +1,7 @@
 #pragma once
 #include "BSExtraData.hpp"
-#include "TESObjectREFR.hpp"
+
+class TESObjectREFR;
 
 // 0x14
 class ExtraDroppedItemList : public BSExtraData

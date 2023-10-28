@@ -1,5 +1,4 @@
 #pragma once
-
 #include "BSMultiBoundShape.hpp"
 #include "NiPoint3.hpp"
 #include "NiFrustumPlanes.hpp"
@@ -8,6 +7,7 @@ NiSmartPointer(BSMultiBoundAABB);
 
 class BSMultiBound;
 
+// 0x24
 class BSMultiBoundAABB : public BSMultiBoundShape {
 public:
 	BSMultiBoundAABB();
@@ -33,5 +33,4 @@ public:
 
 	void GetVertices(BoundVertices* apVerts);
 };
-
-ASSERT_SIZE(BSMultiBoundAABB, 0x24)
+static_assert(sizeof(BSMultiBoundAABB) == 0x24);

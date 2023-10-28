@@ -1,7 +1,7 @@
 #pragma once
-
 #include "NiObject.hpp"
-#include "hkReferencedObject.hpp"
+
+class hkReferencedObject;
 
 class bhkRefObject : public NiObject {
 public:
@@ -13,5 +13,4 @@ public:
 
 	hkReferencedObject* phkObject;
 };
-
-ASSERT_SIZE(bhkRefObject, 0xC);
+static_assert(sizeof(bhkRefObject) == 0xC);

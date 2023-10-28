@@ -1,26 +1,11 @@
 #include <main.h>
-
 #include <Safewrite.hpp>
 #include <SimpleINILibrary.h>
-#include <TESObject.h>
-#include <RTTI.h>
+
+#if 0
 
 namespace Patch::MultiplicativeShots
 {
-	void HandleINIs()
-	{
-		const auto iniPath = GetCurPath() / yUI_INI;
-		CSimpleIniA ini;
-		ini.SetUnicode();
-
-
-		if (ini.LoadFile(iniPath.c_str()) == SI_FILE) return;
-
-		ini.SaveFile(iniPath.c_str(), false);
-	}
-
-	UInt8 __fastcall TESObjectWEAPGetNumProjectilesHook(TESObjectWEAP* weapon, void* dummyEdx, char hasWeaponMod, char dontCheckAmmo, TESForm* form);
-
 	UInt8 __fastcall TESObjectWEAPGetNumProjectilesHook(TESObjectWEAP* weapon, void* dummyEdx, char hasWeaponMod, char dontCheckAmmo, TESForm* form)
 	{
 		auto count = weapon->numProjectiles;
@@ -46,7 +31,9 @@ namespace Patch::MultiplicativeShots
 	extern void Init()
 	{
 		if (g_nvseInterface->isEditor) return;
-		HandleINIs();
+//
 		patchMultiplicativeProjectileCount(true);
 	}
 }
+
+#endif

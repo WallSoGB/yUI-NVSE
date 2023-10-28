@@ -1,9 +1,7 @@
 #include <main.h>
-#include <Menu.h>
-
-#include <GameData.h>
-#include <functions.h>
 #include <SimpleINILibrary.h>
+
+#if 0
 
 namespace UserInterface::VisualObjectives
 {
@@ -293,3 +291,5 @@ namespace UserInterface::VisualObjectives
 		HandleINI();
 	}
 }
+
+#endif

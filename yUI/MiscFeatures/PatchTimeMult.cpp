@@ -1,17 +1,9 @@
 #pragma once
-
 #include <main.h>
-
-#include <Types.h>
-#include <Sound.h>
-#include <Script.h>
-
-#include <GameData.h>
-#include <ConsoleManager.h>
 #include <Safewrite.hpp>
-
 #include <SimpleINILibrary.h>
 
+#if 0
 
 namespace Patch::TimeMult
 {
@@ -249,25 +241,11 @@ namespace Patch::TimeMult
 		}
 	}
 
-	void HandleINIs()
+	extern void Init(CSimpleIni& ini)
 	{
-		const auto iniPath = GetCurPath() / yUI_INI;
-		CSimpleIniA ini;
-		ini.SetUnicode();
-
-
-		if (ini.LoadFile(iniPath.c_str()) == SI_FILE) return;
-
 		enable = ini.GetOrCreate("General", "bTimeMultChanges", 1, "; enable 'Game Time Mult' section of this .ini file.");
 		mode = ini.GetOrCreate("Game Time Mult", "bTimeMultMode", 1, "; select which mods are handled by yGTM, with 0 disabling handling of mods altogether, 1 handling mods that use SGTM command and 2 handling all mods.");
 		minmax = ini.GetOrCreate("Game Time Mult", "bTimeMultMinMax", 1, "; use multiplication of minimum and maximum local values instead of a multiplication of all local values. Provides a more sane range of TimeMult values.");
-
-		ini.SaveFile(iniPath.c_str(), false);
-	}
-
-	extern void Init()
-	{
-		HandleINIs();
 		if (enable) pluginLoad.emplace_back(PluginLoad);
 
 		if (g_nvseInterface->isEditor) return;
@@ -275,3 +253,4 @@ namespace Patch::TimeMult
 		if (enable) deferredInit.emplace_back(FillMaps);
 	}
 }
+#endif

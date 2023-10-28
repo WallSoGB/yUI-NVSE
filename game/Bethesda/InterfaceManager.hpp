@@ -12,7 +12,7 @@ class TileMenu;
 class TileImage;
 class SceneGraph;
 
-enum SpecialInputCode
+enum SpecialInputCode : UInt32
 {
 	kInputCode_Backspace = 0x80000000,
 	kInputCode_ArrowLeft = 0x80000001,
@@ -26,6 +26,8 @@ enum SpecialInputCode
 	kInputCode_PageUp = 0x80000009,
 	kInputCode_PageDown = 0x8000000A
 };
+
+class bhkSimpleShapePhantom;
 
 struct PlayerCameraSphere
 {
@@ -345,11 +347,6 @@ public:
 	Float32							fScale4D0;			// 4D0
 	Tutorials						help;				// 4D4
 
-	char GetMessageBoxResult() {
-		auto button = msgBoxButton;
-		msgBoxButton = -1;
-		return button;
-	};
 
 	void ClosePipboy();
 

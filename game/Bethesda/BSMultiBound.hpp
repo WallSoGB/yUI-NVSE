@@ -1,10 +1,11 @@
 #pragma once
-
 #include "BSMultiBoundAABB.hpp"
 
 NiSmartPointer(BSMultiBound);
 
-class BSMultiBound : public NiObject {
+// 0x10
+class BSMultiBound : public NiObject
+{
 public:
 	BSMultiBound();
 	~BSMultiBound();
@@ -19,5 +20,4 @@ public:
 	BSMultiBoundAABB* GetShape() const;
 	void SetShape(BSMultiBoundAABB* apShape);
 };
-
-ASSERT_SIZE(BSMultiBound, 0x10)
+static_assert(sizeof(BSMultiBound) == 0x10);
