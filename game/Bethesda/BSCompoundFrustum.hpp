@@ -5,6 +5,8 @@
 #include "BSSimpleArray.hpp"
 
 class NiAVObject;
+class BSOcclusionPlane;
+class BSPortal;
 
 class BSCompoundFrustum {
 public:
@@ -32,7 +34,19 @@ public:
 	bool CullCheck(NiBound* apBound, NiFrustumPlanes* apPlanes);
 	bool CullCheckAlt(NiBound* apBound, NiFrustumPlanes* apPlanes);
 	bool Process(NiAVObject* apObject);
+	bool ProcessPlane(BSOcclusionPlane* apPlane);
 	UInt32* GetActivePlaneState();
 	void SetActivePlaneState(UInt32* apState);
 	void PrethreadOpList();
+	void SetCamera(const NiCamera* apCamera);
+
+	void StartGroupIntersection();
+	void AddOcclusionPlane(BSOcclusionPlane* apPlane);
+	void EndGroup();
+
+	void MakeIntoUnion();
+
+	void BuildForPortal(BSCompoundFrustum* apExistingFrustum, BSPortal* apPortal);
+	void AddCompoundFrustum(BSCompoundFrustum* apFrustum);
+	void AddPortal(BSPortal* apPortal);
 };

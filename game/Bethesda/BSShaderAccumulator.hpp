@@ -83,16 +83,9 @@ public:
 	UInt16									usQueryCount;
 	BSGraphics::OcclusionQuery**			ppOcclusionQueries;
 	NiTPointerList<NiGeometry*>				kVolumetricFogGeoList;
-	PersistentPassList						passList_09C;
-	PersistentPassList						passList_0B0;
-	PersistentPassList						passList_0C4;
-	PersistentPassList						passList_0D8;
-	PersistentPassList						passList_0EC;
-	PersistentPassList						passList_100;
-	PersistentPassList						passList_114;
-	PersistentPassList						passList_128;
+	PersistentPassList						passList_09C[4];
+	PersistentPassList						passList_0EC[4];
 	NiObjectPtr								spUnk13C;
-	NiTPointerList<ActorOcclusionTest>		kActorOcclusionTestList;
 	NiTPointerList<ActorOcclusionTest>		kActorOcclusionTestList;;
 	UInt32									uiLastRefID;
 	bool									bLastCullResult;
@@ -119,7 +112,6 @@ public:
 	UInt16									usRenderPassType;
 	UInt32									unk1AC;
 	UInt32									unk1B0;
-	NiTPointerMap<NiAVObject, bool>			kRoomSharedMap;
 	NiTPointerMap<NiAVObject*, bool>		kRoomSharedMap;
 	UInt32									unk1C4;
 	UInt32									unk1C8;
@@ -176,7 +168,7 @@ public:
 	void ResetSunOcclusion();
 	void FinishAccumulating_Standard_PreResolveDepth();
 	void FinishAccumulating_Standard_PostResolveDepth();
-	bool __fastcall RegisterObject(BSShaderAccumulator* apThis, void*, NiGeometry* apGeo);
+	bool __fastcall RegisterObjectEx(BSShaderAccumulator* apThis, void*, NiGeometry* apGeo);
 	static void __cdecl FinishAccumulating_Tiles(BSShaderAccumulator* apAccumulator);
 	static void __cdecl RegisterObject_Custom(BSShaderAccumulator* apAccumuluator, NiGeometry* apGeo, UInt32 unused, BSShaderProperty* apShaderProp, BSShader* apShader);
 	bool RegisterObject_Standard(NiGeometry* apGeometry, int unused, BSShaderProperty* apShaderProp, BSShader* apShader);

@@ -3,16 +3,17 @@
 #include "NiPoint3.hpp"
 #include "GridCell.hpp"
 #include "GridArray.hpp"
+#include "NiSmartPointer.hpp"
 
 class BSRenderedTexture;
 
 class GridCellArray : public GridArray {
 public:
-	SInt32 iDimension;
-	GridCell* pGridCellA;
-	NiPoint3 WorldCenter;
-	bool bLandAttached;
-	BSRenderedTexture* shadowMask;
+	SInt32							iDimension;
+	GridCell*						pGridCellA;
+	NiPoint3						kWorldCenter;
+	bool							bLandAttached;
+	NiPointer<BSRenderedTexture>	spShadowMask;
 
 	GridCell* GetCell(SInt32 aX, SInt32 aY);
 };

@@ -211,7 +211,7 @@ public:
 	virtual bool					Do_DisplayFrame();
 	virtual void					Do_ClearBuffer(const NiRect<float>*, UInt32 uiMode);
 	virtual void					Do_SetCameraData(const NiPoint3* kWorldLoc, const NiPoint3* kWorldDir, const NiPoint3* kWorldUp, const NiPoint3* kWorldRight, const NiFrustum* kFrustum, const NiRect<float>* kPort);
-	virtual void					Do_SetScreenSpaceCameraData(NiRect<float>* pkPort);
+	virtual void					Do_SetScreenSpaceCameraData(const NiRect<float>* pkPort);
 	virtual bool					Do_BeginUsingRenderTargetGroup(NiRenderTargetGroup* pkTarget, NiDX9Renderer::ClearFlags uiClearMode);
 	virtual bool					Do_EndUsingRenderTargetGroup();
 	virtual void					Do_BeginBatch(NiPropertyState* pkPropertyState, NiDynamicEffectState* pkEffectState);
@@ -333,10 +333,10 @@ public:
 	UInt32															m_uiCreationBackBufferCount;
 	RefreshRate														m_uiCreationRefreshRate;
 	bool															unkAD0;
-	NiTArray<int>													m_kResetNotifyFuncs;
-	NiTArray<void*>													m_kResetNotifyFuncData;
-	NiTArray<int>													m_kLostDeviceNotifyFuncs;
-	NiTArray<void*>													m_kLostDeviceNotifyFuncData;
+	NiTPrimitiveArray<int>											m_kResetNotifyFuncs;
+	NiTPrimitiveArray<void*>										m_kResetNotifyFuncData;
+	NiTPrimitiveArray<int>											m_kLostDeviceNotifyFuncs;
+	NiTPrimitiveArray<void*>										m_kLostDeviceNotifyFuncData;
 	NiTMap<D3DFORMAT, NiPixelFormat*>								m_kDepthStencilFormats;
 	NiFrustum														m_kCachedFrustum;
 	NiRect<float>													m_kCachedPort;
@@ -379,10 +379,10 @@ public:
 
 	void SetModelTransform(const NiTransform& kXform, bool bPushToDevice = false);
 
-	void SetScreenSpaceCameraData(NiRect<float>* pkPort);
+	void SetScreenSpaceCameraData(const NiRect<float>* pkPort);
 
-	void SetCameraData(NiCamera* apCamera);
-	void SetCameraData(NiPoint3* kWorldLoc, NiPoint3* kWorldDir, NiPoint3* kWorldUp, NiPoint3* kWorldRight, NiFrustum* kFrustum, NiRect<float>* kPort);
+	void SetCameraData(const NiCamera* apCamera);
+	void SetCameraData(const NiPoint3* kWorldLoc, const NiPoint3* kWorldDir, const NiPoint3* kWorldUp, const NiPoint3* kWorldRight, const NiFrustum* kFrustum, const NiRect<float>* kPort);
 
 	static void __fastcall Do_RenderTristripsAltEx(NiDX9Renderer* apThis, void*, NiTriStrips* apStrip);
 	static void __fastcall Do_RenderShapeAltEx(NiDX9Renderer* apThis, void*, NiTriShape* apShapep);

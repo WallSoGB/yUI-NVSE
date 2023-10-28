@@ -20,7 +20,9 @@ class TESWorldSpace : public TESForm, public TESFullName, public TESTexture
 {
 public:
 	TESWorldSpace();
-	~TESWorldSpace();
+	virtual ~TESWorldSpace();
+	virtual bool GetMapNameForLocation(void*, BSStringT& akName, NiPoint3 akLocation);
+	virtual void Func004F(float arg0, float a3, float a4, float a5, int a6, unsigned int a7);
 
 	struct CoordXY {
 		float	X;

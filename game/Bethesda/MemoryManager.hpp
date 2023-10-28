@@ -12,8 +12,7 @@ class TESForm;
 class Script;
 class ScriptLocals;
 
-enum Context
-{
+enum Context {
 	MC_WINDOW = 0x4,
 	MC_THREAD_SAFE_STRUCT = 0x6,
 	MC_EFFECTS = 0x7,
@@ -91,7 +90,7 @@ struct TLSData {
 	UInt32			uiHeapIndex;			// 2B4
 	UInt32			unk2B8;					// 2B8
 	UInt32			uiAccumulatorCount;		// 2BC
-    UInt32          unk2C0;
+	UInt32		  unk2C0;
 
 	static TLSData* GetTLSData();
 	static UInt32 GetHeapIndex();
@@ -102,33 +101,37 @@ struct TLSData {
 static_assert(sizeof(TLSData) == 0x2C4);
 
 struct MemoryManager {
-    bool			bInitialized;
-    UInt16			usNumHeaps;
-    UInt16			usNumPhysicalHeaps;
-    IMemoryHeap**	ppHeaps;
-    IMemoryHeap*	pHeapsByContextA[66];
-    NiTMap<UInt32, ScrapHeap*> kHeapMap; // BSMapBase
-    DWORD	dword124;
-    bool	byte128;
-    bool	byte129;
-    DWORD	dword12C;
-    DWORD	dword130;
-    DWORD	dword134;
+	bool			bInitialized;
+	UInt16			usNumHeaps;
+	UInt16			usNumPhysicalHeaps;
+	IMemoryHeap**	ppHeaps;
+	IMemoryHeap*	pHeapsByContextA[66];
+	NiTMap<UInt32, ScrapHeap*> kHeapMap; // BSMapBase
+	DWORD	dword124;
+	bool	byte128;
+	bool	byte129;
+	DWORD	dword12C;
+	DWORD	dword130;
+	DWORD	dword134;
 
 
-    static MemoryManager* GetSingleton();
-    static ScrapHeap* GetThreadScrapHeap();
-    
-    template <typename T_Data>
-    static T_Data* Allocate() {
-        return ThisStdCall<T_Data*>(0xAA3E40, MemoryManager::GetSingleton(), sizeof(T_Data));
-    };
-    static void* Allocate(size_t aSize); // operator new
-    static void* Reallocate(void* apOldMem, size_t auiNewSize);
-    static void Deallocate(void* apMemory); // operator delete
+	static MemoryManager* GetSingleton();
+	static ScrapHeap* GetThreadScrapHeap();
+	
+	template <typename T_Data>
+	static T_Data* Allocate() {
+		return ThisStdCall<T_Data*>(0xAA3E40, MemoryManager::GetSingleton(), sizeof(T_Data));
+	};
+	template <typename T_Data>
+	static T_Data* Allocate(size_t aCount) {
+		return ThisStdCall<T_Data*>(0xAA3E40, MemoryManager::GetSingleton(), sizeof(T_Data) * aCount);
+	};
+	static void* Allocate(size_t aSize); // operator new
+	static void* Reallocate(void* apOldMem, size_t auiNewSize);
+	static void Deallocate(void* apMemory); // operator delete
 
-    static void* AllocateScrap(size_t aSize, UInt32 aAlignment);
-    static void DeallocateScrap(void* apMemory);
+	static void* AllocateScrap(size_t aSize, UInt32 aAlignment);
+	static void DeallocateScrap(void* apMemory);
 
 	static void EnterContext(UInt32& apPrevious, UInt32 auiNew);
 	static void LeaveContext(UInt32& apPrevious);
@@ -160,9 +163,9 @@ void Delete(T* t, Args &&... args)
 }
 
 #define BS_ALLOCATOR \
-    static void* operator new(size_t stSize) { \
-        return MemoryManager::Allocate(stSize); \
-    } \
+	static void* operator new(size_t stSize) { \
+		return MemoryManager::Allocate(stSize); \
+	} \
 	static void operator delete(void* apMem) { \
-        return MemoryManager::Deallocate(apMem); \
-    }
+		return MemoryManager::Deallocate(apMem); \
+	}

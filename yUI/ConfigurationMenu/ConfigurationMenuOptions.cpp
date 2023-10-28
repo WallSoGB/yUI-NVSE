@@ -358,7 +358,7 @@ void ModConfigurationMenu::SettingList::Update()
 }
 
 void ModConfigurationMenu::SettingList::Display(const std::string& newcategory, bool newmain, bool newallTag,
-                                                       bool mewdoublestacked)
+													   bool mewdoublestacked)
 {
 	if (categoryActive == newcategory)
 	{

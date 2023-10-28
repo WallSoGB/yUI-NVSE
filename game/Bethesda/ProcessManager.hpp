@@ -52,8 +52,8 @@ struct ProcessManager
 	UInt32									unk000;				// 000
 	ProcessLists							AllProcessArrays;
 	BSSimpleList<UInt32*>*					crimes[5];			// 044
-	BSSimpleList<BSTempEffectParticle*>		lTempParticles;			// 058
-	BSSimpleList<BSTempEffect*>				lTempEffects;		// 060
+	BSSimpleList<BSTempEffectParticlePtr>	lTempParticles;			// 058
+	BSSimpleList<BSTempEffectPtr>			lTempEffects;		// 060
 	BSSimpleList<MuzzleFlash*>				lMuzzleFlashList;		// 068
 	BSSimpleList<void*>						lArrowProjectileList;			// 070
 	BSSimpleList<void*>						lTempShouldMoveList;			// 078
@@ -113,6 +113,8 @@ struct ProcessManager
 	__forceinline int GetTotalDetectionValue(Actor* actor, bool arg2 = false) {
 		return ThisStdCall<int>(0x973710, this, actor, arg2);
 	}
+
+	void UpdateTempEffects(float afTime);
 };
 
 ASSERT_SIZE(ProcessManager, 0x103CC);

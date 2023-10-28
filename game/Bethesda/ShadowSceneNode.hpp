@@ -81,7 +81,8 @@ public:
 
 	void BuildSharedCompoundFrustum(NiCamera* apCamera, BSPortal* apPortal);
 
-	static void __fastcall UpdateMultiBoundVisibility(ShadowSceneNode* apThis, void*, BSMultiBoundNode* apNode, NiPoint3 akViewPoint, BSCullingProcess* apCuller);
+	void UpdateMultiBoundVisibility(BSMultiBoundNode* apNode, NiPoint3 akViewPoint, BSCullingProcess* apCuller);
+	void UpdateRoomAndPortalVisibility(BSMultiBoundRoom* apRoom, NiCamera* apCamera, NiFrustumPlanes* apPlanes, bool abAddIntersection);
 };
 
 static_assert(sizeof(ShadowSceneNode) == 0x200);

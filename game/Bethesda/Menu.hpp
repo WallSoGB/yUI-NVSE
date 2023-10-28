@@ -4,6 +4,7 @@
 #include "BSString.hpp"
 #include "NiColor.hpp"
 #include "TileMenu.hpp"
+#include "BSMemObject.hpp"
 
 class Tile;
 class TileMenu;
@@ -30,7 +31,7 @@ enum MenuSpecialKeyboardInputCode
 };
 
 // 0x28
-class Menu
+class Menu : public BSMemObject
 {
 public:
 
@@ -108,7 +109,7 @@ public:
 	virtual UInt32	GetID() { return 0; };
 	virtual bool	HandleSpecialKeyInput(MenuSpecialKeyboardInputCode code, Float32 keyState) { return false; };
 	virtual bool	HandleControllerInput(int code, Tile* activeTile) { return false; }; 
-	virtual void    OnUpdateUserTrait(int tileVal) {}; // unimplemented by any vanilla menus, called at 0xA1F28E - called when a tilevalue > 10000 is used (any field starting with an underscore like <_XXX></_XXX> is a user trait)
+	virtual void	OnUpdateUserTrait(int tileVal) {}; // unimplemented by any vanilla menus, called at 0xA1F28E - called when a tilevalue > 10000 is used (any field starting with an underscore like <_XXX></_XXX> is a user trait)
 	virtual void	HandleControllerConnectOrDisconnect(bool isControllerConnected) {};
 
 	// 0x14

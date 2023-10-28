@@ -1,13 +1,15 @@
 #pragma once
-#include "NiObject.hpp"
+
 #include "NiTMap.hpp"
 #include "BSRenderPass.hpp"
 #include "BSSimpleList.hpp"
-#include "NiNode.hpp"
+#include "NiObject.hpp"
 #include "PersistentPassList.hpp"
-//#include <PerfCounter.hpp> <-- don't have that
+#include "NiTPointerList.hpp"
+//#include <PerfCounter.hpp> <-- don't have this
 
 class BSShader;
+class NiTexture;
 
 class BSBatchRenderer : public NiObject {
 public:
@@ -15,9 +17,12 @@ public:
 	virtual void Unk_24(RenderPassTypes minPass, RenderPassTypes maxPass, bool bBlendAlpha);
 
 	struct GeometryGroup {
+		GeometryGroup(RenderPassTypes aeMaxPass);
+		~GeometryGroup();
+
 		char ucFlags;
 		UInt16 usCount;
-		RenderPassTypes iMaxPass;
+		RenderPassTypes eMaxPass;
 		BSBatchRenderer* pBatchRenderer;
 		PersistentPassList PassList;
 		UInt32 unk1C;
@@ -25,17 +30,11 @@ public:
 
 		void RegisterPass(BSRenderPass* apRenderPass, bool abUnk);
 		void Render(bool bBlendAlpha);
-		void Unk_B9A490();
-	};
-
-	struct AccumStruct {
-		void* __vftable;
-		NiTListItem<BSRenderPass>* passNode[3];
-		UInt32 unk10;
+		void RemoveAll();
 	};
 
 	struct AccumStruct4 {
-		AccumStruct structs[5];
+		PersistentPassList structs[5];
 		DWORD dword64;
 	};
 
@@ -51,23 +50,23 @@ public:
 		REFRACT_2 = 8,
 		UNK_9 = 9,
 		UNK_10 = 10,
-		DEPTH_1 = 11,
-		DEPTH_2 = 12,
+		DEPTH_WORLD = 11,
+		DEPTH_PLAYER = 12,
 	};
 
-	AccumStruct4* accumStructures4;
-	NiTMap<UInt32, UInt32> passMap;
-	DWORD uiMaxPass;
-	RenderPassTypes passStart;
-	RenderPassTypes passEnd;
-	DWORD* textureBlendStagesList;
-	BSSimpleList<UInt16*> lCurrentPass;
-	UInt32 uiSomeCounter;
-	bool bAutoClearPasses;
-	BSBatchRenderer::GeometryGroup* pGeometryGroupsA[13];
-	BSBatchRenderer::GeometryGroup* pAlphaGroups[2];
-	NiTPointerList<BSBatchRenderer::GeometryGroup> pGroupingAlphasGroup[2];
-	BSBatchRenderer::GeometryGroup* pGeometryGroupsB[2];
+	AccumStruct4*									accumStructures4;
+	NiTMap<UInt32, UInt32>							passMap;
+	DWORD											uiMaxPass;
+	RenderPassTypes									passStart;
+	RenderPassTypes									passEnd;
+	DWORD*											textureBlendStagesList;
+	tList<UInt16>									lCurrentPass;
+	UInt32											uiSomeCounter;
+	bool											bAutoClearPasses;
+	BSBatchRenderer::GeometryGroup*					pGeometryGroupsA[13];
+	BSBatchRenderer::GeometryGroup*					pAlphaGroups[2];
+	NiTPointerList<BSBatchRenderer::GeometryGroup*> pGroupingAlphasGroup[2];
+	BSBatchRenderer::GeometryGroup*					pGeometryGroupsB[2]; // 0 is for facegen stuff? FaceGenAccessory and FaceGenHairHat go there
 
 	static RenderPassTypes uiRenderPassToIgnore;
 	static bool bShowOnlySelectedPass;

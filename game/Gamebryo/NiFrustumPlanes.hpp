@@ -26,9 +26,9 @@ public:
 	NiPlane	m_akCullingPlanes[MAX_PLANES];
 	UInt32	m_uiActivePlanes;
 
-	void Set(NiFrustum* kFrust, NiTransform* kXform);
+	void Set(const NiFrustum& kFrust, const NiTransform& kXform);
 
-	void Set(NiCamera* apCamera);
+	void Set(const NiCamera* apCamera);
 
 
 	const NiPlane& GetPlane(UInt32 ePlane) const;

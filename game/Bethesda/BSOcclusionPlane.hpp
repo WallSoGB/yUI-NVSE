@@ -12,7 +12,7 @@ public:
 	NiPoint3 kCenter;
 	NiPoint2 kHalfExtents;
 	NiMatrix3 kRotation;
-	BSMultiBoundShape::BSMBCullResult kCullResult;
+	BSMultiBoundShape::BSMBCullResult eCullResult;
 	NiFrustumPlanes kCachedPlanes;
 	NiPoint3 kCachedVertices[4];
 	NiPoint3 kViewPoint;
@@ -24,4 +24,9 @@ public:
 	BSOcclusionPlane* pLinkedPlanes[4];
 
 	void UpdateFrustumPlanes(NiPoint3 akViewPoint, NiFrustumPlanes* apPlanes);
+
+	bool WithinFrustumDistFirst(NiFrustumPlanes* apPlanes, NiPoint3& akViewPos);
+
+	UInt32 Unk_B5AA00();
+
 };

@@ -10,8 +10,8 @@ public:
 	QueuedFileLoad();
 	~QueuedFileLoad();
 
-	NiRefObjectPtr spObject;
-	UInt32 dword34;
+	NiRefObjectPtr	spObject;
+	UInt32			eFileType;
 };
 
 ASSERT_SIZE(QueuedFileLoad, 0x38);

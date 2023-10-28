@@ -6,9 +6,9 @@ class BaseFormComponent
 public:
 	BaseFormComponent();
 	~BaseFormComponent();
-	
+
 	virtual void	InitializeDataComponent();
-	virtual	void	ClearDataComponent();
+	virtual void	ClearDataComponent();
 	virtual void	CopyComponent(BaseFormComponent* apComponent);
 	virtual bool	CompareComponent(BaseFormComponent* apSource);
 };

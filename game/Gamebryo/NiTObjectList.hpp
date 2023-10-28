@@ -7,22 +7,22 @@
 template <class T_Data>
 class NiTObjectList : public NiTListBase <NiTObjectAllocator<T_Data>, T_Data> {
 public:
-    ~NiTObjectList() { RemoveAll(); };
+	~NiTObjectList() { RemoveAll(); };
 
-    // 0xB71300
-    void RemoveAll() {
-        NiTListItem<T_Data>* pkCurr = NiTListBase<NiTObjectAllocator<T_Data>, T_Data>::m_pkHead;
-        while (pkCurr)
-        {
-            NiTListItem<T_Data>* pkDel = pkCurr;
-            pkCurr = pkCurr->m_pkNext;
-            DeleteItem(pkDel);
-        }
+	// 0xB71300
+	void RemoveAll() {
+		NiTListItem<T_Data>* pkCurr = NiTListBase<NiTObjectAllocator<T_Data>, T_Data>::m_pkHead;
+		while (pkCurr)
+		{
+			NiTListItem<T_Data>* pkDel = pkCurr;
+			pkCurr = pkCurr->m_pkNext;
+			DeleteItem(pkDel);
+		}
 
-        NiTListBase<NiTObjectAllocator<T_Data>, T_Data>::m_kAllocator.m_uiCount = 0;
-        NiTListBase<NiTObjectAllocator<T_Data>, T_Data>::m_pkHead = 0;
-        NiTListBase<NiTObjectAllocator<T_Data>, T_Data>::m_pkTail = 0;
-    };
+		NiTListBase<NiTObjectAllocator<T_Data>, T_Data>::m_kAllocator.m_uiCount = 0;
+		NiTListBase<NiTObjectAllocator<T_Data>, T_Data>::m_pkHead = 0;
+		NiTListBase<NiTObjectAllocator<T_Data>, T_Data>::m_pkTail = 0;
+	};
 
 protected:
 	// 0x49FA80

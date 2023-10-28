@@ -10,9 +10,12 @@ class BSCullingProcess;
 
 class BSPortalSharedNode : public NiNode {
 public:
-	BSCompoundFrustum* kCompoundFrustum;
-	BSSimpleArray<ShadowSceneLight*> kLights;
-	BSPortal* apPortal;
+	BSPortalSharedNode();
+	virtual ~BSPortalSharedNode();
+
+	BSCompoundFrustum*					kCompoundFrustum;
+	BSSimpleArray<ShadowSceneLight*>	kLights;
+	BSPortal*							apPortal;
 
 	static void __fastcall OnVisibleEx(BSPortalSharedNode* apThis, void*, BSCullingProcess* apCuller);
 };

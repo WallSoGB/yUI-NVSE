@@ -2,10 +2,11 @@
 
 #include "NiPoint3.hpp"
 #include "NiPlane.hpp"
+#include "BSMemObject.hpp"
 
 class NiCamera;
 
-class NiBound {
+class NiBound : public BSMemObject {
 public:
 	NiBound() : m_kCenter(NiPoint3(0.0f,0.0f,0.0f)) , m_fRadius(0.0f) {};
 	~NiBound() {};

@@ -68,17 +68,3 @@ public:
 	void* GetRefractionProperty();
 };
 static_assert(sizeof(ExtraDataList) == 0x20);
-
-/*};
-
-class ExtendDataList : public BSSimpleList<ExtraDataList*>
-{
-public:
-	static ExtendDataList* Create(ExtraDataList* pExtraDataList = nullptr);
-	static void Free(ExtendDataList* xData, bool bFreeList = false);
-	static bool Add(ExtendDataList* xData, ExtraDataList* xList);
-	static bool Remove(ExtendDataList* xData, ExtraDataList* xList, bool bFreeList = false);
-	SInt32 AddAt(ExtraDataList* item, SInt32 index);
-	void RemoveAll() const;
-	ExtraDataList* RemoveNth(SInt32 n);
-};*/

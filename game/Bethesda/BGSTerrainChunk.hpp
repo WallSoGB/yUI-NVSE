@@ -2,7 +2,7 @@
 
 #include "NiGeometry.hpp"
 #include "BSMultiBoundNode.hpp"
-#include "Lighting30ShaderProperty.hpp"
+#include "BSShaderPPLightingProperty.hpp"
 
 struct BGSTerrainNode;
 class BGSTerrainChunkLoadTask;
@@ -24,7 +24,10 @@ struct BGSTerrainChunk {
 	bool bIsInitialized;
 	bool bInitializedShaderProperty;
 	bool gap02B;
-	NiPointer<NoFaderShaderProperty> spShaderProperty;
+	NiPointer<BSShaderPPLightingProperty> spShaderProperty;
 
+	void InitializeShaderProperty();
 	void AttachWaterLOD(bool abForce);
 };
+
+ASSERT_SIZE(BGSTerrainChunk, 0x30);

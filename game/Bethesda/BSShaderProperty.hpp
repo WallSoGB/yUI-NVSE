@@ -154,7 +154,11 @@ public:
 		Wall_RealTimeEnv = 0x80000000,
 	};
 
-	struct RenderPassList : public NiTArray<BSRenderPass*> {
+	class RenderPassList : public NiTObjectArray<BSRenderPass*> {
+	public:
+		RenderPassList(UInt32 auiSize);
+		virtual ~RenderPassList() override;
+
 		UInt32 uiNumPasses;
 
 		void AddPass(NiGeometry* apGeometry, RenderPassTypes auiPassEnum, bool abEnable,
@@ -257,9 +261,14 @@ public:
 	bool HasRealtimeCubeMaps() { return (ulFlags[1] & Wall_RealTimeEnv) != 0; }
 
 	static UInt32 SelectBlendType(UInt32 uiType);
-	static void __fastcall GetViewerStringsEx(BSShaderProperty* apThis, void*, NiTArray<const char*>* apStrings);
+	static void __fastcall GetViewerStringsEx(BSShaderProperty* apThis, void*, NiViewerStringsArray* apStrings);
 
-	void InitRenderPassList(UInt32 auiSize);
+	void InitRenderPassList(SInt32 aiSize);
+	void InitRenderPassList_DepthMap(UInt32 auiSize);
+	void InitRenderPassList_ConstAlpha(UInt32 auiSize);
+	void InitRenderPassList_LocalMap(UInt32 auiSize);
+	void InitRenderPassList_WaterDepth(UInt32 auiSize);
+	void InitRenderPassList_Silhouette(UInt32 auiSize);
 };
 
 ASSERT_SIZE(BSShaderProperty, 0x60);

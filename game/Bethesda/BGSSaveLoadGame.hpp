@@ -9,7 +9,7 @@ class BGSLoadGameSubBuffer;
 class BGSReconstructFormsInFileMap;
 class BGSReconstructFormsInAllFilesMap;
 class BGSLoadFormBuffer;
-struct BGSSaveLoadChangesMap;
+class BGSSaveLoadChangesMap;
 class BGSSaveLoadReferencesMap;
 class Actor;
 class TESObjectCELL;

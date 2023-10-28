@@ -1,5 +1,6 @@
 #pragma once
 #include "NiTArray.hpp"
+#include "NiTLargeArray.hpp"
 #include "TESObjectREFR.hpp"
 
 struct ChangesMap;
@@ -27,7 +28,7 @@ public:
 	UInt32 unk018;								// 018
 	UInt8 unk01C;								// 01C
 	UInt8 pad01D[3];
-	NiTArray<TESObjectREFR*>* arr020; // 020
+	NiTLargePrimitiveArray<TESObjectREFR*>* arr020; // 020
 	UInt32 unk024;					   // 024
 	UInt32 unk028;					   // 028
 	CreatedObject createdObjecBSSimpleList;   // 02C data is formID - verified
@@ -41,10 +42,10 @@ public:
 	UInt32 unk06C;					   // 06C
 	UInt32 unk070;					   // 070
 	UInt8 unk074;					   // 074
-	UInt8 unk075;					   //     init to 0x7D
+	UInt8 unk075;					   //	 init to 0x7D
 	UInt8 pad076[2];
-	NiTArray<UInt32>* array078; // 078 NiTLargePrimitiveArray<?>
-	NiTArray<UInt32>* array07C; // 07C NiTLargePrimitiveArray<?>
+	NiTLargePrimitiveArray<UInt32>*		array078; // 078 NiTLargePrimitiveArray<?>
+	NiTLargePrimitiveArray<UInt32>*		array07C; // 07C NiTLargePrimitiveArray<?>
 	UInt8 unk080;				// 080 version of save?
 	UInt8 unk081;
 	UInt8 pad082[2];

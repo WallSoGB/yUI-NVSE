@@ -7,38 +7,38 @@
 #include "NiVisibleArray.hpp"
 #include "NiFrustumPlanes.hpp"
 
+NiRTTIAddress(NiCullingProcess, 0x11F4990);
+
 class NiCullingProcess : public NiMemObject {
 public:
-	NiCullingProcess() {};
+	NiCullingProcess(NiVisibleArray* apVisibleSet = nullptr);
 
-	virtual NiRTTI*						GetRTTI();
-	virtual NiNode*						IsNiNode();
-	virtual BSFadeNode*					IsFadeNode();
-	virtual BSMultiBoundNode*			IsMultiBoundNode();
-	virtual NiGeometry*					IsGeometry();
-	virtual NiTriBasedGeom*				IsTriBasedGeometry();
-	virtual NiTriStrips*				IsTriStrips();
-	virtual NiTriShape*					IsTriShape();
-	virtual BSSegmentedTriShape*		IsSegmentedTriShape();
-	virtual BSResizableTriShape*		IsResizableTriShape();
-	virtual NiParticles*				IsParticlesGeom();
-	virtual NiLines*					IsLinesGeom();
-	virtual bhkCollisionObject*			IsBhkNiCollisionObject();
-	virtual bhkBlendCollisionObject*	IsBhkBlendCollisionObject();
-	virtual bhkRigidBody*				IsBhkRigidBody();
-	virtual bhkLimitedHingeConstraint*	IsBhkLimitedHingeConstraint();
-	virtual								~NiCullingProcess();
-	virtual void						Process(NiAVObject* pkObject);
-	virtual void						ProcessAlt(const NiCamera* pkCamera, NiAVObject* pkScene, NiVisibleArray* pkVisibleSet);
-	virtual void						AppendVirtual(NiGeometry*);
+	virtual const NiRTTI*				GetRTTI() { return NiCullingProcess__ms_RTTI; }
+	virtual NiNode*						IsNiNode() { return nullptr; };
+	virtual BSFadeNode*					IsFadeNode() { return nullptr; };
+	virtual BSMultiBoundNode*			IsMultiBoundNode() { return nullptr; };
+	virtual NiGeometry*					IsGeometry() { return nullptr; };
+	virtual NiTriBasedGeom*				IsTriBasedGeometry() { return nullptr; };
+	virtual NiTriStrips*				IsTriStrips() { return nullptr; };
+	virtual NiTriShape*					IsTriShape() { return nullptr; };
+	virtual BSSegmentedTriShape*		IsSegmentedTriShape() { return nullptr; };
+	virtual BSResizableTriShape*		IsResizableTriShape() { return nullptr; };
+	virtual NiParticles*				IsParticlesGeom() { return nullptr; };
+	virtual NiLines*					IsLinesGeom() { return nullptr; };
+	virtual bhkCollisionObject*			IsBhkNiCollisionObject() { return nullptr; };
+	virtual bhkBlendCollisionObject*	IsBhkBlendCollisionObject() { return nullptr; };
+	virtual bhkRigidBody*				IsBhkRigidBody() { return nullptr; };
+	virtual bhkLimitedHingeConstraint*	IsBhkLimitedHingeConstraint() { return nullptr; };
+	virtual								~NiCullingProcess() {};
+	virtual void						Process(NiAVObject* apObject);
+	virtual void						ProcessAlt(const NiCamera* apCamera, NiAVObject* apScene, NiVisibleArray* apVisibleSet);
+	virtual void						AppendVirtual(NiGeometry* apGeom) {};
 
 	bool				m_bUseVirtualAppend;
 	NiVisibleArray*		m_pkVisibleSet;
 	NiCamera*			m_pkCamera;
 	NiFrustum			m_kFrustum;
 	NiFrustumPlanes		m_kPlanes;
-
-	static NiCullingProcess* Create(NiCullingProcess* apThis, NiVisibleArray* pkVisibleSet = 0);
 
 	void SetCamera(const NiCamera* apCamera);
 	void SetFrustum(const NiFrustum* kFrustum);

@@ -8,7 +8,7 @@ public:
 	virtual			~SettingCollection();
 	virtual void	Add(T* apSetting);
 	virtual void	Remove(T* apSetting);
-	virtual UInt32	GetViewerStrings(NiTArray<const char*>* apStrings);
+	virtual UInt32	GetViewerStrings(NiViewerStringsArray* apStrings);
 	virtual bool	WriteSetting(T* apSetting);
 	virtual bool	ReadSetting(T* apSetting);
 	virtual bool	Open(bool abWrite);

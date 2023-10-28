@@ -3,10 +3,11 @@
 #include "BSShaderAccumulator.hpp"
 #include "SceneGraph.hpp"
 #include "NiDX9Renderer.hpp"
+#include "BSInputManager.hpp"
+#include "BSPackedTaskQueue.hpp"
 
 class Sun;
 
-class OSInputGlobals;
 class OSSoundGlobals;
 class BSPackedTaskQueue;
 class ImageSpaceManager;
@@ -63,32 +64,14 @@ public:
 	void* mainThreadHandle;
 	UInt32* PackedTaskHeap;
 	UInt32 unk1C;
-	OSInputGlobals* pInput;
+	BSInputManager* pInput;
 	OSSoundGlobals* pSound;
-	BSPackedTaskQueue* pTaskQueue;
-	UInt32 unk2C;
-	UInt32 unk30;
-	UInt32 unk34;
-	UInt32 unk38;
-	UInt32 unk3C;
-	UInt32 unk40;
-	UInt32 unk44;
-	UInt32 unk48;
-	UInt32 unk4C;
+	BSPackedTaskQueue TaskQueue;
 	UInt32 SecondaryPackedTaskHeap;
 	UInt32 unk54;
 	UInt32 unk58;
 	UInt32 unk5C;
-	BSPackedTaskQueue* pSecondaryTaskQueue;
-	UInt32 unk64;
-	UInt32 unk68;
-	UInt32 unk6C;
-	UInt32 unk70;
-	UInt32 unk74;
-	UInt32 unk78;
-	UInt32 unk7C;
-	UInt32 unk80;
-	UInt32 unk84;
+	BSPackedTaskQueue SecondaryTaskQueue;
 	BSShaderAccumulatorPtr spWorldAccum;
 	BSShaderAccumulatorPtr sp1stPersonAccum;
 	BSShaderAccumulatorPtr spAccumulator_Aiming;

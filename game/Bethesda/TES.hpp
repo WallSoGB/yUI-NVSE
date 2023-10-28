@@ -20,7 +20,7 @@ class GridDistantArray;
 
 class TES {
 public:
-	virtual void Fn_00(UInt32 arg1, UInt32 arg2, UInt32 arg3, UInt32 arg4, UInt32 arg5);
+	virtual bool Fn_00(UInt32 arg1, UInt32 arg2, UInt32 arg3, UInt32 arg4, TESWorldSpace* apWorldSpace);
 
 	struct DeathCount
 	{

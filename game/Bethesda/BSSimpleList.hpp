@@ -336,11 +336,11 @@ public:
 	BSSimpleList() : m_item(0), m_pkNext(0) { }
 	~BSSimpleList() { 
 		while (m_pkNext) {
-			auto v2 = m_pkNext->m_pkNext;
+			auto pNewNext = m_pkNext->m_pkNext;
 			m_pkNext->m_pkNext = nullptr;
 			if (m_pkNext)
 				m_pkNext->~BSSimpleList();
-			m_pkNext = v2;
+			m_pkNext = pNewNext;
 		}
 		m_item = 0;
 	}

@@ -6,9 +6,10 @@
 #include "NiAVObject.hpp"
 #include "BSPrecisionTimer.hpp"
 #include "NiPoint4.hpp"
+#include "hkMatrix3x4.hpp"
 
 class hkaRagdollInstance;
-class bhkRagdollShareData;
+NiSmartPointer(bhkRagdollShareData);
 
 class bhkRagdollController : public hkaRaycastInterface {
 public:
@@ -54,12 +55,7 @@ public:
 	bool unk004;
 	float unk008;
 	UInt32 unk00C;
-	UInt32 unk010;
-	UInt32 unk014;
-	UInt32 unk018;
-	UInt32 unk01C;
-	NiPoint4 unk020;
-	NiPoint4 unk030;
+	hkMatrix3x4 unk010;
 	UInt8 byte040;
 	UInt8 byte041;
 	UInt8 byte042;
@@ -75,14 +71,14 @@ public:
 	NiNode* bip01Node;
 	UInt32 unk05C;
 	NiMatrix3 matrix060;
-	NiNode* pDebugLinesNode;
+	NiNodePtr spDebugLinesNode;
 	UInt32 ptr088;
 	UInt8 unk08C[4];
 	UInt32 unk090;
-	UInt32 unk094;
+	hkMatrix3x4* pkMatrices;
 	UInt32 unk098;
 	UInt32 unk09C;
-	BSSimpleArray<NiAVObject*> objectArray0A0;
+	BSSimpleArray<NiAVObject*> kBones;
 	UInt8 byte0B0;
 	UInt8 isLookIK;
 	UInt8 byte0B2;
@@ -183,14 +179,14 @@ public:
 	UInt16 iRightForeArmIdx;
 	UInt16 iRightHandIdx;
 	UInt8 byte21C;
-	UInt8 isGrabIK;
+	bool bIsGrabIK;
 	UInt8 byte21E;
 	UInt8 footIK21F;
 	UInt8 isFootIK;
 	UInt8 byte221;
 	UInt8 byte222;
 	UInt8 byte223;
-	UInt8 byte224_falseIfLibertyPrime;
+	bool byte224_falseIfLibertyPrime;
 	UInt8 gap225[3];
 	UInt32 unk228;
 	UInt32 unk22C;
@@ -199,7 +195,7 @@ public:
 	UInt16 unk238;
 	UInt16 unk23A;
 	float unk23C;
-	UInt8 byte240_trueIfLibertyPrime;
+	bool byte240_trueIfLibertyPrime;
 	UInt8 byte241;
 	UInt8 byte242;
 	UInt8 gap243;
@@ -228,7 +224,7 @@ public:
 	UInt32 unk298;
 	UInt32 unk29C;
 	NiFixedString* blockName;
-	bhkRagdollShareData* ragdollShareData;
+	bhkRagdollShareDataPtr spRagdollShareData;
 	LARGE_INTEGER PerformanceCount;
 	UInt32 unk2B0;
 	UInt32 unk2B4;

@@ -35,7 +35,7 @@ class TESActorBase : public TESBoundAnimObject,
 {
 public:
 	TESActorBase();
-	~TESActorBase();
+	virtual ~TESActorBase();
 
 	virtual BGSBodyPartData*	GetBodyPartData();
 	virtual void				Fn_61(void* arg);

@@ -1,7 +1,9 @@
 #pragma once
 
-#include "ShadowSceneLight.hpp"
-#include "NiGeometry.hpp"
+#include "BSMemObject.hpp"
+
+class ShadowSceneLight;
+class NiGeometry;
 
 enum RenderPassTypes : UInt32 {
 	BSSM_EMPTY = 0x0,
@@ -756,9 +758,7 @@ enum RenderPassTypes : UInt32 {
 	BSSM_FINAL_PASS = 0x2F7,
 };
 
-NiSmartPointer(BSRenderPass);
-
-class BSRenderPass {
+class BSRenderPass : public BSMemObject {
 public:
 	BSRenderPass(NiGeometry* apGeometry, RenderPassTypes aePassEnum, bool abEnable, UInt8 aucNumLights, ...);
 	~BSRenderPass();
@@ -790,8 +790,6 @@ public:
 	void AllocateSceneLights(UInt8 aucNumLights);
 
 	static void RenderImmediately(NiGeometry* apGeometry, RenderPassTypes aePassEnum);
-
-	BS_ALLOCATOR
 };
 
 ASSERT_SIZE(BSRenderPass, 0x10);

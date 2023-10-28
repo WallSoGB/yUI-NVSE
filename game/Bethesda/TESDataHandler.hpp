@@ -91,8 +91,8 @@ public:
 		UInt32			unkC;				// C
 	};
 
-	UInt32							unk00;					// 000
-	BoundObjecBSSimpleListHead* boundObjecBSSimpleList;		// 004
+	UInt32									unk00;					// 000
+	BoundObjecBSSimpleListHead*				boundObjecBSSimpleList;		// 004
 	BSSimpleList<TESPackage*>				packageList;			// 008
 	BSSimpleList<TESWorldSpace*>			worldSpaceList;			// 010
 	BSSimpleList<TESClimate*>				climateList;			// 019
@@ -101,23 +101,23 @@ public:
 	BSSimpleList<TESWeather*>				weatherList;			// 030
 	BSSimpleList<EnchantmentItem*>			enchantmentItemList;	// 038
 	BSSimpleList<SpellItem*>				spellItemList;			// 040
-	BSSimpleList<BGSHeadPart*>				headParBSSimpleList;			// 048
+	BSSimpleList<BGSHeadPart*>				headParBSSimpleList;	// 048
 	BSSimpleList<TESHair*>					hairList;				// 050
 	BSSimpleList<TESEyes*>					eyeList;				// 058
 	BSSimpleList<TESRace*>					raceList;				// 060
 	BSSimpleList<BGSEncounterZone*>			encounterZoneList;		// 068
 	BSSimpleList<TESLandTexture*>			landTextureList;		// 070
-	BSSimpleList<BGSCameraShot*>			cameraShoBSSimpleList;			// 078
+	BSSimpleList<BGSCameraShot*>			cameraShoBSSimpleList;	// 078
 	BSSimpleList<TESClass*>					classList;				// 080
 	BSSimpleList<TESFaction*>				factionList;			// 088
 	BSSimpleList<TESReputation*>			reputationList;			// 090
 	BSSimpleList<TESChallenge*>				challengeList;			// 098
 	BSSimpleList<TESRecipe*>				recipeList;				// 0A0
 	BSSimpleList<TESRecipeCategory*>		recipeCategoryList;		// 0A8
-	BSSimpleList<TESAmmoEffect*>			ammoEffecBSSimpleList;			// 0B0
+	BSSimpleList<TESAmmoEffect*>			ammoEffecBSSimpleList;	// 0B0
 	BSSimpleList<TESCasino*>				casinoList;				// 0B8
 	BSSimpleList<TESCaravanDeck*>			caravanDeckList;		// 0C0
-	BSSimpleList<Script*>					scripBSSimpleList;				// 0C8
+	BSSimpleList<Script*>					scripBSSimpleList;		// 0C8
 	BSSimpleList<TESSound*>					soundList;				// 0D0
 	BSSimpleList<BGSAcousticSpace*>			acousticSpaceList;		// 0D8
 	BSSimpleList<BGSRagdoll*>				ragdollList;			// 0E0
@@ -127,7 +127,7 @@ public:
 	BSSimpleList<BGSImpactDataSet*>			impactDataSeBSSimpleList;		// 100
 	BSSimpleList<TESTopic*>					topicList;				// 108
 	BSSimpleList<TESTopicInfo*>				topicInfoList;			// 110
-	BSSimpleList<TESQuest*>					quesBSSimpleList;				// 118
+	BSSimpleList<TESQuest*>					quesBSSimpleList;		// 118
 	BSSimpleList<TESCombatStyle*>			combatStyleList;		// 120
 	BSSimpleList<TESLoadScreen*>			loadScreenList;			// 128
 	BSSimpleList<TESWaterForm*>				waterFormList;			// 130
@@ -149,34 +149,33 @@ public:
 	BSSimpleList<BGSLightingTemplate*>		lightningTemplateList;	// 1B0
 	BSSimpleList<BGSMusicType*>				musicTypeList;			// 1B8
 	BSSimpleList<TESLoadScreenType*>		loadScreenTypeList;		// 1C0
-	BSSimpleList<MediaSet*>					mediaSeBSSimpleList;			// 1C8
+	BSSimpleList<MediaSet*>					mediaSeBSSimpleList;	// 1C8
 	BSSimpleList<MediaLocationController*>	mediaLocControllerList;	// 1D0
-	TESRegionList* regionList;			// 1D8
-	NiTArray<TESObjectCELL*>		cellArray;				// 1DC
-	NiTArray<BGSAddonNode*>			addonArray;				// 1EC
-
-	UInt32							unk1FC[0x3];			// 1FC	208 looks like next created refID
-	UInt32							nextCreatedRefID;		// 208	Init'd to FF000800 (in GECK init'd to nn000800)
-	TESFile* activeFile;					// 20C	last unselected mod in modList. GECK: active ESM
-	ModList							modList;				// 210
-	UInt8							unk618;					// 618	5A4
-	UInt8							unk619;					// 619
-	UInt8							unk61A;					// 61A	referenced during LoadForm (ie TESSpellList). bit 1 might mean refID to pointer conversion not done. For GECK means save in progress
-	UInt8							unk61B;					// 61B
-	UInt8							unk61C;					// 61C	5A8
-	UInt8							unk61D;					// 61D
-	UInt8							unk61E;					// 61E
-	UInt8							unk61F;					// 61F
-	UInt8							unk620;					// 620	5AC
-	UInt8							loading;				// 621	Init'd to 0 after loadForms
-	UInt8							unk622;					// 622	referenced during loading of modules. Compared with type = GameSetting but seems to always end up equal to 1.
-	UInt8							unk623;					// 623
-	TESRegionManager* regionManager;		// 624	5B0
-	UInt32							unk628;					// 628	5B4
-	UInt32							unk62C;					// 62C
-	UInt32							unk630;					// 630
-	UInt32							unk634;					// 634
-	UInt32							unk638;					// 638
+	TESRegionList*							regionList;				// 1D8
+	NiTPrimitiveArray<TESObjectCELL*>		cellArray;				// 1DC
+	NiTPrimitiveArray<BGSAddonNode*>		addonArray;				// 1EC
+	UInt32									unk1FC[0x3];			// 1FC	208 looks like next created refID
+	UInt32									nextCreatedRefID;		// 208	Init'd to FF000800 (in GECK init'd to nn000800)
+	TESFile*								activeFile;				// 20C	last unselected mod in modList. GECK: active ESM
+	ModList									modList;				// 210
+	UInt8									unk618;					// 618	5A4
+	UInt8									unk619;					// 619
+	UInt8									unk61A;					// 61A	referenced during LoadForm (ie TESSpellList). bit 1 might mean refID to pointer conversion not done. For GECK means save in progress
+	UInt8									unk61B;					// 61B
+	UInt8									unk61C;					// 61C	5A8
+	UInt8									unk61D;					// 61D
+	UInt8									unk61E;					// 61E
+	UInt8									unk61F;					// 61F
+	UInt8									unk620;					// 620	5AC
+	UInt8									loading;				// 621	Init'd to 0 after loadForms
+	UInt8									unk622;					// 622	referenced during loading of modules. Compared with type = GameSetting but seems to always end up equal to 1.
+	UInt8									unk623;					// 623
+	TESRegionManager*						regionManager;			// 624	5B0
+	UInt32									unk628;					// 628	5B4
+	UInt32									unk62C;					// 62C
+	UInt32									unk630;					// 630
+	UInt32									unk634;					// 634
+	UInt32									unk638;					// 638
 
 	static TESDataHandler* GetSingleton();
 	const TESFile** GetActiveModList();		// returns array of modEntry* corresponding to loaded mods sorted by mod index

@@ -718,7 +718,7 @@ __declspec(naked) char* __fastcall CopyString(const char* key)
 		push	ecx
 		push	eax
 #if !_DEBUG
-		call    _malloc_base
+		call	_malloc_base
 #else
 		call	malloc
 #endif

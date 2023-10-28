@@ -30,25 +30,26 @@ class TESObjectREFR : public TESForm
 public:
 
 	TESObjectREFR();
-	~TESObjectREFR() override;
+	virtual ~TESObjectREFR();
+
 	virtual void				GetStartingPosition(NiPoint3* pos, NiPoint3* rot, TESForm** formOut, TESForm* defaultCell);
-	virtual void				Unk_4F();
+	virtual void				VoiceSoundFunction();
 	virtual void				Unk_50();
-	virtual void				Unk_51();
-	virtual bool				CastShadows();
-	virtual void				Unk_53();
-	virtual void				IsCastShadows();
-	virtual void				SetCastShadows(char a2);
+	virtual void				DamageObject();
+	virtual bool				IsCastShadows();
+	virtual void				SetCastShadows();
+	virtual void				Unk_54();
+	virtual void				Unk_55();
 	virtual void				Unk_56();
-	virtual bool				IsObstacle();
-	virtual void				MarkBaseFormAsModified();
+	virtual void				IsObstacle();
+	virtual void				IsQuestObject();
 	virtual void				Unk_59();
 	virtual void				Unk_5A();
 	virtual void				GetStartingAngle();
 	virtual void				GetStartingPos();
 	virtual void				SetStartingPos(NiPoint3 pos);
-	virtual void				Unk_5E();
-	virtual TESObjectREFR*		RemoveItem(TESForm* toRemove, BaseExtraList* extraList, UInt32 count, UInt32 keepOwner, UInt32 drop, TESObjectREFR* destRef, 
+	virtual void				UpdateLight();
+	virtual TESObjectREFR* 		RemoveItem(TESForm* toRemove, BaseExtraList* extraList, UInt32 count, UInt32 unk3, UInt32 unk4, TESObjectREFR* destRef,
 		UInt32 unk6, UInt32 unk7, UInt32 unk8, UInt8 unk9);	// 40 unk2 quantity? Returns the reference assigned to the removed item.
 
 	//	virtual void				GetBodyPartData();

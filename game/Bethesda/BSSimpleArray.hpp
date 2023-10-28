@@ -1,23 +1,28 @@
 #pragma once
 
-template <typename T_Data> class BSSimpleArray 
-{
+template <typename T_Data>
+class BSSimpleArray {
 public:
-	virtual			~BSSimpleArray();
-	virtual T_Data*	Allocate(UInt32);
-	virtual void*	FreeArg(UInt32);
-	virtual void*	Resize4BytesMemebers(UInt32);
+	virtual ~BSSimpleArray();
+	virtual T_Data* Allocate(UInt32 auiCount);
+	virtual void* FreeArg(UInt32);
+	virtual void* ResizeBuffer(T_Data* apData, UInt32 auiCount);
 
-	T_Data*		pData;
+	T_Data*	pBuffer;
 	UInt32	uiSize;
 	UInt32	uiAllocSize;
 
 	// this only compiles for pointer types
-	T_Data operator[](UInt32 idx) { return idx < uiSize ? pData[idx] : NULL; }
+	T_Data operator[](UInt32 idx) {
+		if (idx < uiSize)
+			return pBuffer[idx];
+		return NULL;
+	}
 
 	UInt32 GetSize() { return uiSize; }
 	UInt32 GetAllocSize() { return uiAllocSize; }
 	bool IsEmpty() { return uiSize == 0; }
+	bool IsFull() { return uiSize == uiAllocSize; }
 
 	class Iterator
 	{

@@ -14,7 +14,7 @@ class TESNPC :
 {
 public:
 	TESNPC();
-	~TESNPC();
+	virtual ~TESNPC();
 
 	enum eFaceGenDataType {
 		kFaceGenData_GeometrySymetric = 0,
@@ -68,11 +68,11 @@ public:
 	UInt32		hairColor;						// 1D8/20C
 	BSSimpleList<BGSHeadPart*>	headPart;				// 1DC/210
 	UInt32		impactMaterialType;				// 1E4/218
-	UInt32      unk01E8;						// 1E8
+	UInt32	  unk01E8;						// 1E8
 	TESRace* race1EC;						// 1EC
 	TESNPC* copyFrom;						// 1F0		not set once PlayerRef exists and the target is the Player
 	float		height;							// 1F4/21C
 	float		weight;							// 1F8/220 Aparently, getWeight purposly returns height except for the player.
-	NiTArray <FaceGenUndo*>	faceGenUndo;	// 1FC
+	NiTPrimitiveArray<FaceGenUndo*>	faceGenUndo;	// 1FC
 };
 static_assert(sizeof(TESNPC) == 0x20C);

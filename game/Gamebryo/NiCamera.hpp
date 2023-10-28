@@ -19,9 +19,9 @@ public:
 
 	CREATE_OBJECT(NiCamera, 0xA71430);
 
-	[[nodiscard]] NiFrustum* GetFrustum() { return &m_kViewFrustum; }
+	[[nodiscard]] const NiFrustum* GetFrustum() const { return &m_kViewFrustum; }
 
-	[[nodiscard]] NiRect<float>* GetViewport() { return &m_kPort; }
+	[[nodiscard]] const NiRect<float>* GetViewport() const { return &m_kPort; }
 
 	void SetViewport(const NiRect<float>& kPort) {
 		m_kPort = kPort;

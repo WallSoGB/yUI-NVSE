@@ -6,7 +6,7 @@
 
 NiSmartPointer(NiFixedString);
 
-class NiFixedString : NiMemObject {
+class NiFixedString : public NiMemObject {
 public:
 	NiFixedString();
 	NiFixedString(const char* pcString);

@@ -12,3 +12,5 @@ public:
 
 	bool AddTask(BSPackedTask& akTask);
 };
+
+ASSERT_SIZE(BSPackedTaskQueue, 0x28);

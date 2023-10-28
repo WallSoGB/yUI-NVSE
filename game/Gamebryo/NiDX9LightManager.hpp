@@ -9,6 +9,9 @@
 
 class NiDX9LightManager {
 public:
+	NiDX9LightManager();
+	~NiDX9LightManager();
+
 	class LightEntry {
 	public:
 		D3DLIGHT9	m_kD3DLight;

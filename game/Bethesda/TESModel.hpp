@@ -13,8 +13,12 @@ public:
 	virtual void	SetModel(char* apcPath);	// 06
 	virtual bool	Unk_07();
 
-	enum
-	{
+	virtual				~TESModel();
+	virtual const char*	GetModel();
+	virtual void		SetModel(const char* apcPath);
+	virtual bool		Unk_7();
+
+	enum {
 		kFacegenFlag_Head = 0x01,
 		kFacegenFlag_Torso = 0x02,
 		kFacegenFlag_RightHand = 0x04,

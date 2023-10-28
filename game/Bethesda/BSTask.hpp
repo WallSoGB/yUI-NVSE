@@ -4,8 +4,6 @@
 class BSTask {
 public:
 	BSTask();
-	~BSTask() { ThisStdCall(0x4490E0, this); };
-
 	enum BS_TASK_STATE {
 		BS_TASK_STATE_PENDING = 0x0,
 		BS_TASK_STATE_QUEUED = 0x1,

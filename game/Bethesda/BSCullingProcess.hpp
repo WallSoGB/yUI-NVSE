@@ -5,7 +5,12 @@
 
 class BSCullingProcess : public NiCullingProcess {
 public:
-	BSCullingProcess();
+	BSCullingProcess(NiVisibleArray* apVisibleSet = nullptr);
+	~BSCullingProcess() {};
+
+	void Process(NiAVObject* apObject) override;
+	void ProcessAlt(const NiCamera* apCamera, NiAVObject* apScene, NiVisibleArray* apVisibleSet) override;
+	void AppendVirtual(NiGeometry* apGeom) override;
 
 	enum BSCPCullingType {
 		BSCP_CULL_NORMAL = 0x0, // Normal culling
@@ -21,8 +26,6 @@ public:
 	BSCompoundFrustum*				pCompoundFrustum; // Frustum
 	NiPointer<BSShaderAccumulator>	spAccumulator; // Current accumulator
 
-	static BSCullingProcess* Create(BSCullingProcess* apProc, NiVisibleArray* pkVisibleSet = nullptr);
-
 	void SetCullMode(BSCPCullingType aeType);
 	void PushCullMode(BSCPCullingType aeType);
 	void PopCullMode();
@@ -32,7 +35,7 @@ public:
 	bool AddShared(NiAVObject* apObject);
 	void ClearSharedMap();
 
-	static void __fastcall ProcessEx(BSCullingProcess* apThis, void*, NiAVObject* apObject);
-	static void __fastcall ProcessAltEx(BSCullingProcess* apThis, void*, NiCamera* apCamera, NiAVObject* apObject, NiVisibleArray* apVisibleSet);
+	static void __fastcall ProcessEx(BSCullingProcess* apThis, void*, NiAVObject* apScene);
+	static void __fastcall ProcessAltEx(BSCullingProcess* apThis, void*, const NiCamera* apCamera, NiAVObject* apScene, NiVisibleArray* apVisibleSet);
 };
 ASSERT_SIZE(BSCullingProcess, 0xC8)

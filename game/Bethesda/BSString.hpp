@@ -8,9 +8,9 @@ public:
 	BSStringT();
 	~BSStringT();
 
-	char* pString;
-	UInt16 usLen;
-	UInt16 usMaxLen;
+	char*		pString;
+	UInt16		usLen;
+	UInt16		usMaxLen;
 
 	bool		Set(const char* src);
 	bool		Includes(const char* toFind) const;

@@ -754,12 +754,12 @@ bool PluginManager::Dispatch_Message(PluginHandle sender, UInt32 messageType, vo
 
 	if (!s_pluginListeners.size())	// no listeners yet registered
 	{
-	    _DMESSAGE("no listeners registered");
+		_DMESSAGE("no listeners registered");
 		return false;
 	}
 	else if (sender >= s_pluginListeners.size())
 	{
-	    _DMESSAGE("sender is not in the list");
+		_DMESSAGE("sender is not in the list");
 		return false;
 	}
 
@@ -792,7 +792,7 @@ bool PluginManager::Dispatch_Message(PluginHandle sender, UInt32 messageType, vo
 		}
 		else
 		{
-		    //_DMESSAGE("sending %u to %u", messageType, iter->listener);
+			//_DMESSAGE("sending %u to %u", messageType, iter->listener);
 			iter->handleMessage(&msg);
 			numRespondents++;
 		}

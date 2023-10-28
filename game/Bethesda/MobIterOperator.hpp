@@ -1,11 +1,13 @@
 #pragma once
 
+class TESObjectREFR;
+
 class MobIterOperator {
 public:
-	MobIterOperator() { ThisStdCall(0x872E29, this); };
+	MobIterOperator();
 	~MobIterOperator();
 
-	virtual void Operate();
+	virtual void Operate(TESObjectREFR* apRef) = 0;
 
-	UInt32 unk04;
+	UInt32 eType;
 };

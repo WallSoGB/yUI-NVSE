@@ -97,6 +97,8 @@ public:
 	UInt16 GetTextureSets();
 	NiPoint2* GetTextureSet(UInt16 ausSet);
 
+	UInt16 GetVertCount() const;
+
 	void SetKeepFlags(KeepFlags aeFlags);
 	void SetCompressFlags(Compression aeFlags);
 	void SetConsistency(Consistency aeFlags);

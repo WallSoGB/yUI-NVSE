@@ -4,7 +4,7 @@
 
 class DepthOfFieldTextures : public ImageSpaceEffect {
 public:
-	NiTArray<ImageSpaceTexture> pDOFTextures;
+	NiTPrimitiveArray<ImageSpaceTexture> pDOFTextures;
 };
 
 class ImageSpaceEffectDepthOfField : public DepthOfFieldTextures {

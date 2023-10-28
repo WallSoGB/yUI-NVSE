@@ -80,7 +80,8 @@ public:
 	BSShaderProperty::RenderPassList* AddWaterDepthPass(NiGeometry* apGeometry);
 
 	static bool __fastcall SetupGeometryEx(BSShaderPPLightingProperty* apThis, void*, NiGeometry* apGeometry);
-	static void __fastcall GetViewerStringsEx(BSShaderPPLightingProperty* apThis, void*, NiTArray<const char*>* apStrings);
+	static BSShaderProperty::RenderPassList* __fastcall GetRenderPassesEx(BSShaderPPLightingProperty* apThis, void*, NiGeometry* apGeometry, UInt32 auiEnabledPasses, WORD* pusPassCount, UInt32 aeRenderMode, BSShaderAccumulator* apAccumulator, int a7);
+	static void __fastcall GetViewerStringsEx(BSShaderPPLightingProperty* apThis, void*, NiViewerStringsArray* apStrings);
 
 };
 

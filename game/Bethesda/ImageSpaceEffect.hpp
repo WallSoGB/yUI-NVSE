@@ -12,7 +12,7 @@ class ImageSpaceShader;
 
 class ImageSpaceEffect {
 public:
-	virtual void Destroy(bool doFree);
+	virtual ~ImageSpaceEffect();
 	virtual void RenderShader(NiGeometry* apScreenShape, NiDX9Renderer* pkRenderer, ImageSpaceEffectParam* apParam, bool abEndFrame);
 	virtual void Setup(ImageSpaceManager* pISManager, ImageSpaceEffectParam* apParam);
 	virtual void Shutdown();
@@ -27,13 +27,13 @@ public:
 	};
 
 
-	bool								bIsActive;
-	bool								bParamsChanged;
-	NiTArray<ImageSpaceShader*>			kShaders;
-	NiTArray<ImageSpaceShaderParam*>	kShaderParams;
-	NiTArray<ImageSpaceTexture*>		kTextures;
-	NiTArray<EffectInput*>				kShaderInputs;
-	NiTArray<UInt32*>					kShaderOutputs;
+	bool										bIsActive;
+	bool										bParamsChanged;
+	NiTPrimitiveArray<ImageSpaceShader*>		kShaders;
+	NiTPrimitiveArray<ImageSpaceShaderParam*>	kShaderParams;
+	NiTPrimitiveArray<ImageSpaceTexture*>		kTextures;
+	NiTPrimitiveArray<EffectInput*>				kShaderInputs;
+	NiTPrimitiveArray<UInt32*>					kShaderOutputs;
 
 	void SetTexture(UInt32 aiIndex, ImageSpaceTexture* apTex, TextureFilterMode aiFilterMode) {
 		ThisStdCall(0xBA3CB0, this, aiIndex, apTex, aiFilterMode);

@@ -132,7 +132,7 @@ public:
 	};
 
 	BSRenderedTexture* pMainTarget;
-	NiTArray<ImageSpaceEffect*> EffectList;
+	NiTPrimitiveArray<ImageSpaceEffect*> EffectArray;
 	ImageSpaceBaseData pBaseData;
 	ImageSpaceBaseData* pOverRideBaseData;
 	ImageSpaceBaseData* activeImageSpaceParams;
@@ -200,7 +200,7 @@ public:
 	}
 
 	ImageSpaceEffect* GetEffect(UInt32 effectID) {
-		return EffectList.GetAt(effectID);
+		return EffectArray.GetAt(effectID);
 	}
 
 	// Source Texture

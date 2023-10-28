@@ -18,7 +18,7 @@ enum IO_TASK_PRIORITY {
 class IOTask : public BSTask {
 public:
 	IOTask();
-	~IOTask() { ThisStdCall(0x440640, this); };
+	virtual ~IOTask();
 
 	virtual void PostProcess();
 	virtual void GenerateKey();

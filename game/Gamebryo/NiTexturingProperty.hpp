@@ -62,9 +62,9 @@ public:
 		NiTextureTransform* m_pkTextureTransform;
 	};
 
-	UInt16 m_usflags;
-	NiTPrimitiveArray<NiTexturingProperty::Map*> m_kMaps;
-	NiTArray<void>* m_pkShaderMaps;
+	UInt16											m_usflags;
+	NiTPrimitiveArray<NiTexturingProperty::Map*>	m_kMaps;
+	NiTPrimitiveArray<void>*						m_pkShaderMaps;
 
 	CREATE_OBJECT(NiTexturingProperty, 0xA6AD40)
 };

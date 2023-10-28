@@ -1,17 +1,26 @@
 #pragma once
 
-#include "DList.hpp"
+#include "NiTListBase.hpp"
 #include "BSRenderPass.hpp"
+#include "NiTPointerAllocator.hpp"
+#include "NiTPointerListBase.hpp"
 
-class PersistentPassList {
+class PersistentPassListAllocator : public NiTPointerAllocator<size_t> {
 public:
-	virtual void Destroy(bool bDoFree);
+	NiTListItem<BSRenderPass*>* m_pkCurrentItem;
+};
 
-	DListNode<BSRenderPass>* m_pPass[3];
-	UInt32 m_uiCount;
+class PersistentPassList : public NiTPointerListBase<PersistentPassListAllocator, BSRenderPass*> {
+public:
+	PersistentPassList();
+	virtual ~PersistentPassList();
+
+	void RemoveAll();
 
 	void Render(bool bBlendAlpha);
 	void AlphaSort(SInt32(__cdecl* Sort)(BSRenderPass** apPassPtrOne, BSRenderPass** apPassPtrTwo));
-	void Unk_B99890(BSRenderPass** appRenderPass);
-	void Unk_B99840(BSRenderPass** appRenderPass);
+	void AddHead(BSRenderPass*& appRenderPass);
+	void AddTail(BSRenderPass*& appRenderPass);
 };
+
+ASSERT_SIZE(PersistentPassList, 0x14);

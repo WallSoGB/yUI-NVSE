@@ -133,6 +133,15 @@ public:
 		y = to.y * (1 - by) + from.y * by;
 		z = to.z * (1 - by) + from.z * by;
 	}
+
+	float GetLargest() const {
+		float largest = x;
+		if (y > largest)
+			largest = y;
+		if (z > largest)
+			largest = z;
+		return largest;
+	}
 };
 
 ASSERT_SIZE(NiPoint3, 0xC);

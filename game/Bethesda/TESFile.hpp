@@ -41,7 +41,7 @@ struct TESFile {
 		UInt32		formID;				// 0C											FormID
 		UInt32		unk10;				// 10											Version Control Info 1
 		UInt16		formVersion;		// 14 always initialized to 0F on SaveForm.		Form Version
-		UInt16		unk16;				// 16                                           Version Control Info 2
+		UInt16		unk16;				// 16										   Version Control Info 2
 	};
 
 	// 18 info about current group of form
@@ -53,7 +53,7 @@ struct TESFile {
 		UInt32		groupType;			// 0C forms, dialog, cell...					Type
 		UInt32		unk10;				// 10											Stamp
 		UInt16		unk14;				// 14											Part of Unknown
-		UInt16		unk16;				// 16                                           Part of Unknown
+		UInt16		unk16;				// 16										   Part of Unknown
 	};
 
 	struct FileHeader	// File header in FNVEdit Signature 'HEDR'

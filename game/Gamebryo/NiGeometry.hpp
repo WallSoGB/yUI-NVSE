@@ -69,7 +69,7 @@ public:
 	NiPoint2* GetTextureSet(UInt16 ausSet);
 
 	static void __fastcall RenderImmediateEx(NiGeometry* apThis, void*, NiDX9Renderer* apRenderer);
-	static void __fastcall GetViewerStringsEx(NiGeometry* apThis, void*, NiTArray<const char*>* apStrings);
+	static void __fastcall GetViewerStringsEx(NiGeometry* apThis, void*, NiViewerStringsArray* apStrings);
 };
 
 ASSERT_SIZE(NiGeometry, 0xC4);

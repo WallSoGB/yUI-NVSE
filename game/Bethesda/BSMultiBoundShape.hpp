@@ -20,7 +20,7 @@ public:
 		BS_CULL_OCCLUDED = 0x3,
 	};
 
-	BSMBCullResult kCullResult;
+	BSMBCullResult eCullResult;
 };
 
 ASSERT_SIZE(BSMultiBoundShape, 0xC);

@@ -25,7 +25,8 @@ enum TextureAddressMode
 
 class BSGraphics {
 public:
-	struct OcclusionQuery {
+	class OcclusionQuery : public BSMemObject {
+	public:
 		OcclusionQuery();
 		~OcclusionQuery();
 
@@ -33,8 +34,6 @@ public:
 
 		bool Begin();
 		void End();
-		
-		BS_ALLOCATOR
 	};
 
 	static NiPoint3* GetCameraWorldTranslate() {

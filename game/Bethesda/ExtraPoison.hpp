@@ -7,6 +7,6 @@ public:
 	ExtraPoison();
 	virtual ~ExtraPoison();
 
-	AlchemyItem* poisonEffect;    // 0C
+	AlchemyItem* poisonEffect;	// 0C
 };
 static_assert(sizeof(ExtraPoison) == 0x10);

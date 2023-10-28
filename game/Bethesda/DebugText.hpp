@@ -6,28 +6,28 @@
 class DebugText
 {
 public:
-	virtual void    Unk_00();
-	virtual void    Unk_01(UInt32 arg1, UInt32 arg2);
+	virtual void	Unk_00();
+	virtual void	Unk_01(UInt32 arg1, UInt32 arg2);
 	virtual UInt32  Unk_02(UInt32 arg1, UInt32 arg2, UInt32 arg3, UInt32 arg4, UInt32 arg5, UInt32 arg6);
 	virtual UInt32  Unk_03(UInt32 arg1, UInt32 arg2, UInt32 arg3, UInt32 arg4);
-	virtual void    Unk_04(UInt32 arg1, UInt32 arg2, UInt32 arg3, UInt32 arg4, UInt32 arg5, UInt32 arg6);
+	virtual void	Unk_04(UInt32 arg1, UInt32 arg2, UInt32 arg3, UInt32 arg4, UInt32 arg5, UInt32 arg6);
 	virtual UInt32  Unk_05(UInt32 arg1, UInt32 arg2, UInt32 arg3, UInt32 arg4, UInt32 arg5);
-	virtual void    Unk_06(UInt32 arg1, UInt32 arg2, UInt32 arg3, UInt32 arg4, UInt32 arg5);
+	virtual void	Unk_06(UInt32 arg1, UInt32 arg2, UInt32 arg3, UInt32 arg4, UInt32 arg5);
 	virtual UInt32  Unk_07(UInt32 arg1, UInt32 arg2, UInt32 arg3, UInt32 arg4, UInt32 arg5, UInt32 arg6, UInt32 arg7);
 	virtual UInt32  Unk_08(UInt32 arg1, UInt32 arg2, UInt32 arg3, UInt32 arg4, UInt32 arg5);
 	virtual UInt32  Unk_09(UInt32 arg1, UInt32 arg2, UInt32 arg3, UInt32 arg4, UInt32 arg5, UInt32 arg6);
 	virtual UInt32  Unk_0A(UInt32 arg1);
-	virtual void    Unk_0B(UInt32 arg1, UInt32 arg2);
+	virtual void	Unk_0B(UInt32 arg1, UInt32 arg2);
 
 	struct DebugLine
 	{
-		float           offsetX;    // 00
-		float           offsetY;    // 04
-		UInt32          alignment;  // 08
-		NiNode*			node;       // 0C
-		BSStringT       text;       // 10
-		float           flt18;      // 18    Always -1.0
-		NiColorA		color;      // 1C
+		float		   offsetX;	// 00
+		float		   offsetY;	// 04
+		UInt32		  alignment;  // 08
+		NiNode*			node;	   // 0C
+		BSStringT	   text;	   // 10
+		float		   flt18;	  // 18	Always -1.0
+		NiColorA		color;	  // 1C
 	};
 
 	struct sPrintData

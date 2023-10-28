@@ -33,11 +33,11 @@ public:
 	Info		uValue;
 	const char* pKey;
 
-	UInt32 GetType();
-	bool Get(double& out);
-	bool Get(const char* str);
+	UInt32		GetType();
+	bool		Get(double& out);
+	bool		Get(const char* str);
 	const char* Get();
-	bool Set(double newVal);
-	bool Set(const char* str);
+	bool		Set(double newVal);
+	bool		Set(const char* str);
 };
 static_assert(sizeof(Setting) == 0xC);

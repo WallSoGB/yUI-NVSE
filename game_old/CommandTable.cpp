@@ -4962,11 +4962,11 @@ __declspec(naked) NiNode* TESObjectREFR::GetNiNode()
 	/*
 	 *  result = this->renderState;
   if ( !result )
-    return result;
+	return result;
 
   result = (TESObjectREFR::RenderState *)result->niNode14;
   if ( this->refID == 0x14 && !this->isInThirdPerson )
-    return (TESObjectREFR::RenderState *)this->node1stPerson;
+	return (TESObjectREFR::RenderState *)this->node1stPerson;
 
   return result;
 	 *

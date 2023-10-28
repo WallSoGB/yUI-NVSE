@@ -14,7 +14,7 @@ public:
 		UInt32 uiNumPrimitives;
 		bool bIsEnabled;
 		UInt32 uiTriCount;
-		UInt8 ucDisabledCount;
+		bool ucDisabledCount;
 	};
 
 	Segment* pSegments;

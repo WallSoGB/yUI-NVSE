@@ -4,7 +4,6 @@
 #include <HUDMainMenu.hpp>
 #include <InterfaceManager.hpp>
 
-#if 0
 class MyTile;
 
 template <typename T_Name> class EasyTiles
@@ -35,16 +34,34 @@ public:
 		return pkTile;
 	}
 
+	MyTile* GetChildAlt(const std::string& childName) const
+	{
+		bool any = false;
+		UInt32 index = 0;
+		auto tileName = childName;
+
+		if (childName[0] == '*') any = true;
+		if (const auto separator = childName.find_last_of(':')) {
+			index = atoi(childName.substr(separator + 1).c_str());
+			tileName = childName.substr(0, separator - 1);
+		}
+
+		for (auto tile : *(Tile*)this) if ((any || tileName == tile->kName.CStr()) && !index--) return reinterpret_cast<MyTile*>(tile);
+		return nullptr;
+	}
+
 	Tile*								AddTileFromTemplate(const char* templateName, const char* altName = nullptr);
 	TileMenu*							GetTileMenu();
 
 	MyTile& operator[](const std::string& path)
 	{
-		return *static_cast<T_Name*>(this)->GetChildAlt(path.c_str());
+		MyTile* tile = reinterpret_cast<MyTile*>(static_cast<T_Name*>(this));
+		return *tile->GetChildAlt(path);
 	}
 	MyTile& operator[](const char* path)
 	{
-		return *static_cast<Tile*>(static_cast<T_Name*>(this)->GetChildAlt(path));
+		MyTile* tile = reinterpret_cast<MyTile*>(static_cast<T_Name*>(this));
+		return *tile->GetChildAlt(path);
 	}
 
 };
@@ -57,11 +74,13 @@ class EasyMenus
 public:
 	MyTile& operator[](const std::string& path)
 	{
-		return *static_cast<Tile*>(static_cast<T_Name*>(this)->pkRootTile->GetChildAlt(path.c_str()));
+		MyTile* tile = reinterpret_cast<MyTile*>(static_cast<T_Name*>(this)->pkRootTile);
+		return *tile->GetChildAlt(path);
 	}
 	MyTile& operator[](const char* path)
 	{
-		return *static_cast<Tile*>(static_cast<T_Name*>(this)->pkRootTile->GetChildAlt(path));
+		MyTile* tile = reinterpret_cast<MyTile*>(static_cast<T_Name*>(this)->pkRootTile);
+		return *tile->GetChildAlt(path);
 	}
 	static T_Name& Get() { return *(T_Name*)T_Name::GetSingleton(); }
 
@@ -300,4 +319,3 @@ void RestoreScrollPositionProxy(Float32 listIndex, Float32 scrollbarPos) { ThisC
 ListBox* SetNthFlag(char flags, char value) {}
 
 */
-#endif

@@ -221,7 +221,7 @@ namespace SortingIcons::Keyrings
 	void EquipUpdate()
 	{
 		update = true;
-    }
+	}
 
 	UInt32 __fastcall OpenKeyring(Tile*	pkTile)
 	{

@@ -261,6 +261,7 @@ public:
 	void ToggleKeyboard(bool abDisable);
 	void ChangeMouseCooperativeLevel(bool abBackground);
 	bool GetButtonState(UInt32 uiInputDevice, UInt8 aucKey, UInt32 auiState);
+	SInt32 GetControlState(UInt8 aucKey, UInt32 auiState);
 };
 
 ASSERT_SIZE(BSInputManager, 0x1C04);

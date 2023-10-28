@@ -6,6 +6,8 @@
 
 class TESObjectCELL;
 
+NiSmartPointer(BSTempEffectParticle);
+
 class BSTempEffectParticle : public BSTempEffect {
 public:
 	NiRefObjectPtr	spParticleObject;

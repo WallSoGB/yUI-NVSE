@@ -46,8 +46,8 @@ public:
 static_assert(sizeof(NiPointer<void*>) == 0x4);
 
 #define NiSmartPointer(className) \
-    class className; \
-    typedef NiPointer<className> className##Ptr;
+	class className; \
+	typedef NiPointer<className> className##Ptr;
 
 
 template <class T_Data>

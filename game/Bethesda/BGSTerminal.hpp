@@ -38,7 +38,7 @@ public:
 
 		EnumLockLevel	eDifficulty;
 		UInt8			ucTerminalFlags;
-		UInt8			ucType;             // 0-9, corresponds to GECK types 1-10
+		UInt8			ucType;			 // 0-9, corresponds to GECK types 1-10
 	};
 
 	struct MenuEntry

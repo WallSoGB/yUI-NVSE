@@ -16,7 +16,7 @@ NiSmartPointer(TallGrassObject);
 
 class TallGrassObject : public NiRefObject {
 public:
-	NiGeometryData*					pGeoData;
+	NiGeometryDataPtr				spGeoData;
 	float*							pfUnkDataC;
 	DWORD							dword10;
 	NiSourceTexturePtr				spTexture;
@@ -62,7 +62,7 @@ public:
 
 	CREATE_OBJECT(TallGrassShaderProperty, 0xB60F50);
 
-	static void __fastcall GetViewerStringsEx(TallGrassShaderProperty* apThis, void*, NiTArray<const char*>* apStrings);
+	static void __fastcall GetViewerStringsEx(TallGrassShaderProperty* apThis, void*, NiViewerStringsArray* apStrings);
 
 	static BSShaderProperty::RenderPassList* __fastcall GetRenderPassesEx(TallGrassShaderProperty* apThis, void*, NiGeometry* apGeometry, UInt32 auiEnabledPasses, UInt16* pusPassCount, int a5, BSShaderAccumulator* apAccumulator, int a7);
 };

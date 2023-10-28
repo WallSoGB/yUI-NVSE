@@ -3,7 +3,6 @@
 
 #include <SimpleINILibrary.h>
 
-#if 0
 namespace Fix::TablineSelected
 {
 	inline int enable = 1;
@@ -34,4 +33,3 @@ namespace Fix::TablineSelected
 		if (enable) mainLoop.emplace_back(MainLoop);
 	}
 }
-#endif

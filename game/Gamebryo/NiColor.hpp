@@ -85,6 +85,10 @@ public:
 	};
 
 	const char* GetViewerStrings(const char* apText);
+
+	double MultiplyBy3Something() {
+		return g * 3.6f + r * 3.1f + b * 3.2f;
+	};
 };
 
 ASSERT_SIZE(NiColor, 0xC);
@@ -116,6 +120,7 @@ public:
 	NiColorA() : r(0.f), g(0.f), b(0.f), a(0.f) {};
 
 	NiColorA(const NiColor& color) : r(color.r), g(color.g), b(color.b), a(1.0f) {};
+	NiColorA(const NiColor& color, float a) : r(color.r), g(color.g), b(color.b), a(a) {};
 
 	NiColorA(float r, float g, float b) : r(r), g(g), b(b), a(1.0f) {};
 

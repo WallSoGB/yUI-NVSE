@@ -35,7 +35,8 @@ struct BipedAnim;
 
 class PlayerCharacter : public Character {
 public:
-
+	PlayerCharacter();
+	virtual ~PlayerCharacter();
 
 	struct WobbleNodes
 	{

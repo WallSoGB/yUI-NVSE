@@ -54,7 +54,7 @@ public:
 		SAVE_EXTERNAL_GEOM_DATA = 0x200,
 		NO_DECALS = 0x400,
 		ALWAYS_DRAW = 0x800,
-		MESH_LOD = 0x1000,
+		ACTOR_NODE = 0x1000,
 		FIXED_BOUND = 0x2000,
 		TOP_FADE_NODE = 0x4000,
 		IGNORE_FADE = 0x8000,
@@ -62,7 +62,7 @@ public:
 		NO_ANIM_SYNC_Y = 0x20000,
 		NO_ANIM_SYNC_Z = 0x40000,
 		NO_ANIM_SYNC_S = 0x80000,
-		NO_DISMEMBER = 0x100000,
+		ACTOR_CULLED = 0x100000,
 		NO_DISMEMBER_VALIDITY = 0x200000,
 		RENDER_USE = 0x400000,
 		MATERIALS_APPLIED = 0x800000,
@@ -80,7 +80,7 @@ public:
 	bhkNiCollisionObjectPtr			m_spCollisionObject;
 	NiBound*						m_kWorldBound;
 	NiTPointerList<NiPropertyPtr>	m_kPropertyList;
-	UInt32							m_uiFlags;
+	NiFlags							m_eFlags;
 	NiTransform						m_kLocal;
 	NiTransform						m_kWorld;
 
@@ -154,8 +154,8 @@ public:
 	void SetAlwaysDraw(bool bVal);
 	bool GetAlwaysDraw();
 
-	void SetMeshLOD(bool bVal);
-	bool GetMeshLOD();
+	void SetActorNode(bool bVal);
+	bool GetActorNode();
 
 	void SetFixedBound(bool bVal);
 	bool GetFixedBound();
@@ -178,15 +178,15 @@ public:
 	void SetNoAnimSyncS(bool bVal);
 	bool GetNoAnimSyncS();
 
-	void SetNoDismember(bool bVal);
-	bool GetNoDismember();
+	void SetActorCulled(bool bVal);
+	bool GetActorCulled();
 
 	void SetNoDismemberValidity(bool bVal);
 	bool GetNoDismemberValidity();
 
 
 
-//	void Update(NiUpdateData& arData = g_defaultUpdateData); <-- don't have this
+	void Update(NiUpdateData& arData = NiUpdateData::kDefaultUpdateData);
 	NiNode* GetParent();
 	const NiNode* GetParent() const;
 	NiProperty* GetProperty(UInt32 iType);
@@ -220,7 +220,7 @@ ASSERT_OFFSET(NiAVObject, m_spCollisionObject, 0x1C);
 ASSERT_OFFSET(NiAVObject, m_kWorldBound, 0x20);
 ASSERT_OFFSET(NiAVObject, m_kPropertyList, 0x24);
 ASSERT_SIZE(NiTPointerList<NiPointer<NiProperty>>, 0xC);
-ASSERT_OFFSET(NiAVObject, m_uiFlags, 0x30);
+ASSERT_OFFSET(NiAVObject, m_eFlags, 0x30);
 ASSERT_OFFSET(NiAVObject, m_kLocal, 0x34);
 ASSERT_OFFSET(NiAVObject, m_kWorld, 0x68);
 ASSERT_SIZE(NiAVObject, 0x9C);

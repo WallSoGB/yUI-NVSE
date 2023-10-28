@@ -7,16 +7,22 @@ NiRTTIAddress(BSMultiBoundNode, 0x1202E74);
 
 class BSCullingProcess;
 class BSOcclusionPlane;
+class BSMultiBoundRoom;
 
 // 0xB4
 class BSMultiBoundNode : public BSNiNode
 {
 public:
 	BSMultiBoundNode();
-	~BSMultiBoundNode();
+	virtual ~BSMultiBoundNode();
+
+	virtual BSMultiBoundRoom*	GetMultiBoundRoom();
+	virtual bool				GetPointWithin(NiPoint3& akPoint);
+	virtual UInt32				CheckBound(BSMultiBound*);
+	virtual UInt32				CheckBoundAlt(NiBound*);
 
 	BSMultiBoundPtr spMultiBound;
-	UInt32 uiCullingMode;
+	UInt32			uiCullingMode;
 
 	CREATE_OBJECT(BSMultiBoundNode, 0xC46DF0);
 

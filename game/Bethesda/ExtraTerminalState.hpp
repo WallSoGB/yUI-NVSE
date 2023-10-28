@@ -9,7 +9,7 @@ public:
 
 	enum
 	{
-		kFlag_Locked = 1 << 7,        // terminal is locked
+		kFlag_Locked = 1 << 7,		// terminal is locked
 	};
 
 	UInt8	flags;

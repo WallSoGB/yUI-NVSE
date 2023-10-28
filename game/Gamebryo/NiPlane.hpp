@@ -18,7 +18,7 @@ public:
 		NEGATIVE_SIDE = 0x2,
 	};
 
-	UInt32 WhichSide(NiPoint3* kPoint);
+	UInt32 WhichSide(NiPoint3* kPoint) const;
 	static UInt32 __fastcall WhichSide_Hook(NiPlane* pThis, void*, NiPoint3* kPoint);
 };
 

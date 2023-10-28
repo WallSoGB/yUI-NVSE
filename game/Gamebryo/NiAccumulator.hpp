@@ -17,7 +17,7 @@ public:
 
 	virtual void FinishAccumulating();
 	virtual void RegisterObjectArray(void* kArray);
-	virtual void RegisterObject(NiGeometry* apGeometry);
+	virtual bool RegisterObject(NiGeometry* apGeometry);
 	virtual bool AddShared(NiAVObject* apObject);
 	virtual void ClearSharedMap();
 

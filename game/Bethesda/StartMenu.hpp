@@ -8,7 +8,7 @@ public:
 	StartMenu();
 
 	// 10
-	class Option
+	class Option : public BSMemObject
 	{
 	public:
 		// which menus the option should be shown in

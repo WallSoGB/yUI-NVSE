@@ -13,7 +13,7 @@ public:
 	NiTexture* srcTexture;
 	NiTexture* m_pAlphaTexture;
 	NiColorA overlayColor;
-	float  alpha;
+	float  fTileAlpha;
 	float  unk7C;
 	float  unk80;
 	float  flt84;

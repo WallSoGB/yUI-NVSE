@@ -4,20 +4,19 @@
 #include "QueuedFile.hpp"
 
 class Actor;
-class NiRefObject;
 
 class QueuedHelmet : public QueuedFile {
 public:
 	QueuedHelmet();
-	~QueuedHelmet();
+	virtual ~QueuedHelmet();
 
-	BipedAnim* anim;
-	NiRefObject* list2C[20];
-	NiRefObject* list7C[20];
-	NiRefObject* listCC[20];
-	Actor* actor;
-	char unk120;
-	int unk124;
+	BipedAnim*		pAnim;
+	NiRefObjectPtr	spObjects2C[20];
+	NiRefObjectPtr	spObjects7C[20];
+	NiRefObjectPtr	spObjectsCC[20];
+	Actor*			pActor;
+	char			unk120;
+	int				unk124;
 };
 
 ASSERT_SIZE(QueuedHelmet, 0x128);

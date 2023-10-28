@@ -52,8 +52,8 @@ public:
 	char* text;		 // 02C / 02C / 040
 	UInt8* m_val;	 // 030 / 030 / 044
 	float unk34;				 // 034
-	float questDelayTimeCounter; // 038      - init'd to fQuestDelayTime, decremented by frametime each frame
-	float secondsPassed;		 // 03C      - only if you've modified fQuestDelayTime
+	float questDelayTimeCounter; // 038	  - init'd to fQuestDelayTime, decremented by frametime each frame
+	float secondsPassed;		 // 03C	  - only if you've modified fQuestDelayTime
 	TESQuest* quest;			 // 040
 	BSSimpleList<RefVariable*> refList;	 // 044 / 034 / 048 - ref variables and immediates
 	BSSimpleList<VariableInfo*> varList; // 04C / 03C / 050 - local variable list
