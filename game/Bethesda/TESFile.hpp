@@ -842,8 +842,8 @@ struct TESFile {
 	UInt32 unk408;
 	UInt8 modIndex;
 	UInt8 pad40D[3];
-	BSStringT author;
-	BSStringT description;
+	BSStringT<char> author;
+	BSStringT<char> description;
 	void* pDecompressedFormBuffer;
 	UInt32 iDecompressedFormBufferSize;
 	UInt8 maybeShouldBeReloaded;

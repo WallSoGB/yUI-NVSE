@@ -21,7 +21,7 @@ class TESWorldSpace : public TESForm, public TESFullName, public TESTexture
 public:
 	TESWorldSpace();
 	virtual ~TESWorldSpace();
-	virtual bool GetMapNameForLocation(void*, BSStringT& akName, NiPoint3 akLocation);
+	virtual bool GetMapNameForLocation(void*, BSStringT<char>& akName, NiPoint3 akLocation);
 	virtual void Func004F(float arg0, float a3, float a4, float a5, int a6, unsigned int a7);
 
 	struct CoordXY {
@@ -79,36 +79,36 @@ public:
 	};
 
 	NiTPointerMap<SInt32, TESObjectCELL*>*						pCellMap;			// 030 confirmed
-	TESObjectCELL*						pPersistentCell;				// 034 should be the Permanent cell
-	UInt32								unk038;				// 038
+	TESObjectCELL*						pPersistentCell;		// 034 should be the Permanent cell
+	UInt32								unk038;					// 038
 	BGSTerrainManager*					pTerrainManager;
 	TESClimate*							pClimate;
 	TESImageSpace*						pImageSpace;
 	ImpactData*							pImpactSwap;
-	UInt8								cFlags;				// 04C confirmed DATA
+	UInt8								cFlags;					// 04C confirmed DATA
 	UInt16								sParentUseFlags;		// 04E init'd to FF if has a parent. 5 is use ImageSpace, 4 is use parent climate, 3 is use parent Water, 1 is use parent LOD data, 0 is use parent LAND data
-	NiTPointerMap<UInt32, BSSimpleList<TESObjectREFR*>*>					fixedPersistentRefMap;			// 050 confirmed
-	BSSimpleList<TESObjectREFR*>		mobilePersistentRefs;				// 060
+	NiTPointerMap<UInt32, BSSimpleList<TESObjectREFR*>*>		fixedPersistentRefMap;			// 050 confirmed
+	BSSimpleList<TESObjectREFR*>		mobilePersistentRefs;	// 060
 	NiTMap<UInt32, TESObjectREFR*>*		OverlappedMultiboundMap;
-	BSPortalGraphPtr					spPortalGraph;				// 068 confirmed as BSSimpleList
+	BSPortalGraphPtr					spPortalGraph;			// 068 confirmed as BSSimpleList
 	TESWorldSpace*						pParentWorld;			// 070 confirmed
 	TESWaterForm*						pWorldWater;
 	TESWaterForm*						pLODWater;
 	float								fWaterLODHeight;		// 07C confirmed NAM4
-	MapData								mapData;			// 080 confirmed MNAM
-	float								fWorldMapScale;		// 090 confirmed ONAM for three floats
-	float								fWorldMapCellX;		// 094 confirmed
-	float								fWorldMapCellY;		// 098 confirmed
-	BGSMusicType*						pMusic;			// 09C confirmed ZNAM
-	CoordXY								min;				// 0A0 confirmed NAM0 min of all Offset_Data.min
-	CoordXY								max;				// 0A8 confirmed NAM9 max of all Offset_data.max
-	NiTMap<TESFile*, TESWorldSpace::Offset_Data*>						offsetMap;			// 0B0 guarded by an isESM
-	BSStringT							editorID;				// 0C0
-	float								fDefaultLandHeight;	// 0C8 confirmed DNAM for the two
+	MapData								mapData;				// 080 confirmed MNAM
+	float								fWorldMapScale;			// 090 confirmed ONAM for three floats
+	float								fWorldMapCellX;			// 094 confirmed
+	float								fWorldMapCellY;			// 098 confirmed
+	BGSMusicType*						pMusic;					// 09C confirmed ZNAM
+	CoordXY								min;					// 0A0 confirmed NAM0 min of all Offset_Data.min
+	CoordXY								max;					// 0A8 confirmed NAM9 max of all Offset_data.max
+	NiTMap<TESFile*, TESWorldSpace::Offset_Data*>				offsetMap;			// 0B0 guarded by an isESM
+	BSStringT<char>						editorID;				// 0C0
+	float								fDefaultLandHeight;		// 0C8 confirmed DNAM for the two
 	float								fDefaultWaterHeight;	// 0CC
-	BGSEncounterZone*					pEncounterZone;	// 0D0 confirmed
-	TESTexture							canopyShadow;		// 0D4 confirmed NNAM
-	TESTexture							waterNoiseTexture;	// 0E0 confirmed XNAM
+	BGSEncounterZone*					pEncounterZone;			// 0D0 confirmed
+	TESTexture							canopyShadow;			// 0D4 confirmed NNAM
+	TESTexture							waterNoiseTexture;		// 0E0 confirmed XNAM
 
 	BGSTerrainManager* GetTerrainManager();
 	TESObjectCELL* GetCellAtCoord(SInt32 x, SInt32 y);

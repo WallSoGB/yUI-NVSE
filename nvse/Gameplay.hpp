@@ -1,3 +1,9 @@
 #pragma once
+#include <NiPoint3.hpp>
+#include <RTTI.hpp>
+#include <OSInputGlobals.hpp>
 #include <ExtraDroppedItemList.hpp>
 #include <ExtraDataList.hpp>
+#include <TESDataHandler.hpp>
+#include <TESRecipe.hpp>
+#include <PlayerCharacter.hpp>

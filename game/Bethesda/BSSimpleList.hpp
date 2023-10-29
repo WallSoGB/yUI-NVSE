@@ -363,13 +363,13 @@ public:
 			return *this;
 		}
 		T_Data		operator->() const { return m_curr->GetItem(); }
-		T_Data&		operator*() const { return m_curr->GetItem(); }
+		T_Data		operator*() const { return m_curr->GetItem(); }
 		Iterator&	operator=(const Iterator& rhs)
 		{
 			m_curr = rhs.m_curr;
 			return *this;
 		}
-		bool		operator!=(const Iterator& rhs) { return m_curr && m_curr->data; }
+		bool		operator!=(const Iterator& rhs) { return m_curr && m_curr->m_item; }
 
 		Iterator() : m_curr(nullptr) {}
 		Iterator(BSSimpleList<T_Data>* node) : m_curr(node) {}
@@ -379,8 +379,8 @@ public:
 //		Iterator(TList* _list, Item* _item) : m_curr(&_list->first) { Find(_item); }
 	};
 
-	Iterator begin() const { return Iterator(this); }
-	Iterator end() const { return Iterator(); }
+	Iterator begin() { return Iterator(this); }
+	Iterator end() { return Iterator(); }
 
 	UInt32 count() const
 	{
@@ -507,6 +507,18 @@ public:
 
 	BSSimpleList<T_Data>* Head() { return this; }
 	BSSimpleList<T_Data>* Tail() { return GetLastNode(); }
+
+	void RemoveAll()
+	{ 
+		while (m_pkNext) {
+			auto pNewNext = m_pkNext->m_pkNext;
+			m_pkNext->m_pkNext = nullptr;
+			if (m_pkNext) m_pkNext->~BSSimpleList();
+			m_pkNext = pNewNext;
+		}
+		m_item = 0;
+	}
+
 };
 static_assert(sizeof(BSSimpleList<void*>) == 0x8);
 //template <class T> using BSSimpleList = TList<T>;

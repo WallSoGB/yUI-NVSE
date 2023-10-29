@@ -2,7 +2,7 @@
 
 class Actor;
 class ActorHitData;
-class AnimData;
+struct AnimData;
 class bhkCharacterController;
 class DetectionData;
 class TESAmmo;

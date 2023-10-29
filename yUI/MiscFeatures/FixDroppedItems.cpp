@@ -5,22 +5,22 @@
 
 namespace Fix::DroppedItems
 {
-	inline int enable = 1;
+	inline bool enable = true;
 
-	BSSimpleList<TESObjectREFR*>* iterDroppedItem;
+	thread_local BSSimpleList<TESObjectREFR*>* currentDroppedItemList;
 
 	TESObjectREFR* __fastcall GetHead(ExtraDataList* extradatalist)
 	{
-		const auto xDropped = reinterpret_cast<ExtraDroppedItemList*>(extradatalist->GetExtra(BSExtraData::kExtraData_DroppedItemList));
-		if (!xDropped) return nullptr;
-		iterDroppedItem = xDropped->kDroppedItemList.Head();
-		if (!iterDroppedItem) return nullptr;
-		return iterDroppedItem->m_item;
+		const auto xDropped = GetByTypeCast(*extradatalist, ExtraDroppedItemList);
+		if (!xDropped || xDropped->kDroppedItemList.IsEmpty()) return nullptr;
+		currentDroppedItemList = xDropped->kDroppedItemList.Head();
+		if (!currentDroppedItemList) return nullptr;
+		return currentDroppedItemList->m_item;
 	}
 
 	TESObjectREFR* __fastcall GetNext()
 	{
-		return (iterDroppedItem = iterDroppedItem->m_pkNext) ? iterDroppedItem->m_item : nullptr;
+		return (currentDroppedItemList = currentDroppedItemList->m_pkNext) ? currentDroppedItemList->m_item : nullptr;
 	}
 
 	template <UInt32 retn> __declspec(naked) void HookGetNext()

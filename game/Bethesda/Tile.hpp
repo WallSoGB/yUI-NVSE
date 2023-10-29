@@ -261,7 +261,7 @@ public:
 	};
 
 	BSSimpleArray<Value*>		kValues;			// 10
-	BSStringT					kName;				// 20
+	BSStringT<char>				kName;				// 20
 	Tile*						pkParent;			// 28
 	NiNode*						pkNode;				// 2C
 	UInt32						uiFlags;			// 30

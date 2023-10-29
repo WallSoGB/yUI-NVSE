@@ -10,7 +10,11 @@ class NiNode;
 
 // 02B4
 struct BipedAnim {	// somehow descend from NiNodeArray
-	enum eOptionalBoneType {
+
+	BipedAnim() { ThisStdCall(0x4AACA0, this); };
+	~BipedAnim() { ThisStdCall(0x418E00, this); };
+
+	enum OptionalBoneType {
 		kOptionalBone_Bip01Head			= 0,
 		kOptionalBone_Weapon			= 1,
 		kOptionalBone_Bip01LForeTwist	= 2,
@@ -46,9 +50,4 @@ struct BipedAnim {	// somehow descend from NiNodeArray
 	VB01Data unk016C[20];
 	UInt32 unk2AC;
 	Actor* actor;
-
-	MEMBER_FN_PREFIX(BipedAnim);
-#if RUNTIME
-	DEFINE_MEMBER_FN(Destroy, bool, 0x00418E00, BipedAnim*, bool);	// Destoy and optionally free the structure/class
-#endif
 };

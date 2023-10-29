@@ -2,13 +2,12 @@
 #include <UserInterface.hpp>
 #include <SimpleINILibrary.h>
 
-#if 0
 namespace Patch::B42InjectHideCrosshair
 {
 	inline bool enable = true;
 
-	void XilOn() { MyHUDMainMenu::Get().tileReticleCenter->Set(Tile::kValue_visible, false); }
-	void XilOff() { MyHUDMainMenu::Get().tileReticleCenter->Set(Tile::kValue_visible, true); }
+	void XilOn() { MyHUDMainMenu::Get().pkTileReticleCenter->Set(Tile::kValue_visible, false); }
+	void XilOff() { MyHUDMainMenu::Get().pkTileReticleCenter->Set(Tile::kValue_visible, true); }
 
 	void MainLoopDoOnce()
 	{
@@ -27,4 +26,3 @@ namespace Patch::B42InjectHideCrosshair
 		mainLoopDoOnce.emplace_back(MainLoopDoOnce);
 	}
 }
-#endif

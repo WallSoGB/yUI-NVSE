@@ -10,26 +10,21 @@ public:
 
 	virtual			~TESModel();
 	virtual char*	GetModel();
-	virtual void	SetModel(char* apcPath);	// 06
+	virtual void	SetModel(const char* apcPath);	// 06
 	virtual bool	Unk_07();
 
-	virtual				~TESModel();
-	virtual const char*	GetModel();
-	virtual void		SetModel(const char* apcPath);
-	virtual bool		Unk_7();
-
 	enum {
-		kFacegenFlag_Head = 0x01,
-		kFacegenFlag_Torso = 0x02,
-		kFacegenFlag_RightHand = 0x04,
-		kFacegenFlag_LeftHand = 0x08,
+		kFacegenFlag_Head		= 1 << 0,
+		kFacegenFlag_Torso		= 1 << 1,
+		kFacegenFlag_RightHand	= 1 << 2,
+		kFacegenFlag_LeftHand	= 1 << 3,
 	};
 
-	BSStringT	kModel;
-	void*		pTexturesA;
-	void*		pMaterialsA;
-	UInt8		ucFacegenFlags;
-	UInt8		pad15[3];
+	BSStringT<char>	kModel;
+	void*			pTexturesA;
+	void*			pMaterialsA;
+	UInt8			ucFacegenFlags;
+	UInt8			pad15[3];
 
 	void SetPath(const char* newPath) { kModel.Set(newPath); }
 };

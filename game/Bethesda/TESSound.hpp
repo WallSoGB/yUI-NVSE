@@ -46,7 +46,7 @@ public:
 		UInt32		loopPointEnd;
 	};
 
-	BSStringT		kEditorID;
+	BSStringT<char>	kEditorID;
 	TESSoundData	kData;
 	UInt8			ucRngChance;
 	UInt8			gap69[3];

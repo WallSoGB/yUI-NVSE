@@ -7,6 +7,7 @@
 #include "ActorMover.hpp"
 #include "ExtraContainerChanges.hpp"
 #include "ActorValue.hpp"
+#include "TESObjectWEAP.hpp"
 
 class BGSPerk;
 class bhkRagdollController;
@@ -82,8 +83,8 @@ public:
 	virtual void		Unk_F7();
 	virtual void		AddSpellToList();	// 0F8 bool AddSpell(spell)
 	virtual void		Unk_F9();
-	virtual void		Reload(TESObjectWEAP* apkWeapon, TESObjectWEAP::EnumWeaponReloadModes aeAnimtype, bool abHasExtendedClip);
-	virtual void		ReloadAlt(TESObjectWEAP* apkWeapon, TESObjectWEAP::EnumWeaponReloadModes aeAnimtype, bool abHasExtendedClip, bool abIsInstantSwapHotkey);
+	virtual void		Reload(TESObjectWEAP* apkWeapon, TESObjectWEAP::WeaponReloadModes aeAnimtype, bool abHasExtendedClip);
+	virtual void		ReloadAlt(TESObjectWEAP* apkWeapon, TESObjectWEAP::WeaponReloadModes aeAnimtype, bool abHasExtendedClip, bool abIsInstantSwapHotkey);
 	virtual void		DecreaseClipAmmo(UInt32 auiCount);
 	virtual void		Unk_FD();
 	virtual void		GetCombatGroup();
@@ -144,7 +145,7 @@ public:
 	virtual void		DestroyActorMover();
 	virtual void		GetBaseActorValue();
 
-	enum EnumLifeStates : UInt32
+	enum LifeStates : UInt32
 	{
 		kLifeState_Alive					= 0x0,
 		kLifeState_Dying					= 0x1,
@@ -155,7 +156,7 @@ public:
 		kLifeState_EssentialUnconscious		= 0x6,
 	};
 
-	enum EnumCriticalStages : UInt32
+	enum CriticalStages : UInt32
 	{
 		kCriticalStage_None					= 0x0,
 		kCriticalStage_GooStart				= 0x1,
@@ -172,105 +173,105 @@ public:
 
 	bhkRagdollController*		pkRagDollController;
 	bhkRagdollPenetrationUtil*	pkRagDollPentrationUtil;
-	UInt32			unk0B4;
-	Float32			flt0B8;
-	bool			bIsAIProcessing;
-	UInt8			byte0BD;
-	UInt8			byte0BE;
-	UInt8			byte0BF;
-	Actor*			pkKiller;
-	UInt8			byte0C4;
-	UInt8			byte0C5;
-	UInt8			byte0C6;
-	UInt8			byte0C7;
-	Float32			time0C8;
-	Float32			fCheckDeadBodyTimer;
-	void*			forceAVList[2];
-	UInt8			byte0D8;
-	UInt8			byte0D9;
-	UInt8			byte0DA;
-	UInt8			byte0DB;
-	UInt32			unk0DC;
-	void*			setAVList[2];
-	UInt8			byte0E8;
-	UInt8			byte0E9;
-	UInt8			byte0EA;
-	UInt8			byte0EB;
-	UInt32			unk0EC;
-	UInt8			byte0F0;
-	UInt8			byte0F1;
-	UInt8			byte0F2;
-	UInt8			byte0F3;
-	void*			list0F4[2];
-	BSSimpleList<Disposition*> kDispositionList;
-	bool			bIsInCombat;
-	UInt8			jipActorFlags1;
-	UInt8			jipActorFlags2;
-	UInt8			jipActorFlags3;
-	EnumLifeStates		eLifeState;
-	EnumCriticalStages	eCriticalStage;
-	UInt32			queuedAttackAnim;
-	Float32			fPainSoundTimer;
-	UInt8			byte118;
-	UInt8			byte119;
-	UInt16			jip11A;
-	UInt32			flags11C;
-	UInt32			hoursPassed120;
-	bool			bForceRun;
-	bool			bForceSneak;
-	UInt8			byte126;
-	UInt8			hasSearch;
-	Actor*			pkCombatTarget;
-	BSSimpleArray<Actor*>* pkCombatTargets;
-	BSSimpleArray<Actor*>* pkCombatAllies;
-	UInt8			byte134;
-	UInt8			byte135;
-	UInt16			jip136;
-	UInt32			unk138;
-	UInt32			uiMinorCrimeCount;
-	UInt32			uiActorFlags;
-	bool			bIgnoreCrime;
-	UInt8			byte145;
-	UInt8			bIsResetAI;
-	UInt8			byte147;
-	TESActorBase*	actorbase148;
-	UInt8			bInWater;
-	UInt8			bIsSwimming;
-	UInt8			byte14E;
-	UInt8			gap14F;
-	UInt32			uiActionValue;
-	Float32			fTimerOnAction;
-	Float32			fUpdateTargetTimer;
-	UInt8			byte15C;
-	UInt8			bShouldRotateToTrack;
-	UInt16			jip15E;
-	NiPoint3		kStartingPos;
-	Float32			flt16C;
-	TESForm*		pkStartingWorldOrCell;
-	UInt8			byte174;
-	UInt8			byte175;
-	UInt16			jip176;
-	Float32			fCachedSpreadProjectile;
-	Float32			fCachedSpreadScoped;
-	Float32			fCachedSpreadWeaponModel;
-	Float32			fCachedSpreadVATS;
-	Float32			fCachedSpreadHealthPercent;
-	UInt8			bIsCameraRagdollAnimDist;
-	bool			bIsTeammate;
-	UInt8			byte18E;
-	UInt8			byte18F;
-	ActorMover*		pkActorMover;
-	UInt32			unk194;
-	TESPackage*		package198;
-	Float32			fRadiationDamageMultiplier;	// 1 - RadResist%
-	ContinuousBeamProjectile* continuousBeamProjectile;
-	UInt32			uiSpeechExpression;
-	UInt32			uiEmotionValue;
-	UInt32			uiSitSleepState;
-	UInt8			bIsTurret;
-	bool			bForceHit;
-	UInt8			byte1B2;
-	UInt8			byte1B3;
+	UInt32						unk0B4;
+	Float32						flt0B8;
+	bool						bIsAIProcessing;
+	UInt8						byte0BD;
+	UInt8						byte0BE;
+	UInt8						byte0BF;
+	Actor*						pkKiller;
+	UInt8						byte0C4;
+	UInt8						byte0C5;
+	UInt8						byte0C6;
+	UInt8						byte0C7;
+	Float32						time0C8;
+	Float32						fCheckDeadBodyTimer;
+	void*						forceAVList[2];
+	UInt8						byte0D8;
+	UInt8						byte0D9;
+	UInt8						byte0DA;
+	UInt8						byte0DB;
+	UInt32						unk0DC;
+	void*						setAVList[2];
+	UInt8						byte0E8;
+	UInt8						byte0E9;
+	UInt8						byte0EA;
+	UInt8						byte0EB;
+	UInt32						unk0EC;
+	UInt8						byte0F0;
+	UInt8						byte0F1;
+	UInt8						byte0F2;
+	UInt8						byte0F3;
+	void*						list0F4[2];
+	BSSimpleList<Disposition*>	kDispositionList;
+	bool						bIsInCombat;
+	UInt8						jipActorFlags1;
+	UInt8						jipActorFlags2;
+	UInt8						jipActorFlags3;
+	LifeStates					eLifeState;
+	CriticalStages				eCriticalStage;
+	UInt32						queuedAttackAnim;
+	Float32						fPainSoundTimer;
+	UInt8						byte118;
+	UInt8						byte119;
+	UInt16						jip11A;
+	UInt32						flags11C;
+	UInt32						hoursPassed120;
+	bool						bForceRun;
+	bool						bForceSneak;
+	UInt8						byte126;
+	UInt8						hasSearch;
+	Actor*						pkCombatTarget;
+	BSSimpleArray<Actor*>*		pkCombatTargets;
+	BSSimpleArray<Actor*>*		pkCombatAllies;
+	UInt8						byte134;
+	UInt8						byte135;
+	UInt16						jip136;
+	UInt32						unk138;
+	UInt32						uiMinorCrimeCount;
+	UInt32						uiActorFlags;
+	bool						bIgnoreCrime;
+	UInt8						byte145;
+	UInt8						bIsResetAI;
+	UInt8						byte147;
+	TESActorBase*				actorbase148;
+	UInt8						bInWater;
+	UInt8						bIsSwimming;
+	UInt8						byte14E;
+	UInt8						gap14F;
+	UInt32						uiActionValue;
+	Float32						fTimerOnAction;
+	Float32						fUpdateTargetTimer;
+	UInt8						byte15C;
+	UInt8						bShouldRotateToTrack;
+	UInt16						jip15E;
+	NiPoint3					kStartingPos;
+	Float32						flt16C;
+	TESForm*					pkStartingWorldOrCell;
+	UInt8						byte174;
+	UInt8						byte175;
+	UInt16						jip176;
+	Float32						fCachedSpreadProjectile;
+	Float32						fCachedSpreadScoped;
+	Float32						fCachedSpreadWeaponModel;
+	Float32						fCachedSpreadVATS;
+	Float32						fCachedSpreadHealthPercent;
+	UInt8						bIsCameraRagdollAnimDist;
+	bool						bIsTeammate;
+	UInt8						byte18E;
+	UInt8						byte18F;
+	ActorMover*					pkActorMover;
+	UInt32						unk194;
+	TESPackage*					package198;
+	Float32						fRadiationDamageMultiplier;	// 1 - RadResist%
+	ContinuousBeamProjectile*	continuousBeamProjectile;
+	UInt32						uiSpeechExpression;
+	UInt32						uiEmotionValue;
+	UInt32						uiSitSleepState;
+	UInt8						bIsTurret;
+	bool						bForceHit;
+	UInt8						byte1B2;
+	UInt8						byte1B3;
 	
 	// OBSE: unk1 looks like quantity, usu. 1; ignored for ammo (equips entire stack). In NVSE, pretty much always forced internally to 1
 	// OBSE: itemExtraList is NULL as the container changes entry is not resolved before the call
@@ -283,12 +284,6 @@ public:
 	bool HasExtraRefractionProperty();
 	bool CastsShadows();
 
-	EquippedItemsList	GetEquippedItems();
-	ExtraContainerDataArray	GetEquippedEntryDataList();
-	ExtraContainerExtendDataArray GetEquippedExtendDataList();
-	TESObjectWEAP* GetEquippedWeapon();
-
-
 	void								FireWeapon();
 	void								EjectFromWeapon(TESObjectWEAP* weapon);
 	TESObjectWEAP*						GetWeaponForm() const;
@@ -299,8 +294,6 @@ public:
 	void								UnequipItem(TESForm* objType, UInt32 unequipCount = 1, ExtraDataList* itemExtraList = nullptr, UInt32 shouldApplyEnchantment = 1,
 		UInt32 lockUnequip = false, UInt32 noMessage = 1);
 
-	std::vector<TESForm*>				GetEquippedItems();
-	InventoryChangesArray				GetEquippedEntryDataList();
 	Float64								GetCalculatedSpread(UInt32 mode = 0, InventoryChanges* entry = nullptr);
 
 	bool								IsDoingAttackAnim() { return ThisCall<bool>(0x894900, this); }

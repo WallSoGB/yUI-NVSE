@@ -78,8 +78,13 @@ typedef LPDIRECT3DVERTEXDECLARATION9 NiD3DVertexDeclaration;
 typedef LPDIRECT3DVERTEXSHADER9 NiD3DVertexShaderHandle;
 typedef LPDIRECT3DPIXELSHADER9 NiD3DPixelShaderHandle;
 
+#define DYNAMIC_CAST(obj, from, to) ( ## to *) Fallout_DynamicCast((void*)(obj), 0, RTTI_ ## from, RTTI_ ## to, 0)
+
 #include "SafeWrite.hpp"
 #include "Utilities.hpp"
+#include "Bitwise.hpp"
+
+
 /*
 class ActiveEffect;
 class Actor;

@@ -1,12 +1,8 @@
 #include <functions.h>
 #include <main.h>
-
 #include <unordered_set>
-
 #include "dinput8.hpp"
-
-#if 0
-
+#include <UserInterface.hpp>
 
 namespace CraftingComponents
 {
@@ -15,12 +11,12 @@ namespace CraftingComponents
 
 	void Fill()
 	{
-		for (const auto mIter : g_TESDataHandler->recipeList)
+		for (const auto mIter : TESDataHandler::GetSingleton()->recipeList)
 		{
-			for (const auto node : mIter->inputs)
-				if (node->item) g_Components.emplace(node->item);
-			for (const auto node : mIter->outputs)
-				if (node->item) g_Products.emplace(node->item);
+			for (const auto node : mIter->kInputs)
+				if (node->pkItem) g_Components.emplace(node->pkItem);
+			for (const auto node : mIter->kOutputs)
+				if (node->pkItem) g_Products.emplace(node->pkItem);
 		}
 	}
 
@@ -45,7 +41,7 @@ namespace HideInfoPrompt
 
 	void Update()
 	{
-		g_HUDMainMenu->tileInfo->Set(kTileValue_visible, !shouldHide);
+		HUDMainMenu::GetSingleton()->pkTileInfo->Set(Tile::kValue_visible, !shouldHide);
 	}
 }
 
@@ -120,6 +116,7 @@ bool FindStringCI(const std::string& strHaystack, const std::string& strNeedle)
 	return it != strHaystack.end();
 }
 
+/*
 bool IsPlayersOtherAnimData(AnimData* animData)
 {
 	if (PlayerCharacter::GetSingleton()->IsThirdPerson() && animData == PlayerCharacter::GetSingleton()->firstPersonAnimData)
@@ -135,7 +132,7 @@ AnimData* GetThirdPersonAnimData(AnimData* animData)
 		return PlayerCharacter::GetSingleton()->baseProcess->GetAnimData();
 	return animData;
 }
-
+*/
 /*
 void PatchPause(UInt32 ptr)
 {
@@ -147,17 +144,6 @@ void SetUIStringFull(const char* tochange, const char* changeto, UInt32 tileValu
 	HUDMainMenu::GetSingleton()->tile->SetStringRecursive(tileValue, changeto, tochange);
 }
 */
-
-bool TryGetTypeOfForm(TESForm* form)
-{
-	__try {
-		const auto whaa = form->typeID && form->refID;
-		return whaa;
-	}
-	__except (EXCEPTION_EXECUTE_HANDLER) {
-		return false;
-	}
-}
 
 /*
 void Tile::SetStringRecursive(const UInt32 tileValue, const char* changeto, const char* tochange) {
@@ -442,12 +428,18 @@ Float32 SetJIPAuxVarOrDefault(const char* auxvar, SInt32 index, Float32 value)
 	return element.num;
 }
 
-TList<void*> activationPromptTList;
+template <typename ...Args>
+void ApplyPerkModifiers(UInt32 id, Actor* actor, Args ...args)
+{
+	CdeclCall<void>(0x05E58F0, id, actor, std::forward<Args>(args)...);
+}
+
+BSSimpleList<void*> activationPromptTList;
 bool GetCannibalPrompt(TESObjectREFR* ref)
 {
 	activationPromptTList.RemoveAll();
 	ApplyPerkModifiers(0x1B, g_player, ref, &activationPromptTList, ref);
-	return !activationPromptTList.Empty();
+	return !activationPromptTList.IsEmpty();
 }
 
 
@@ -466,4 +458,3 @@ std::string GetStringForButton(UInt32 button)
 	default: return std::to_string(button);
 	}
 }
-#endif

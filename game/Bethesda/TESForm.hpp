@@ -175,7 +175,7 @@ public:
 	virtual void		FinishLoadGame(void* arg);
 	virtual void		InitItem();
 	virtual UInt32		GetSavedFormType();
-	virtual void		GetFormDetailedString(BSStringT* apDest);
+	virtual void		GetFormDetailedString(BSStringT<char>* apDest);
 	virtual bool		IsPermanentOrIsQuestItem();
 	// Unk_26 though Unk_36 get or set flag bits
 	virtual bool		HasTalkedToPC();		// 00000040

@@ -35,29 +35,29 @@ class Menu : public BSMemObject
 {
 public:
 
-	enum EnumType : UInt32
+	enum Type : UInt32
 	{
-		kType_Min = 0x3E9,
-		kType_Message = kType_Min,
+		kType_Min			= 0x3E9,
+		kType_Message		= kType_Min,
 		kType_Inventory,
 		kType_Stats,
 		kType_HUDMain,
-		kType_Loading = 0x3EF,
+		kType_Loading		= 0x3EF,
 		kType_Container,
 		kType_Dialog,
-		kType_SleepWait = 0x3F4,
+		kType_SleepWait		= 0x3F4,
 		kType_Start,
 		kType_LockPick,
-		kType_Quantity = 0x3F8,
-		kType_Map = 0x3FF,
-		kType_Book = 0x402,
+		kType_Quantity		= 0x3F8,
+		kType_Map			= 0x3FF,
+		kType_Book			= 0x402,
 		kType_LevelUp,
-		kType_Repair = 0x40B,
+		kType_Repair		= 0x40B,
 		kType_RaceSex,
-		kType_Credits = 0x417,
+		kType_Credits		= 0x417,
 		kType_CharGen,
-		kType_TextEdit = 0x41B,
-		kType_Barter = 0x41D,
+		kType_TextEdit		= 0x41B,
+		kType_Barter		= 0x41D,
 		kType_Surgery,
 		kType_Hacking,
 		kType_VATS,
@@ -66,23 +66,23 @@ public:
 		kType_Tutorial,
 		kType_SpecialBook,
 		kType_ItemMod,
-		kType_LoveTester = 0x432,
+		kType_LoveTester	= 0x432,
 		kType_CompanionWheel,
 		kType_TraitSelect,
 		kType_Recipe,
-		kType_SlotMachine = 0x438,
+		kType_SlotMachine	= 0x438,
 		kType_Blackjack,
 		kType_Roulette,
 		kType_Caravan,
-		kType_Trait = 0x43C,
-		kType_Max = kType_Trait,
+		kType_Trait			= 0x43C,
+		kType_Max			= kType_Trait,
 	};
 
 	// check 1 at 0xA0B174, 0x70D529, 0x70D592 :: set at 0x712224
 	// check 2 at 0x711FF1 :: set 2 at 0xA1D987 (when closes menu), 0xA1DA41
 	// check 4 at 0xA1D9EC (when closing menu) :: set at 0x7036A4, 0x71204D
 	// check 8 at 0x712194 :: set 8 at 0xA1DB8F (when opening menu), 0x720B39
-	enum EnumVisibilityState : UInt32
+	enum State : UInt32
 	{
 		kMenuStateIsReady	= 1 << 0,
 		kMenuStateIsFadeOut	= 1 << 1,
@@ -114,17 +114,17 @@ public:
 
 	// 0x14
 	struct TemplateInstance {
-		UInt32		unk00;
-		Float32		flt04;
-		BSStringT	kTileName;
-		Tile*		pTile;
+		UInt32				unk00;
+		Float32				flt04;
+		BSStringT<char>		kTileName;
+		Tile*				pkTile;
 	};
 
 	// 0x14
 	struct TemplateData {
 		const char*					pcTemplateName;
 		TileExtra*					pkTileExtra;
-		NiTList<TemplateInstance>	instances;
+		NiTList<TemplateInstance*>	instances;
 	};
 
 	TileMenu*					pkRootTile;			// 0x4
@@ -136,8 +136,8 @@ public:
 	UInt8						hasList08Data;		// 0x1D
 	UInt8						byte1E;				// 0x1E
 	UInt8						byte1F;				// 0x1F
-	EnumType					eID;				// 0x20
-	EnumVisibilityState			eVisibilityState;	// 0x24
+	Type						eID;				// 0x20
+	State						eVisibilityState;	// 0x24
 
 
 	Menu*						HandleMenuInput(UInt32 tileID, Tile* clickedTile);
@@ -149,7 +149,11 @@ public:
 	__forceinline void			Close() { pkRootTile->Set(Tile::kValue_fadeout, 1); ThisCall(0xA1D910, this); } // fade out
 
 
-	static bool					IsVisible(const UInt32 menuType);
+	static bool					IsVisible(const UInt32 menuType) {
+		UInt8* menuVisibility = reinterpret_cast<UInt8*>(0x011F308F);
+		return menuType >= kType_Min && menuType <= kType_Max ? menuVisibility[menuType] : false; 
+	}
+
 	bool						IsVisible() const;
 	static TileMenu*			GetTileMenu(const UInt32 menuType);
 	TileMenu*					GetTileMenu() const;

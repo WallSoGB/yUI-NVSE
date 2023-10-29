@@ -5,7 +5,6 @@
 
 #include <SimpleINILibrary.h>
 
-#if 0
 namespace Fix::TouchpadScrolling
 {
 	inline int enable = 1;
@@ -52,4 +51,3 @@ namespace Fix::TouchpadScrolling
 		Patch(enable);
 	}
 }
-#endif 

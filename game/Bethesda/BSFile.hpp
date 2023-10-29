@@ -11,11 +11,11 @@ public:
 	virtual bool	Open(int, bool abTextMode);
 	virtual bool	OpenByFilePointer(void* apFile);
 	virtual UInt32	GetSize();
-	virtual UInt32	ReadString(BSStringT* arString, UInt32 auiMaxLength);	// 2C
-	virtual UInt32	ReadStringAlt(BSStringT* arString, UInt32 auiMaxLength);
+	virtual UInt32	ReadString(BSStringT<char>* arString, UInt32 auiMaxLength);	// 2C
+	virtual UInt32	ReadStringAlt(BSStringT<char>* arString, UInt32 auiMaxLength);
 	virtual UInt32	GetLine(void* pBuffer, UInt32 uiMaxBytes, UInt8 usMark);
-	virtual UInt32	WriteString(BSStringT* arString, bool abBinary);
-	virtual UInt32	WriteStringAlt(BSStringT* arString, bool abBinary);
+	virtual UInt32	WriteString(BSStringT<char>* arString, bool abBinary);
+	virtual UInt32	WriteStringAlt(BSStringT<char>* arString, bool abBinary);
 	virtual bool	IsReadable();
 	virtual UInt32	DoRead(void* apBuffer, UInt32 auiBytes);
 	virtual UInt32	DoWrite(void* apBuffer, UInt32 auiBytes);

@@ -1,5 +1,6 @@
 #pragma once
 #include "BSExtraData.hpp"
+#include "BSSimpleList.hpp"
 
 class TESObjectREFR;
 

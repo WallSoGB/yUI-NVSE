@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
-
-#if 0
+#include <Gameplay.hpp>
 
 namespace CraftingComponents
 {
@@ -29,19 +28,14 @@ std::string ReplaceAll(std::string str, const std::string& from, const std::stri
 bool FindStringCI(const std::string& strHaystack, const std::string& strNeedle);
 
 // if player is in third person, returns true if anim data is the first person and vice versa
+struct AnimData;
 bool IsPlayersOtherAnimData(AnimData* animData);
-
 AnimData* GetThirdPersonAnimData(AnimData* animData);
-
-bool TryGetTypeOfForm(TESForm* form);
 
 char* __fastcall StrFromINI(DWORD* address);
 
 void RegisterTraitID(const char* var1, UInt32 var2);
 void funpatch();
-
-inline Tile* g_TileReticleCenter = nullptr;
-extern PlayerCharacter* g_player;
 
 bool WorldToScreen(NiPoint3* posXYZ, NiPoint3& posOut, float offscreenHandling);
 
@@ -59,5 +53,3 @@ UInt32 GetControl(UInt32 whichControl, UInt32 type = OSInputGlobals::kControlTyp
 void SetNativeHandlerFunctionBool(bool trueorfalse);
 bool ToggleVanityWheel(bool toggle);
 std::string GetStringForButton(UInt32 button);
-
-#endif

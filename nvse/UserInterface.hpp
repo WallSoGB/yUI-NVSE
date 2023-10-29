@@ -46,7 +46,7 @@ public:
 			tileName = childName.substr(0, separator - 1);
 		}
 
-		for (auto tile : *(Tile*)this) if ((any || tileName == tile->kName.CStr()) && !index--) return reinterpret_cast<MyTile*>(tile);
+		for (auto tile : *(Tile*)this) if ((any || tileName == std::string_view(tile->kName)) && !index--) return reinterpret_cast<MyTile*>(tile);
 		return nullptr;
 	}
 

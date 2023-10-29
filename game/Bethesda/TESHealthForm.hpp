@@ -1,14 +1,13 @@
 #pragma once
 #include "BaseFormComponent.hpp"
-// Complete
 
 // 0x8
 class TESHealthForm : public BaseFormComponent {
 public:
 	TESHealthForm();
-	~TESHealthForm() override;
-	virtual UInt32	GetHealth();	// 0004
+	virtual ~TESHealthForm();
+	virtual UInt32	GetHealth();	// 04
 
-	UInt32	health;		// 004
+	UInt32	uiHealth;	// 004
 };
 static_assert(sizeof(TESHealthForm) == 0x8);

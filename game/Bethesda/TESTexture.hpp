@@ -8,10 +8,10 @@ public:
 	TESTexture();
 
 	virtual UInt32	Unk_04();
-	virtual void	GetNormalMap(BSStringT* str);
+	virtual void	GetNormalMap(BSStringT<char>* str);
 	virtual char*	GetPathRoot();
 
-	BSStringT		kTexturePath;
+	BSStringT<char>	kTexturePath;
 
 	const char*		GetTextureName();
 	UInt32			GetTextureNameLength();

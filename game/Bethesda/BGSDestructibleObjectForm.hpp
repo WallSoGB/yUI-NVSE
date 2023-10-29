@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseFormComponent.hpp"
+#include "NiTArray.hpp"
 
 class BGSExplosion;
 class BGSDebris;
@@ -33,7 +34,7 @@ struct DestructibleObjectData
 	UInt8					ucNumStages;			// 04
 	bool					bTargetable;			// 05
 	UInt8					unk06[2];				// 06
-	NiTArray<DestructibleObjectStage*>*	pkStagesArray;	// 08
+	NiTObjectArray<DestructibleObjectStage*>*	pkStagesArray;	// 08
 };
 static_assert(sizeof(DestructibleObjectData) == 0xC);
 

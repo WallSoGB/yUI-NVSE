@@ -3,12 +3,14 @@
 #include "TESChildCell.hpp"
 #include "ExtraDroppedItemList.hpp"
 
+struct AnimData;
+struct BipedAnim;
+struct ScriptEventList;
 class ExtraScript;
 class NiNode;
 class TESContainer;
 class TESSound;
-struct AnimData;
-struct BipedAnim;
+class Actor;
 class NiGeometry;
 class ExtraDroppedItemList;
 class ValidBip01Names;
@@ -30,8 +32,7 @@ class TESObjectREFR : public TESForm
 public:
 
 	TESObjectREFR();
-	virtual ~TESObjectREFR();
-
+	~TESObjectREFR() override;
 	virtual void				GetStartingPosition(NiPoint3* pos, NiPoint3* rot, TESForm** formOut, TESForm* defaultCell);
 	virtual void				VoiceSoundFunction();
 	virtual void				Unk_50();
@@ -102,9 +103,6 @@ public:
 	virtual void				Unk_8E();
 	virtual void				GetExtraDataAnimNoteReceiver();
 
-#ifdef EDITOR
-	EditorData	editorData;			// +04
-#endif
 	TESChildCell*	pkChildCell;
 	TESSound*		pkLoopSound;
 	TESForm*		pkObjectReference;

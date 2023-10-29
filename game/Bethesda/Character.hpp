@@ -7,7 +7,7 @@ class TESObjectARMO;
 class Character : public Actor {
 public:
 	Character();
-	virtual ~Character();
+	~Character() override;
 
 	virtual void		Unk_137();
 	virtual void		Unk_138();

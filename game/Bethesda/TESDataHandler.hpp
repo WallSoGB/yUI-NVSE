@@ -177,32 +177,19 @@ public:
 	UInt32									unk634;					// 634
 	UInt32									unk638;					// 638
 
-	static TESDataHandler* GetSingleton();
-	const TESFile** GetActiveModList();		// returns array of modEntry* corresponding to loaded mods sorted by mod index
-	const TESFile* LookupModByName(const char* modName);
-	UInt8 GetModIndex(const char* modName);
-	UInt8 GetActiveModCount() const;
-	const char* GetNthModName(UInt32 modIndex);
-
-	void DisableAssignFormIDs(bool shouldAsssign);
-
-	bool DoAddForm(TESForm* apForm);
-
-	TESQuest* GetQuestByName(const char* questName);
-
 	static TESForm* CreateFormFromID(UInt8 aucID);
 
 	TESObjectCELL* GetCellFromCellCoord(SInt32 aiX, SInt32 aiY, TESWorldSpace* apWorldSpace, bool abUnk);
 
 	__forceinline static TESDataHandler* GetSingleton() { return *reinterpret_cast<TESDataHandler**>(0x011C3F2C); }
-	std::vector<ModInfo*> GetActiveModList();		// returns array of modEntry* corresponding to loaded mods sorted by mod index
-	const ModInfo* LookupModByName(const char* modName);
+	NiTObjectArray<TESFile> GetActiveModList();		// returns array of modEntry* corresponding to loaded mods sorted by mod index
+	const TESFile* LookupModByName(const char* modName);
 	UInt8 GetModIndex(const char* modName);
 	UInt8 GetActiveModCount() const;
 	const char* GetNthModName(UInt32 modIndex);
 	void DisableAssignFormIDs(bool shouldAsssign);
 
-	UInt32 DoAddForm(TESForm* pForm) { return ThisCall<UInt32>(0x004603B0, this, pForm); }
+	bool DoAddForm(TESForm* pForm) { return ThisCall<bool>(0x004603B0, this, pForm); }
 	TESQuest* GetQuestByName(const char* questName);
 };
 static_assert(sizeof(TESDataHandler) == 0x63C);

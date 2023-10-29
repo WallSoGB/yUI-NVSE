@@ -1,5 +1,13 @@
 #pragma once
 
+class MagicItem;
+class MagicItemForm;
+class MagicTarget;
+class SpellItem;
+class TESForm;
+class ActiveEffect;
+class EffectItem;
+
 // 0xC
 class MagicCaster {
 public:

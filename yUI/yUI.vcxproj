@@ -56,7 +56,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\..;$(SolutionDir)\..\nvse;$(SolutionDir)\..;$(SolutionDir)\..\game;$(SolutionDir)\..\game\Bethesda;$(SolutionDir)\..\game\Gamebryo;$(SolutionDir)\..\libraries;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\..;$(SolutionDir)\..\nvse;$(SolutionDir)\..;$(SolutionDir)\..\game;$(SolutionDir)\..\game\Bethesda;;$(SolutionDir)\..\game\Bethesda;$(SolutionDir)\..\game\Gamebryo;$(SolutionDir)\..\game\Havok;$(SolutionDir)\..\game\Obsidian;$(SolutionDir)\..\libraries;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;yUI_EXPORTS;RUNTIME_VERSION=0x040020D0;RUNTIME;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -67,6 +67,7 @@
       <ForcedIncludeFiles>nvse/prefix.hpp;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <BuildStlModules>false</BuildStlModules>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <ModuleDefinitionFile>exports.def</ModuleDefinitionFile>
@@ -87,7 +88,7 @@ copy "$(TargetPath)" "D:\Mod Organizer\Fallout New Vegas\mods\yUI\nvse\plugins"<
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\..;$(SolutionDir)\..\nvse;$(SolutionDir)\..;$(SolutionDir)\..\game;$(SolutionDir)\..\game\Bethesda;$(SolutionDir)\..\game\Gamebryo;$(SolutionDir)\..\libraries;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\..;$(SolutionDir)\..\nvse;$(SolutionDir)\..;$(SolutionDir)\..\game;$(SolutionDir)\..\game\Bethesda;;$(SolutionDir)\..\game\Bethesda;$(SolutionDir)\..\game\Gamebryo;$(SolutionDir)\..\game\Havok;$(SolutionDir)\..\game\Obsidian;$(SolutionDir)\..\libraries;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;yUI_EXPORTS;RUNTIME_VERSION=0x040020D0;RUNTIME;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader />
@@ -96,6 +97,7 @@ copy "$(TargetPath)" "D:\Mod Organizer\Fallout New Vegas\mods\yUI\nvse\plugins"<
       <ForcedIncludeFiles>nvse/prefix.hpp;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <BuildStlModules>false</BuildStlModules>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <ModuleDefinitionFile>exports.def</ModuleDefinitionFile>
@@ -138,7 +140,6 @@ copy "$(TargetPath)" "D:\Mod Organizer\Fallout New Vegas\mods\yUI\nvse\plugins"<
     <ClCompile Include="MiscFeatures\FixDroppedItems.cpp" />
     <ClCompile Include="MiscFeatures\FixTablineSelected.cpp" />
     <ClCompile Include="MiscFeatures\FixTouchpadScrolling.cpp" />
-    <ClCompile Include="MiscFeatures\FixReorderMCM.cpp" />
     <ClCompile Include="MiscFeatures\PatchAlterSpread.cpp" />
     <ClCompile Include="MiscFeatures\PatchArmedUnarmed.cpp" />
     <ClCompile Include="MiscFeatures\PatchB42InjectHideCrosshair.cpp" />
@@ -941,6 +942,7 @@ copy "$(TargetPath)" "D:\Mod Organizer\Fallout New Vegas\mods\yUI\nvse\plugins"<
     <ClInclude Include="..\game\Bethesda\WaterShaderProperty.hpp" />
     <ClInclude Include="..\game\Bethesda\WeatherEntry.hpp" />
     <ClInclude Include="..\game\Bethesda\XGameSetting.hpp" />
+    <ClInclude Include="..\game\Bitwise.hpp" />
     <ClInclude Include="..\game\Gamebryo\Ni2DBuffer.hpp" />
     <ClInclude Include="..\game\Gamebryo\NiAccumulator.hpp" />
     <ClInclude Include="..\game\Gamebryo\NiAdditionalGeometryData.hpp" />
@@ -1263,6 +1265,8 @@ copy "$(TargetPath)" "D:\Mod Organizer\Fallout New Vegas\mods\yUI\nvse\plugins"<
     <ClInclude Include="..\game\Obsidian\TESRecipeCategory.hpp" />
     <ClInclude Include="..\game\Obsidian\TESReputation.hpp" />
     <ClInclude Include="..\game\Obsidian\TraitMenu.hpp" />
+    <ClInclude Include="..\game\OSInputGlobals.hpp" />
+    <ClInclude Include="..\game\RTTI.hpp" />
     <ClInclude Include="..\libraries\json.h" />
     <ClInclude Include="..\libraries\SimpleINILibrary.h" />
     <ClInclude Include="..\nvse\CommandTable.hpp" />

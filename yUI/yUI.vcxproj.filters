@@ -44,9 +44,6 @@
     <ClCompile Include="MiscFeatures\PatchMatchedCursor.cpp">
       <Filter>features</Filter>
     </ClCompile>
-    <ClCompile Include="MiscFeatures\FixReorderMCM.cpp">
-      <Filter>features</Filter>
-    </ClCompile>
     <ClCompile Include="MiscFeatures\FixTouchpadScrolling.cpp">
       <Filter>features</Filter>
     </ClCompile>
@@ -3469,6 +3466,15 @@
     </ClInclude>
     <ClInclude Include="..\nvse\CommandTable.hpp">
       <Filter>nvse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\game\RTTI.hpp">
+      <Filter>CommonLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\game\OSInputGlobals.hpp">
+      <Filter>CommonLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\game\Bitwise.hpp">
+      <Filter>CommonLib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

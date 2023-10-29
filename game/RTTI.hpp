@@ -1755,5 +1755,3 @@ enum RTTI
 
 typedef void * (* _Fallout_DynamicCast)(void * srcObj, UInt32 arg1, RTTI fromType, RTTI toType, UInt32 arg4);
 inline const _Fallout_DynamicCast Fallout_DynamicCast = reinterpret_cast<_Fallout_DynamicCast>(0x00EC43FB);
-
-#define DYNAMIC_CAST(obj, from, to) ( ## to *) Fallout_DynamicCast((void*)(obj), 0, RTTI_ ## from, RTTI_ ## to, 0)
