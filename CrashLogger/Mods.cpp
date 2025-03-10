@@ -22,20 +22,36 @@ namespace CrashLogger::Mods
 	extern void Process(EXCEPTION_POINTERS* info)
 	try {
 		char textBuffer[512];
-		sprintf_s(textBuffer, "Mods:\n  # | %*s%*s | %*s%*s\n", CENTERED_TEXT(80, "Mod"), CENTERED_TEXT(60, "Author"));
+		if (TESDataHandler::bHasExtendedPlugins)
+			sprintf_s(textBuffer, "Mods:\n  #  |  Index  | %*s%*s | %*s%*s\n", CENTERED_TEXT(80, "Mod"), CENTERED_TEXT(60, "Author"));
+		else	
+			sprintf_s(textBuffer, "Mods:\n  # | %*s%*s | %*s%*s\n", CENTERED_TEXT(80, "Mod"), CENTERED_TEXT(60, "Author"));
 		output << textBuffer;
-		for (UInt32 i = 0; i < g_TESDataHandler->kMods.uiLoadedModCount; i++) {
-			const auto mod = g_TESDataHandler->kMods.pLoadedMods[i];
+		UInt32 i = 0;
+		for (TESFile* mod : *g_TESDataHandler->GetFileList()) {
 			if (!mod)
 				continue;
 
-			const auto& author = mod->author;
+			const auto& author = mod->strAuthor;
 			const char* authorName = author.pcString;
-			if (!author.usLen || !strcmp(mod->author.pcString, "DEFAULT"))
+			if (!author.usLen || !strcmp(mod->strAuthor.pcString, "DEFAULT"))
 				authorName = "";
 
-			sprintf_s(textBuffer, " %02X | %-80s | %-60s\n", i, mod->m_Filename, authorName);
+			if (TESDataHandler::bHasExtendedPlugins) {
+				if (mod->IsOverlay()) {
+					sprintf_s(textBuffer, " %03i |   XXX   | %-80s | %-60s\n", i, mod->GetName(), authorName);
+				}
+				else if (mod->IsSmallFile()) {
+					sprintf_s(textBuffer, " %03i |  FE%03X  | %-80s | %-60s\n", i, mod->GetSmallCompileIndex(), mod->GetName(), authorName);
+				}
+				else {
+					sprintf_s(textBuffer, " %03i |    %02X   | %-80s | %-60s\n", i, mod->GetCompileIndex(), mod->GetName(), authorName);
+				}
+			}
+			else
+				sprintf_s(textBuffer, " %02X | %-80s | %-60s\n", i, mod->GetName(), authorName);
 			output << textBuffer;
+			i++;
 		}
 		output << '\n';
 

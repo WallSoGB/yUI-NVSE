@@ -309,9 +309,11 @@ const char* GetModName(const TESForm* script)
 	const char* modName = "In-game console";
 	if (script->ucModIndex != 0xFF)
 	{
-		modName = TESDataHandler::GetSingleton()->GetNthModName(script->ucModIndex);
-		if (!modName || !modName[0])
+		TESFile* pFile = TESDataHandler::GetSingleton()->GetCompiledFile(script->ucModIndex);
+		if (!pFile)
 			modName = "Unknown";
+		else
+			modName = pFile->GetName();
 	}
 	return modName;
 }

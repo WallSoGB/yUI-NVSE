@@ -134,6 +134,8 @@
     <ClCompile Include="Bethesda\BSMemory.cpp" />
     <ClCompile Include="Bethesda\MemoryManager.cpp" />
     <ClCompile Include="Bethesda\ModelLoader.cpp" />
+    <ClCompile Include="Bethesda\TESDataHandler.cpp" />
+    <ClCompile Include="Bethesda\TESFile.cpp" />
     <ClCompile Include="Bethesda\TESForm.cpp" />
     <ClCompile Include="Bethesda\TLSData.cpp" />
     <ClCompile Include="Gamebryo\NiMemManager.cpp" />

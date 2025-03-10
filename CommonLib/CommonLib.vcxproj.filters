@@ -13,6 +13,8 @@
     <ClCompile Include="Gamebryo\NiMemory.cpp" />
     <ClCompile Include="Bethesda\BSWin32TaskletManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Bethesda\TESDataHandler.cpp" />
+    <ClCompile Include="Bethesda\TESFile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bethesda\AbsorbEffect.hpp" />

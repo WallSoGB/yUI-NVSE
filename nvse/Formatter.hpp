@@ -80,11 +80,11 @@ inline auto LogClass(const TESForm& obj)
 		TESFile* sourceMod = obj.kMods.m_item;
 		TESFile* lastMod = obj.kMods.TailItem();
 
-		sprintf_s(buffer, "Plugin: \"%s\"", sourceMod->m_Filename);
+		sprintf_s(buffer, "Plugin: \"%s\"", sourceMod->GetName());
 		vec.push_back(buffer);
 
 		if (sourceMod != lastMod) {
-			sprintf_s(buffer, "Last modified by: \"%s\"", lastMod->m_Filename);
+			sprintf_s(buffer, "Last modified by: \"%s\"", lastMod->GetName());
 			vec.push_back(buffer);
 		}
 	}

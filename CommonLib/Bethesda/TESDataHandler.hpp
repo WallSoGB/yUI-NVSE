@@ -2,6 +2,7 @@
 #include "TESFile.hpp"
 #include "NiTArray.hpp"
 #include "NiTPointerList.hpp"
+#include "BSSimpleArray.hpp"
 
 class BGSAcousticSpace;
 class BGSAddonNode;
@@ -67,14 +68,43 @@ class TESTopicInfo;
 class TESWaterForm;
 class TESWeather;
 class TESWorldSpace;
+class TESForm;
+class InventoryChanges;
+class BGSSleepDeprevationStage;
 
-struct ModList 
-{
-	BSSimpleList<TESFile*>	kModInfos;
-	UInt32					uiLoadedModCount;
-	TESFile*				pLoadedMods[0xFF];
+class CompiledFiles {
+protected:
+	friend class TESDataHandler;
+
+	union {
+		struct {
+			BSSimpleArray<TESFile*> kNormalFiles;
+			BSSimpleArray<TESFile*> kSmallFiles;
+			BSSimpleArray<TESFile*> kOverlayFiles;
+			uint32_t				padding[0xF4];
+		};
+
+		struct {
+			uint32_t	uiCompiledFileCount;
+			TESFile* pFileArray[0xFF];
+		};
+	};
+
+public:
+	uint32_t GetFileCount() const;
+
+	TESFile* GetFile(uint32_t auiIndex) const;
+
+	uint32_t GetSmallFileCount() const;
+
+	TESFile* GetSmallFile(uint32_t auiIndex) const;
+
+	uint32_t GetOverlayFileCount() const;
+
+	TESFile* GetOverlayFile(uint32_t auiIndex) const;
 };
-static_assert(sizeof(ModList) == 0x408);
+
+ASSERT_SIZE(CompiledFiles, 0x400);
 
 // 5B8
 class TESDataHandler {
@@ -83,7 +113,7 @@ public:
 	~TESDataHandler();
 
 
-	UInt32									unk00;					// 000
+	Bitfield8								ucDLCFlags;				// 000
 	TESObjectList*							pObjects;				// 004
 	BSSimpleList<TESPackage*>				kPackages;				// 008
 	BSSimpleList<TESWorldSpace*>			kWorldSpaces;			// 010
@@ -129,7 +159,7 @@ public:
 	BSSimpleList<BGSRadiationStage*>		kRadiationStages;		// 150
 	BSSimpleList<BGSDehydrationStage*>		kDehydrationStages;		// 158
 	BSSimpleList<BGSHungerStage*>			kHungerStages;			// 160
-	BSSimpleList<BGSSleepDeprivationStage*>	kSleepDepriveStages;	// 168
+	BSSimpleList<BGSSleepDeprevationStage*>	kSleepDepriveStages;	// 168
 	BSSimpleList<BGSDebris*>				kDebris;				// 170
 	BSSimpleList<BGSPerk*>					kPerks;					// 178
 	BSSimpleList<BGSBodyPartData*>			kBodyPartData;			// 180
@@ -147,58 +177,42 @@ public:
 	NiTPrimitiveArray<TESObjectCELL*>		kCellArray;				// 1DC
 	NiTPrimitiveArray<BGSAddonNode*>		kAddonArray;			// 1EC
 	NiTPointerList<TESForm*>				kBadForms;				// 1FC
-	UInt32									uiNextCreatedRefID;		// 208
-	TESFile*								pActiveFile;			// 20C	last unselected mod in modList. GECK: active ESM
-	ModList									kMods;					// 210
-	bool									unk618;					// 618
+	uint32_t								uiNextCreatedRefID;		// 208
+	TESFile*								pActiveFile;			// 20C
+	BSSimpleList<TESFile*>					kFiles;					// 210
+	CompiledFiles							kCompiledFiles;			// 218
+	bool									bMasterSave;			// 618
 	bool									bSaveLoadGame;			// 619
-	bool									unk61A;					// 61A	referenced during LoadForm (ie TESSpellList). bit 1 might mean refID to pointer conversion not done. For GECK means save in progress
+	bool									bCompilingFiles;		// 61A
 	bool									unk61B;					// 61B
 	bool									unk61C;					// 61C
-	bool									unk61D;					// 61D
+	bool									bClearingData;			// 61D
 	bool									bIsClosingFile;			// 61E
 	bool									unk61F;					// 61F
-	bool									bAssignFormIDs;			// 620
+	bool									bLoadingFiles;			// 620
 	bool									bIsLoading;				// 621
-	UInt8									ucGameSettingsLoadState;// 622
+	uint8_t									ucGameSettingsLoadState;// 622
 	bool									unk623;					// 623
 	TESRegionDataManager*					pRegionManager;			// 624
-	void*									pVendorContainer;		// 628
-	UInt32									unk62C;					// 62C
-	UInt32									unk630;					// 630
-	UInt32									unk634;					// 634
-	UInt32									unk638;					// 638
+	InventoryChanges*						pBarterContainer;		// 628
+	uint32_t								unk62C;					// 62C
+	TESForm*								pSpotterEffect;			// 630
+	TESForm*								pItemDetectedEffect;	// 634
+	TESForm*								pCatEyeMobileEffect;	// 638
 
-	static TESDataHandler* GetSingleton() { return *reinterpret_cast<TESDataHandler**>(0x011C3F2C); }
+	static TESDataHandler* GetSingleton();
+	BSSimpleList<TESFile*>* GetFileList();
+	uint32_t GetCompiledFileCount() const;
+	TESFile* GetCompiledFile(uint32_t auiIndex) const;
+	TESFile* GetListFile(uint32_t auiIndex);
+	TESFile* GetListFile(const char* apFileName);
 
-	std::vector<TESFile*> GetActiveModList()
-	{
-		std::vector<TESFile*> activeMods;
-		if (activeMods.empty())
-			for (const auto iter : kMods.kModInfos)
-				if (iter->IsLoaded()) activeMods.push_back(iter);
-		return activeMods;
-	};		// returns array of modEntry* corresponding to loaded mods sorted by mod index
-	const TESFile* LookupModByName(const char* modName);
-	UInt8 GetModIndex(const char* modName);
-	UInt8 GetActiveModCount() const;
-	const char* GetNthModName(UInt32 modIndex)
-	{
-		if (modIndex == 0xFF) return "Runtime";
-		if (const auto iter = GetActiveModList()[modIndex]) return iter->m_Filename;
-		return "";
-	};
+	static bool bHasExtendedPlugins;
 
-	void DisableAssignFormIDs(bool shouldAsssign);
+	uint32_t GetSmallCompiledFileCount() const;
+	TESFile* GetSmallFile(uint32_t auiIndex) const;
 
-	void RemoveIDFromDataHandler(UInt32 auiFormID);
-
-	bool DoAddForm(TESForm* apForm);
-
-	TESQuest* GetQuestByName(const char* questName);
-
-	static TESForm* CreateFormFromID(UInt8 aucID);
-
-	TESObjectCELL* GetCellFromCellCoord(SInt32 aiX, SInt32 aiY, TESWorldSpace* apWorldSpace, bool abUnk);
+	uint32_t GetOverlayFileCount() const;
+	TESFile* GetOverlayFile(uint32_t auiIndex) const;
 };
 static_assert(sizeof(TESDataHandler) == 0x63C);

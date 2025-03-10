@@ -68,7 +68,10 @@ void InitLog(const std::filesystem::path& path = "")
 
 void NVSEMessageHandler(NVSEMessagingInterface::Message* msg)
 {
-	if (msg->type == NVSEMessagingInterface::kMessage_DeferredInit)
+	if (msg->type == NVSEMessagingInterface::kMessage_PostLoad) {
+		TESDataHandler::bHasExtendedPlugins = GetModuleHandle("PluginExtensions") != nullptr;
+	}
+	else if (msg->type == NVSEMessagingInterface::kMessage_DeferredInit)
 	{
 		InitSingletons();
 		Logger::Play();
