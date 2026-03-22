@@ -123,14 +123,16 @@ void __fastcall GetFormFlags(const TESForm* apForm, char* apBuffer, size_t astBu
 		}
 	}
 
-	if (bRef && pBase && uiFormFlags.GetBit(TESForm::FormFlags::CASTS_SHADOWS)) {
-		if (pBase->eTypeID == TESForm::kType_TESObjectLIGH)
-			AddFlag(apBuffer, astBufferSize, "CASTS_SHADOWS");
-		else if (pBase->eTypeID == TESForm::kType_BGSMovableStatic)
-			AddFlag(apBuffer, astBufferSize, "MOTION_BLUR");
+	if (uiFormFlags.GetBit(TESForm::FormFlags::CASTS_SHADOWS)) {
+		if (bRef && pBase) {
+			if (pBase->eTypeID == TESForm::kType_TESObjectLIGH)
+				AddFlag(apBuffer, astBufferSize, "CASTS_SHADOWS");
+			else if (pBase->eTypeID == TESForm::kType_BGSMovableStatic)
+				AddFlag(apBuffer, astBufferSize, "MOTION_BLUR");
+		}
+		else if (bBoundObj)
+			AddFlag(apBuffer, astBufferSize, "ON_LOCAL_MAP");
 	}
-	else if (bBoundObj)
-		AddFlag(apBuffer, astBufferSize, "ON_LOCAL_MAP");
 
 	if (uiFormFlags.GetBit(TESForm::FormFlags::PERSISTENT)) {
 		if (bRef || eFormType == TESForm::kType_TESObjectCELL)
