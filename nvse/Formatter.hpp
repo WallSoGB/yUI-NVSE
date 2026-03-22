@@ -663,10 +663,12 @@ inline void __fastcall LogClass(const bhkRefObject& obj, bool nested = false) {
 inline void __fastcall LogClass(const NiCollisionObject& obj, bool nested = false) {
 	LogClass(static_cast<const NiRefObject&>(obj), nested);
 	if (const auto object = obj.m_pkSceneObject) {
+		char cNameBuffer[256];
+		sprintf_s(cNameBuffer, "Scene Object: %s", object->GetRTTIName());
 		if (object->IsNiNode())
-			LogMember("Scene Object:", reinterpret_cast<const NiNode&>(*object));
+			LogMember(cNameBuffer, reinterpret_cast<const NiNode&>(*object));
 		else
-			LogMember("Scene Object:", *object);
+			LogMember(cNameBuffer, *object);
 	}
 }
 
@@ -694,8 +696,11 @@ inline void __fastcall LogClass(const hkpWorldObject& obj, bool nested = false) 
 	}
 
 	bhkNiCollisionObject* object = bhkUtilFunctions::GetbhkNiCollisionObject(&obj);
-	if (object)
-		LogMember("Collision Object:", reinterpret_cast<const NiCollisionObject&>(*object));
+	if (object) {
+		char cNameBuffer[256];
+		sprintf_s(cNameBuffer, "Collision Object: %s", object->GetRTTIName());
+		LogMember(cNameBuffer, reinterpret_cast<const NiCollisionObject&>(*object));
+	}
 }
 
 inline void __fastcall LogClass(const IMemoryHeap& obj, bool nested = false) {
