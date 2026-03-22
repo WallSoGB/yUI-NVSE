@@ -322,18 +322,6 @@ inline void __fastcall LogClass(const TESForm& obj, bool nested = false) {
 	const UInt32 refID = obj.uiFormID;
 
 	const char* pEDID = obj.GetEditorID();
-	const char* pName = nullptr;
-	if (obj.eTypeID == TESForm::kType_TESObjectCELL)
-		pName = static_cast<const TESObjectCELL&>(obj).GetFullName();
-	else if (obj.IsReference())
-		pName = static_cast<const TESObjectREFR&>(obj).GetFullName();
-	else
-		pName = TESFullName::GetFullName(&obj);
-
-	if (pName && pName[0])
-		_MESSAGE("Full Name: \"%s\"", pName);
-	else
-		_MESSAGE("Full Name: None");
 
 	// Temporary forms don't have actual FormIDs, so logging them is useless
 	if (!pEDID || !pEDID[0]) {
@@ -348,6 +336,19 @@ inline void __fastcall LogClass(const TESForm& obj, bool nested = false) {
 		else
 			_MESSAGE("FormID: %08X (\"%s\")", refID, pEDID);
 	}
+
+	const char* pName = nullptr;
+	if (obj.eTypeID == TESForm::kType_TESObjectCELL)
+		pName = static_cast<const TESObjectCELL&>(obj).GetFullName();
+	else if (obj.IsReference())
+		pName = static_cast<const TESObjectREFR&>(obj).GetFullName();
+	else
+		pName = TESFullName::GetFullName(&obj);
+
+	if (pName && pName[0])
+		_MESSAGE("Full Name: \"%s\"", pName);
+	else
+		_MESSAGE("Full Name: None");
 
 	{
 		char cFlagsBuffer[512] = {};
