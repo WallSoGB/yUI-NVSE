@@ -83,17 +83,6 @@ namespace CrashLogger::GameData
 
 			TextureCounter();
 
-			UInt32 uiFaceGenMeshes = 0;
-			if (BSFaceGenManager::GetSingleton() && BSFaceGenManager::GetSingleton()->pModelMap)
-				uiFaceGenMeshes = BSFaceGenManager::GetSingleton()->pModelMap->kEntryMap.GetCount();
-
-			UInt32 uiModels = 0;
-			UInt32 uiAnimations = 0;
-			if (ModelLoader::GetSingleton()) {
-				if (ModelLoader::GetSingleton()->pModelMap)
-					uiModels = ModelLoader::GetSingleton()->pModelMap->uiCount;
-				if (ModelLoader::GetSingleton()->pKFModelMap)
-					uiAnimations = ModelLoader::GetSingleton()->pKFModelMap->uiCount;
 			}
 
 			try {
@@ -148,6 +137,26 @@ namespace CrashLogger::GameData
 
 			_MESSAGE("\nLoaded assets:");
 			{
+				UInt32 uiFaceGenMeshes = 0;
+				if (BSFaceGenManager::GetSingleton() && BSFaceGenManager::GetSingleton()->pModelMap)
+					uiFaceGenMeshes = BSFaceGenManager::GetSingleton()->pModelMap->kEntryMap.GetCount();
+
+				UInt32 uiModels = 0;
+				UInt32 uiAnimations = 0;
+				if (ModelLoader::GetSingleton()) {
+					if (ModelLoader::GetSingleton()->pModelMap)
+						uiModels = ModelLoader::GetSingleton()->pModelMap->uiCount;
+					if (ModelLoader::GetSingleton()->pKFModelMap)
+						uiAnimations = ModelLoader::GetSingleton()->pKFModelMap->uiCount;
+				}
+
+				UInt32 uiPlayingSounds = 0;
+				UInt32 uiCachedSounds = 0;
+				if (BSAudioManager::GetSingleton()) {
+					uiPlayingSounds = BSAudioManager::GetSingleton()->kPlayingSounds.GetCount();
+					uiCachedSounds = BSAudioManager::GetSingleton()->kCachedSounds.GetSize();
+				}
+
 				AutoIndent indent;
 				_MESSAGE("Textures:       %i", textureCounters[7]);
 				_MESSAGE("  <= 128:  %i", textureCounters[0]);
@@ -160,6 +169,11 @@ namespace CrashLogger::GameData
 				_MESSAGE("Models:         %i", uiModels);
 				_MESSAGE("FaceGen Models: %i", uiFaceGenMeshes);
 				_MESSAGE("Animations:     %i", uiAnimations);
+				_MESSAGE("Playing Sounds: %i", uiPlayingSounds);
+				{
+					AutoIndent indent;
+					_MESSAGE("Cached Sounds:  %i", uiCachedSounds);
+				}
 			}
 
 			_MESSAGE("\nProcess Lists:");
