@@ -583,6 +583,9 @@ inline void __fastcall LogClass(const NiExtraData& obj, bool nested = false) {
 inline void __fastcall LogClass(const BSFile& obj, bool nested = false) {
 	char sanitizedPath[MAX_PATH] = {};
 	_MESSAGE("File Path: \"%s\"", SanitizeString(obj.cFileName, sanitizedPath, sizeof(sanitizedPath)));
+	uint32_t uiSize = obj.uiFileSize;
+	char cSizeBuffer[64];
+	_MESSAGE("File Size: %s", FormatSize(uiSize, cSizeBuffer, sizeof(cSizeBuffer)));
 
 }
 inline void __fastcall LogClass(const TESModel& obj, bool nested = false) {
