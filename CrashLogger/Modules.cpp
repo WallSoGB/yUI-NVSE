@@ -1,11 +1,11 @@
 #include <CrashLogger.hpp>
+#include <tchar.h>
+#include <strsafe.h>
 
 #pragma comment (lib, "version.lib")
 
 namespace CrashLogger::Modules
 {
-	std::stringstream output;
-
 	struct UserContext {
 		UInt32 eip;
 		UInt32 moduleBase;
@@ -14,8 +14,8 @@ namespace CrashLogger::Modules
 
 	struct Module
 	{
-		UInt32 moduleBase;
-		UInt32 moduleEnd;
+		size_t moduleBase;
+		size_t moduleEnd;
 		std::filesystem::path path;
 
 		bool operator<(const Module& other) const {
@@ -32,12 +32,12 @@ namespace CrashLogger::Modules
 			info->moduleBase = moduleBase;
 			strcpy_s(info->name, 100, name);
 		}
-		enumeratedModules.emplace((UInt32)moduleBase, (UInt32)moduleBase + (UInt32)moduleSize, std::string(name));
+		enumeratedModules.emplace(moduleBase, moduleBase + moduleSize, name);
 
 		return TRUE;
 	}
 
-	static std::unordered_map<std::string, const char*> pluginNames = {
+	static std::unordered_map<std::string_view, const char*> pluginNames = {
 		{"hot_reload_editor", "hot_reload"},
 		{"ilsfix", "ILS Fix"},
 		{"improved_console", "Improved Console"},
@@ -56,32 +56,33 @@ namespace CrashLogger::Modules
 		{"Alpha Fixes", "Fallout Alpha Rendering Tweaks"}
 	};
 
-	std::string GetPluginNameForFileName(std::string name)
+	const char* __fastcall GetPluginNameForFileName(const char* name)
 	{
 		if (pluginNames.contains(name))
 			return pluginNames[name];
 		return name;
 	}
 
-	std::string GetFileVersion(std::string path) {
-		char version[64] = { 0 };
-		DWORD infoSize = GetFileVersionInfoSizeA(path.c_str(), 0);
-		LPSTR verData = new char[infoSize];
-		if (GetFileVersionInfo(path.c_str(), 0, infoSize, verData)) {
-			LPBYTE lpBuffer = nullptr;
-			UINT size = 0;
-			if (VerQueryValue(verData, "\\", (VOID FAR * FAR*) & lpBuffer, &size) && size) {
-				VS_FIXEDFILEINFO* verInfo = (VS_FIXEDFILEINFO*)lpBuffer;
-				if (verInfo->dwSignature == 0xfeef04bd) {
-					sprintf_s(version, "%d.%d.%d.%d", verInfo->dwFileVersionMS >> 16, verInfo->dwFileVersionMS & 0xffff, verInfo->dwFileVersionLS >> 16, verInfo->dwFileVersionLS & 0xffff);
+	void __fastcall GetFileVersion(const char* apPath, char* apVerBuffer, size_t apVerBufferSize) {
+		DWORD dwInfoSize = GetFileVersionInfoSize(apPath, 0);
+		if (dwInfoSize) {
+			char* pData = new char[dwInfoSize];
+			if (GetFileVersionInfo(apPath, 0, dwInfoSize, pData)) {
+				if (apVerBuffer) {
+					void* pFileInfoRaw = nullptr;
+					uint32_t uiInfoSize = 0;
+					if (VerQueryValue(pData, "\\", &pFileInfoRaw, &uiInfoSize) && uiInfoSize) {
+						VS_FIXEDFILEINFO* pFileInfo = static_cast<VS_FIXEDFILEINFO*>(pFileInfoRaw);
+						if (pFileInfo->dwSignature == 0xfeef04bd)
+							sprintf_s(apVerBuffer, apVerBufferSize, "%d.%d.%d.%d", pFileInfo->dwFileVersionMS >> 16, pFileInfo->dwFileVersionMS & 0xffff, pFileInfo->dwFileVersionLS >> 16, pFileInfo->dwFileVersionLS & 0xffff);
+					}
 				}
 			}
+			delete[] pData;
 		}
-		delete[] verData;
-		return std::string(version);
 	}
 
-	extern void Process(EXCEPTION_POINTERS* info)
+	extern void __fastcall Process(EXCEPTION_POINTERS* info)
 	try {
 		HANDLE process = GetCurrentProcess();
 
@@ -92,40 +93,49 @@ namespace CrashLogger::Modules
 		Safe_EnumerateLoadedModules(process, EumerateModulesCallback, &infoUser);
 
 		size_t memoryAllocated = 0;
+		size_t memoryAllocatedNVSE = 0;
 
-		char textBuffer[512];
-		sprintf_s(textBuffer, "Module bases:\n %*s%*s  | %*s%*s | %*s%*s | %*s\n", CENTERED_TEXT(22, "Address"), CENTERED_TEXT(40, "Module"), CENTERED_TEXT(20, "Version"), 40, "Filepath");
-		output << textBuffer;
-		for (const auto& [moduleBase, moduleEnd, path] : enumeratedModules)
-		{
+		_MESSAGE("\nModule bases:\n %*s%*s  | %*s%*s | %*s%*s | %*s%*s | %*s", CENTERED_TEXT(22, "Address Range"), CENTERED_TEXT(10, "Size"), CENTERED_TEXT(40, "Module"), CENTERED_TEXT(20, "Version"), 40, "Filepath");
+		for (const auto& [moduleBase, moduleEnd, path] : enumeratedModules) {
+			size_t stSize = moduleEnd - moduleBase;
+			memoryAllocated += stSize;
+
 			char version[64] = {};
+			const char* pDesc = nullptr;
 
 			if (g_commandInterface) {
-				if (const auto info = g_commandInterface->GetPluginInfoByName(GetPluginNameForFileName(path.stem().generic_string()).c_str())) {
+				if (g_commandInterface->version >= 2) {
+					if (const PluginInfo* info = g_commandInterface->GetPluginInfoByDLLName(path.filename().generic_string().c_str())) {
+						sprintf_s(version, "%d", info->version);
+						pDesc = info->name;
+						memoryAllocatedNVSE += stSize;
+					}
+				}
+				else if (const auto info = g_commandInterface->GetPluginInfoByName(GetPluginNameForFileName(path.stem().generic_string().c_str()))) {
 					sprintf_s(version, "%d", info->version);
+					pDesc = info->name;
+					memoryAllocatedNVSE += stSize;
 				}
 			}
 
 			if (version[0] == 0) {
-				const std::string& dll_version = GetFileVersion(path.generic_string());
-				if (dll_version.empty())
+				GetFileVersion(path.generic_string().c_str(), version, sizeof(version));
+				if (version[0] == 0)
 					strcpy_s(version, "Unknown");
-				else
-					strcpy_s(version, dll_version.c_str());
 			}
 
-			memoryAllocated += moduleEnd - moduleBase;
-
-			sprintf_s(textBuffer, " 0x%08X - 0x%08X | %-40s | %-20s | %s\n", moduleBase, moduleEnd, path.stem().generic_string().c_str(), version, SanitizeString(path.generic_string()).c_str());
-			output << textBuffer;
+			char sanitizedPath[MAX_PATH] = {};
+			char sizeBuffer[32] = {};
+			_MESSAGE(" 0x%08X - 0x%08X | %-10s | %-40s | %-20s | %s", moduleBase, moduleEnd, FormatSize(stSize, sizeBuffer, sizeof(sizeBuffer)), pDesc ? pDesc : path.stem().generic_string().c_str(), version, SanitizeString(path.generic_string().c_str(), sanitizedPath, sizeof(sanitizedPath)));
 		}
 
-		char cMemBuffer[128];
+		char cMemBuffer[32];
 		FormatSize(memoryAllocated, cMemBuffer, sizeof(cMemBuffer));
-		sprintf_s(textBuffer, "\nTotal memory allocated to modules: %s\n", cMemBuffer);
-		output << textBuffer;
-	}
-	catch (...) { output << "Failed to print out modules.\n"; }
+		_MESSAGE("\nTotal memory allocated to all modules:  %-10s", cMemBuffer);
+		FormatSize(memoryAllocatedNVSE, cMemBuffer, sizeof(cMemBuffer));
+		_MESSAGE("Total memory allocated to NVSE plugins: %-10s", cMemBuffer);
 
-	extern std::stringstream& Get() { output.flush(); return output; }
+		free(infoUser.name);
+	}
+	catch (...) { _MESSAGE("Failed to print out modules."); }
 }

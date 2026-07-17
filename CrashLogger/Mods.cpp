@@ -2,17 +2,21 @@
 #include "TESDataHandler.hpp"
 #include <filesystem>
 
+#include <shlwapi.h>
+
+#pragma comment(lib, "Shlwapi.lib")
+
 namespace CrashLogger::Install
 {
-	std::stringstream output;
-
-	extern void Process(EXCEPTION_POINTERS* info)
-	try {
-		output << "Install: " << SanitizeString(GetFalloutDirectory().generic_string()) << '\n';
+	extern void __fastcall Process(EXCEPTION_POINTERS* info) {
+		try {
+			char sanitizedBuffer[MAX_PATH] = {};
+			_MESSAGE("\nInstall: %s", SanitizeString(GetRootDirectory(), sanitizedBuffer, sizeof(sanitizedBuffer)));
+		}
+		catch (...) { 
+			_MESSAGE("Failed to print install path."); 
+		}
 	}
-	catch (...) { output << "Failed to print install path." << '\n'; }
-
-	extern std::stringstream& Get() { output.flush(); return output; }
 }
 
 namespace CrashLogger::Mods
@@ -62,18 +66,24 @@ namespace CrashLogger::Mods
 			sprintf_s(textBuffer, "Script Runners:\n  # | %*s%*s\n", CENTERED_TEXT(80, "Filename"));
 			output << textBuffer;
 
-			UInt32 i = 0;
-			// Iterate through each entry in the directory
-			for (const auto& entry : std::filesystem::directory_iterator(folder_path)) {
-				if (entry.path().extension().string()._Equal(".txt")) {
-					sprintf_s(textBuffer, " %02X | %-80s\n", i, entry.path().filename().string().c_str());
-					output << textBuffer;
-					i++;
+				UInt32 i = 0;
+				// Iterate through each entry in the directory
+				WIN32_FIND_DATA findFileData;
+				HANDLE hFind = INVALID_HANDLE_VALUE;
+				char searchPath[MAX_PATH];
+				sprintf_s(searchPath, "%s\\*.txt", folder_path);
+				hFind = FindFirstFile(searchPath, &findFileData);
+				if (hFind != INVALID_HANDLE_VALUE) {
+					do {
+						_MESSAGE(" %02X | %-80s", i, findFileData.cFileName);
+						i++;
+					} while (FindNextFile(hFind, &findFileData) != 0);
+					FindClose(hFind);
 				}
 			}
 		}
+		catch (...) {
+			_MESSAGE("\nFailed to print out script runners.");
+		}
 	}
-	catch (...) { output << "Failed to print out mod list." << '\n'; }
-
-	extern std::stringstream& Get() { output.flush(); return output; }
 }

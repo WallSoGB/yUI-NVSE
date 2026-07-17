@@ -3,28 +3,31 @@
 #include "BSMemObject.hpp"
 
 template <typename T_Data>
-class BSSimpleArray {
+class BSSimpleArray : public BSMemObject {
 public:
 	BSSimpleArray() { InitialSetup(0, 0); }
-	BSSimpleArray(uint32_t auiSize) { InitialSetup(auiSize, auiSize); }
-	BSSimpleArray(const BSSimpleArray&) = delete;
-	BSSimpleArray& operator=(const BSSimpleArray&) = delete;
+	BSSimpleArray(UInt32 auiSize) { InitialSetup(auiSize, auiSize); }
 
-	virtual			~BSSimpleArray() { Clear(); };
-	virtual T_Data* Allocate(uint32_t auiCount) { return BSNew<T_Data>(auiCount); };
+	virtual			~BSSimpleArray() { Clear(true); };
+	virtual T_Data* Allocate(UInt32 auiCount) { return BSNew<T_Data>(auiCount); };
 	virtual void    Deallocate(T_Data* apData) { BSFree(apData); };
-	virtual T_Data* Reallocate(T_Data* apData, uint32_t auiCount) { return (T_Data*)BSReallocate(apData, sizeof(T_Data) * auiCount); };
+	virtual T_Data* Reallocate(T_Data* apData, UInt32 auiCount) { return (T_Data*)BSReallocate(apData, sizeof(T_Data) * auiCount); };
 
-	T_Data*		pBuffer;
-	uint32_t	uiSize;
-	uint32_t	uiAllocSize;
+	T_Data*	pBuffer;
+	UInt32	uiSize;
+	UInt32	uiAllocSize;
 
-	uint32_t GetSize() const { return uiSize; }
-	uint32_t GetAllocSize() const { return uiAllocSize; }
+	// this only compiles for pointer types
+	T_Data operator[](UInt32 idx) {
+		return pBuffer[idx];
+	}
+
+	UInt32 GetSize() const { return uiSize; }
+	UInt32 GetAllocSize() const { return uiAllocSize; }
 	bool IsEmpty() const { return uiSize == 0; }
 	bool IsFull() const { return uiSize == uiAllocSize; }
-	T_Data& GetAt(const uint32_t idx) const { return pBuffer[idx]; }
-	T_Data& GetLast() { return pBuffer[uiSize - 1]; }
+	T_Data& GetAt(const UInt32 idx) const { return pBuffer[idx]; }
+	T_Data& GetLast() const { return pBuffer[uiSize - 1]; }
 
 	class Iterator {
 	public:
@@ -46,28 +49,34 @@ public:
 		T_Data* m_node;
 	};
 
-	Iterator begin() { return Iterator(&GetAt(0)); }
-	Iterator end() { return Iterator(&GetLast()); }
+	Iterator begin() { return Iterator(GetAt(0)); }
+	Iterator end() { return Iterator(GetLast()); }
 
 	template <typename FUNC, typename... ARGS>
 	void ForEach(FUNC&& func, ARGS... args) {
-		for (uint32_t i = 0; i < uiSize; i++)
+		for (UInt32 i = 0; i < uiSize; i++)
 			func(GetAt(i), args...);
 	}
 
+
+	void ConstructDefaultItems(UInt32 auiCount) {
+		for (UInt32 i = 0; i < auiCount; ++i)
+			new (&pBuffer[i]) T_Data;
+	}
+
 	// 0x822780
-	void ConstructItems(T_Data* apData, uint32_t auiCount) {
-		for (uint32_t i = 0; i < auiCount; i++)
+	void ConstructItems(T_Data* apData, UInt32 auiCount) {
+		for (UInt32 i = 0; i < auiCount; i++)
 			new (&apData[i]) T_Data;
 	}
 
 	// 0x822820
-	void DestructItems(T_Data* apData, uint32_t auiCount) {
-		for (uint32_t i = 0; i < auiCount; ++i)
+	void DestructItems(T_Data* apData, UInt32 auiCount) {
+		for (UInt32 i = 0; i < auiCount; ++i)
 			apData[i].~T_Data();
 	}
 
-	void InitialSetup(uint32_t auiSize, uint32_t auiAllocSize) {
+	void InitialSetup(UInt32 auiSize, UInt32 auiAllocSize) {
 		pBuffer = nullptr;
 		uiSize = 0;
 		uiAllocSize = 0;
@@ -80,7 +89,7 @@ public:
 		}
 
 		if (auiAllocSize) {
-			ConstructItems(pBuffer, auiAllocSize);
+			ConstructDefaultItems(auiAllocSize);
 			uiSize = auiAllocSize;
 		}
 	}
@@ -92,7 +101,7 @@ public:
 	}
 
 	// 0x6C6200
-	void Clear(bool abFree = true) {
+	void Clear(bool abFree) {
 		if (!pBuffer)
 			return;
 
@@ -107,24 +116,24 @@ public:
 		uiSize = 0;
 	}
 
-	void CopyItems(T_Data* apNewBuffer, T_Data* apOldBuffer, uint32_t auiSize) {
+	void CopyItems(T_Data* apNewBuffer, T_Data* apOldBuffer, UInt32 auiSize) {
 		if (!auiSize)
 			return;
 
 		if (apNewBuffer >= apOldBuffer) {
 			if (apNewBuffer > apOldBuffer) {
-				for (uint32_t i = auiSize - 1; i >= 0; --i)
+				for (UInt32 i = auiSize - 1; i >= 0; --i)
 					memcpy(&apNewBuffer[i], &apOldBuffer[i], sizeof(T_Data));
 			}
 		}
 		else {
-			for (uint32_t j = 0; j < auiSize; ++j)
+			for (UInt32 j = 0; j < auiSize; ++j)
 				memcpy(&apNewBuffer[j], &apOldBuffer[j], sizeof(T_Data));
 		}
 	}
 
 	// 0x42FC00
-	void Resize(uint32_t auiNewSize, uint32_t auiSize) {
+	void ReallocateBuffer(UInt32 auiNewSize, UInt32 auiSize) {
 		if (!pBuffer) {
 			pBuffer = Allocate(auiNewSize);
 			uiAllocSize = auiNewSize;
@@ -141,7 +150,7 @@ public:
 	}
 
 	// 0x695230
-	void SetSize(uint32_t auiSize, bool abFree = true) {
+	void SetSize(UInt32 auiSize, bool abFree) {
 		if (!auiSize) {
 			Clear(abFree);
 			return;
@@ -149,12 +158,12 @@ public:
 
 		if (auiSize > uiAllocSize) {
 			if (uiAllocSize)
-				Resize(auiSize, uiSize);
+				ReallocateBuffer(auiSize, uiSize);
 			else
 				pBuffer = Allocate(auiSize);
 
 			uiAllocSize = auiSize;
-			ConstructItems(&pBuffer[uiSize], auiSize - uiSize);
+			DestructItems(&pBuffer[uiSize], auiSize - uiSize);
 		}
 		else if (auiSize >= uiSize) {
 			ConstructItems(&pBuffer[uiSize], auiSize - uiSize);
@@ -163,7 +172,7 @@ public:
 			DestructItems(&pBuffer[auiSize], uiSize - auiSize);
 
 			if (abFree && auiSize <= uiAllocSize >> 2) {
-				Resize(auiSize, auiSize);
+				ReallocateBuffer(auiSize, auiSize);
 				uiAllocSize = auiSize;
 			}
 		}
@@ -171,33 +180,33 @@ public:
 	}
 
 	// 0x6F9790
-	void SetAllocSize(uint32_t auiAllocSize) {
+	void SetAllocSize(UInt32 auiAllocSize) {
 		if (auiAllocSize == uiAllocSize)
 			return;
 
 		if (auiAllocSize < uiSize) {
 			uiSize = auiAllocSize;
 		}
-		Resize(auiAllocSize, uiSize);
+		ReallocateBuffer(auiAllocSize, uiSize);
 		uiAllocSize = auiAllocSize;
 	}
 
 	// 0x9A3910
-	uint32_t GetResizeSize() {
+	UInt32 GetResizeSize() {
 		if (uiAllocSize <= 1024)
 			return 2 * uiAllocSize;
 		else
 			return uiAllocSize + 1024;
 	}
 
-	// GAME - 0x761540
-	uint32_t GetNextIndex() {
+	// 0x761540
+	UInt32 GetNextIndex() {
 		if (!IsFull())
 			return uiSize++;
 
 		if (uiAllocSize) {
-			uint32_t a2 = GetResizeSize();
-			Resize(a2, uiSize);
+			UInt32 a2 = GetResizeSize();
+			ReallocateBuffer(a2, uiSize);
 			uiAllocSize = a2;
 		}
 		else {
@@ -208,52 +217,12 @@ public:
 		return uiSize++;
 	}
 
-	// GAME - 0xB5C360
-	uint32_t GetCurrentIndex() {
-		if (!IsFull())
-			return uiSize++;
-
-		if (!uiAllocSize) {
-			pBuffer = Allocate(4);
-			uiSize++;
-			uiAllocSize = 4;
-			return uiSize - 1;
-		}
-
-		uint32_t uiResizeSize = GetResizeSize();
-		Resize(uiResizeSize, uiSize);
-		uiAllocSize = uiResizeSize;
-		return uiSize++;
-	}
-
-	// GAME - 0x7CB2E0
-	uint32_t Add(const T_Data& aItem) {
-		uint32_t uiNext = GetNextIndex();
+	// 0x7CB2E0
+	UInt32 Append(T_Data& aItem) {
+		UInt32 uiNext = GetNextIndex();
 		ConstructItems(&pBuffer[uiNext], 1);
 		pBuffer[uiNext] = aItem;
 		return uiNext;
-	}
-
-	void SetAt(uint32_t auiIndex, const T_Data& aItem) {
-		if (auiIndex == uiSize) {
-			pBuffer[GetNextIndex()] = aItem;
-			return;
-		}
-
-		if (auiIndex != uiAllocSize) {
-			CopyItems(pBuffer[auiIndex + 1], pBuffer[auiIndex], uiSize - auiIndex);
-		}
-		else {
-			uint32_t uiResizeSize = GetResizeSize();
-			T_Data* pNewBuffer = Allocate(uiResizeSize);
-			CopyItems(pNewBuffer, pBuffer, auiIndex);
-			CopyItems(&pNewBuffer[auiIndex + 1], &pBuffer[auiIndex], uiSize - auiIndex);
-			Deallocate(pBuffer);
-			pBuffer = pNewBuffer;
-			uiAllocSize = uiResizeSize;
-		}
-		++uiSize;
-		pBuffer[auiIndex] = aItem;
 	}
 
 	bool HasSufficientCapacity() {
@@ -267,30 +236,31 @@ public:
 		return false;
 	}
 
-	uint32_t GetOptimalCapacity() {
+	UInt32 GetOptimalCapacity() {
 		if (uiAllocSize <= 2048u)
 			return uiAllocSize >> 1;
 		else
 			return uiAllocSize - 1024;
 	}
 
-	void MoveItems(T_Data* apNewBuffer, const T_Data* apOldBuffer, const uint32_t auiSize) {
-		if (!auiSize)
-			return;
-
-		if (apNewBuffer < apOldBuffer) {
-			for (uint32_t j = 0; j < auiSize; ++j)
-				memcpy(&apNewBuffer[j], &apOldBuffer[j], sizeof(T_Data));
-		}
-		else if (apNewBuffer > apOldBuffer) {
-			for (uint32_t i = auiSize - 1; i >= 0; --i)
-				memcpy(&apNewBuffer[i], &apOldBuffer[i], sizeof(T_Data));
+	void MoveItems(T_Data* apNewBuffer, const T_Data* apOldBuffer, const UInt32 auiSize) {
+		if (auiSize) {
+			if (apNewBuffer >= apOldBuffer) {
+				if (apNewBuffer > apOldBuffer) {
+					for (UInt32 i = auiSize - 1; i >= 0; --i)
+						memcpy(&apNewBuffer[i], &apOldBuffer[i], sizeof(T_Data));
+				}
+			}
+			else {
+				for (UInt32 j = 0; j < auiSize; ++j)
+					memcpy(&apNewBuffer[j], &apOldBuffer[j], sizeof(T_Data));
+			}
 		}
 	}
 
-	void RemoveAt(uint32_t auiIndex, bool abResize) {
+	void RemoveAt(UInt32 auiIndex, bool abResize) {
 		if (abResize && BSSimpleArray::HasSufficientCapacity()) {
-			uint32_t uiOptimalCapacity = GetOptimalCapacity();
+			UInt32 uiOptimalCapacity = GetOptimalCapacity();
 			T_Data* pNewBuffer = Allocate(uiOptimalCapacity);
 			MoveItems(pNewBuffer, pBuffer, auiIndex);
 			DestructItems(&pBuffer[auiIndex], 1);
@@ -306,24 +276,6 @@ public:
 		}
 		--uiSize;
 	}
-
-	// 0x719B20
-	int32_t Find(const T_Data& aItem, uint32_t auiStartPosition, bool(__cdecl* apCompareFunc)(const T_Data&, const T_Data&)) {
-		while (auiStartPosition < uiSize) {
-			if (pBuffer && apCompareFunc(pBuffer[auiStartPosition], aItem))
-				return auiStartPosition;
-			++auiStartPosition;
-		}
-		return -1;
-	}
-
-	bool IsInArray(const T_Data& aItem) const {
-		for (uint32_t i = 0; i < uiSize; ++i) {
-			if (pBuffer && pBuffer[i] == aItem)
-				return true;
-		}
-		return false;
-	}
 };
 
-ASSERT_SIZE(BSSimpleArray<uint32_t>, 0x10);
+ASSERT_SIZE(BSSimpleArray<UInt32>, 0x10);
