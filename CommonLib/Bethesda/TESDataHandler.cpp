@@ -1,7 +1,5 @@
 #include "TESDataHandler.hpp"
 
-bool TESDataHandler::bHasExtendedPlugins = false;
-
 TESDataHandler* TESDataHandler::GetSingleton() {
 	return *(TESDataHandler**)0x11C3F2C;
 }
@@ -60,6 +58,14 @@ TESFile* TESDataHandler::GetListFile(const char* apFileName) {
 	return nullptr;
 }
 
+bool TESDataHandler::HasExtendedPlugins() const {
+	return ucFlags.GetBit(0xC0);
+}
+
+bool TESDataHandler::ExtendedPlugins() {
+	return GetSingleton()->HasExtendedPlugins();
+}
+
 uint32_t TESDataHandler::GetSmallCompiledFileCount() const {
 	return kCompiledFiles.GetSmallFileCount();
 }
@@ -77,7 +83,7 @@ TESFile* TESDataHandler::GetOverlayFile(uint32_t auiIndex) const {
 }
 
 uint32_t CompiledFiles::GetFileCount() const {
-	if (TESDataHandler::bHasExtendedPlugins)
+	if (TESDataHandler::ExtendedPlugins())
 		return kNormalFiles.GetSize();
 
 	return uiCompiledFileCount;
@@ -87,14 +93,14 @@ TESFile* CompiledFiles::GetFile(uint32_t auiIndex) const {
 	if (auiIndex >= GetFileCount())
 		return nullptr;
 
-	if (TESDataHandler::bHasExtendedPlugins)
+	if (TESDataHandler::ExtendedPlugins())
 		return kNormalFiles.GetAt(auiIndex);
 
 	return pFileArray[auiIndex];
 }
 
 uint32_t CompiledFiles::GetSmallFileCount() const {
-	if (TESDataHandler::bHasExtendedPlugins)
+	if (TESDataHandler::ExtendedPlugins())
 		return kSmallFiles.GetSize();
 	return 0;
 }
@@ -103,13 +109,13 @@ TESFile* CompiledFiles::GetSmallFile(uint32_t auiIndex) const {
 	if (auiIndex >= GetSmallFileCount())
 		return nullptr;
 
-	if (TESDataHandler::bHasExtendedPlugins)
+	if (TESDataHandler::ExtendedPlugins())
 		return kSmallFiles.GetAt(auiIndex);
 	return nullptr;
 }
 
 uint32_t CompiledFiles::GetOverlayFileCount() const {
-	if (TESDataHandler::bHasExtendedPlugins)
+	if (TESDataHandler::ExtendedPlugins())
 		return kOverlayFiles.GetSize();
 	return 0;
 }
@@ -118,7 +124,7 @@ TESFile* CompiledFiles::GetOverlayFile(uint32_t auiIndex) const {
 	if (auiIndex >= GetOverlayFileCount())
 		return nullptr;
 
-	if (TESDataHandler::bHasExtendedPlugins)
+	if (TESDataHandler::ExtendedPlugins())
 		return kOverlayFiles.GetAt(auiIndex);
 	return nullptr;
 }

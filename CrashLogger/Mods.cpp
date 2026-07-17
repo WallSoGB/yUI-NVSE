@@ -22,7 +22,7 @@ namespace CrashLogger::Mods
 	extern void Process(EXCEPTION_POINTERS* info)
 	try {
 		char textBuffer[512];
-		if (TESDataHandler::bHasExtendedPlugins)
+		if (TESDataHandler::ExtendedPlugins())
 			sprintf_s(textBuffer, "Mods:\n  #  |  Index  | %*s%*s | %*s%*s\n", CENTERED_TEXT(80, "Mod"), CENTERED_TEXT(60, "Author"));
 		else	
 			sprintf_s(textBuffer, "Mods:\n  # | %*s%*s | %*s%*s\n", CENTERED_TEXT(80, "Mod"), CENTERED_TEXT(60, "Author"));
@@ -37,7 +37,7 @@ namespace CrashLogger::Mods
 			if (!author.usLen || !strcmp(mod->strAuthor.pcString, "DEFAULT"))
 				authorName = "";
 
-			if (TESDataHandler::bHasExtendedPlugins) {
+			if (TESDataHandler::ExtendedPlugins()) {
 				if (mod->IsOverlay()) {
 					sprintf_s(textBuffer, " %03i |   XXX   | %-80s | %-60s\n", i, mod->GetName(), authorName);
 				}

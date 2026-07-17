@@ -113,7 +113,7 @@ public:
 	~TESDataHandler();
 
 
-	Bitfield8								ucDLCFlags;				// 000
+	Bitfield8								ucFlags;				// 000
 	TESObjectList*							pObjects;				// 004
 	BSSimpleList<TESPackage*>				kPackages;				// 008
 	BSSimpleList<TESWorldSpace*>			kWorldSpaces;			// 010
@@ -207,7 +207,8 @@ public:
 	TESFile* GetListFile(uint32_t auiIndex);
 	TESFile* GetListFile(const char* apFileName);
 
-	static bool bHasExtendedPlugins;
+	bool HasExtendedPlugins() const;
+	static bool ExtendedPlugins();
 
 	uint32_t GetSmallCompiledFileCount() const;
 	TESFile* GetSmallFile(uint32_t auiIndex) const;
