@@ -135,6 +135,8 @@
     <ClCompile Include="Bethesda\MemoryManager.cpp" />
     <ClCompile Include="Bethesda\ModelLoader.cpp" />
     <ClCompile Include="Bethesda\ScriptRunManager.cpp" />
+    <ClCompile Include="Bethesda\TESDataHandler.cpp" />
+    <ClCompile Include="Bethesda\TESFile.cpp" />
     <ClCompile Include="Bethesda\TESForm.cpp" />
     <ClCompile Include="Bethesda\TESFullName.cpp" />
     <ClCompile Include="Bethesda\TLSData.cpp" />
