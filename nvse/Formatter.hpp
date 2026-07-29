@@ -403,6 +403,13 @@ inline void __fastcall LogClass(const TESObjectREFR& obj, bool nested = false) {
 		if (obj.pkParentCell) {
 			LogMember("Cell:", *obj.pkParentCell);
 		}
+		else {
+			TESObjectCELL* pPersistentCell = ThisStdCall<TESObjectCELL*>(0x41D460, &obj.kExtraList);
+			if (pPersistentCell)
+				LogMember("Persistent Cell", *pPersistentCell);
+			else
+				_MESSAGE("Cell: None");
+		}
 
 		try {
 			TESModel* pModel = ModelLoader::GetSingleton()->GetModelForBoundObject(baseForm, &obj);
