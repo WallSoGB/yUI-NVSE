@@ -57,14 +57,17 @@ namespace CrashLogger::GameData
 				PlayerCharacter* pPlayer = PlayerCharacter::GetSingleton();
 				if (pPlayer) {
 					TESObjectCELL* pParentCell = pPlayer->GetParentCell();
-					if (pParentCell)
-						_MESSAGE("Cell:       %08X (\"%s\")", pParentCell->GetFormID(), pParentCell->GetEditorID());
+					if (pParentCell) {
+						const char* pDefaultCellName = reinterpret_cast<Setting*>(0x11CA130)->uValue.str;
+						const char* pCellName = pParentCell->GetFullName();
+						_MESSAGE("Cell:       %08X (\"%s\") - %s", pParentCell->GetFormID(), pParentCell->GetEditorID(), pCellName[0] ? pCellName : pDefaultCellName);
+					}
 					else
 						_MESSAGE("Cell:       None");
 
 					TESWorldSpace* pWorld = TES::GetSingleton()->pWorldSpace;
 					if (pWorld)
-						_MESSAGE("World:      %08X (\"%s\")", pWorld->GetFormID(), pWorld->GetEditorID());
+						_MESSAGE("World:      %08X (\"%s\") - %s", pWorld->GetFormID(), pWorld->GetEditorID(), pWorld->GetFullName());
 					else
 						_MESSAGE("World:      None");
 
