@@ -784,6 +784,10 @@ inline void __fastcall LogClass(const TESObjectCELL& obj, bool nested = false) {
 	}
 	_MESSAGE("State: %s", pCellStateName);
 
+	if (!obj.IsInterior() && obj.pCellData.pCellDataExterior) {
+		_MESSAGE("Coordinates: %i, %i", obj.pCellData.pCellDataExterior->iCellX, obj.pCellData.pCellDataExterior->iCellY);
+	}
+
 	if (obj.GetWorldspace())
 		LogMember("Worldspace:", *obj.GetWorldspace());
 }
