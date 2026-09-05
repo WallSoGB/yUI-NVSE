@@ -399,6 +399,10 @@ inline void __fastcall LogClass(const TESObjectREFR& obj, bool nested = false) {
 			_MESSAGE(cBuffer);
 	}
 
+	_MESSAGE("Position: %0.2f, %0.2f, %0.2f", obj.kPosition.x, obj.kPosition.y, obj.kPosition.z);
+	_MESSAGE("Rotation: %0.2f, %0.2f, %0.2f", obj.kRotation.x, obj.kRotation.y, obj.kRotation.z);
+	_MESSAGE("Scale: %0.2f", obj.fRefScale);
+
 	if (!nested) {
 		if (obj.pkParentCell) {
 			LogMember("Cell:", *obj.pkParentCell);
