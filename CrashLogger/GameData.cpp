@@ -11,10 +11,39 @@
 #include "ScriptRunner.hpp"
 #include "TES.hpp"
 #include "TESWorldSpace.hpp"
+#include "AILinearTaskThreadManager.hpp"
+#include "BSParallelTaskThreadManager.hpp"
+#include "ShadowSceneNode.hpp"
 
 namespace CrashLogger::GameData
 {
 	UInt16 textureCounters[8] = { 0 };
+
+	static const char* AI_TASK_THREAD_1_EVENT_NAMES[] = {
+		"Start",
+		"Interface Update",
+		"Animation Update",
+		"Cell Animations Update",
+		"Combat Update",
+		"Magic Update",
+		"Packages Update",
+		"Actors Update",
+		"Pre-Render Actions",
+		"Post-Render Actions",
+		"Player Followers Update",
+		"Finished",
+	};
+
+	static const char* AI_TASK_THREAD_2_EVENT_NAMES[] = {
+		"Start",
+		"Detection Update",
+		"World Animations Update",
+		"Actor Movement Update",
+		"Actor Ragdoll Anim Update",
+		"Object Destruction Update",
+		"World Update",
+		"Finished",
+	};
 
 	static void __fastcall AddTexture(UInt32 size) {
 		if (size <= 128)
@@ -84,10 +113,6 @@ namespace CrashLogger::GameData
 				_MESSAGE(" Failed to get player character info.");
 			}
 
-			TextureCounter();
-
-			}
-
 			try {
 				ScriptRunManager* pMgr = ScriptRunManager::GetSingleton();
 				_MESSAGE("\nCurrently running script:");
@@ -138,8 +163,51 @@ namespace CrashLogger::GameData
 				_MESSAGE(" Failed to get currently running script info.");
 			}
 
+			_MESSAGE("\nScene Stats:");
+			{
+				AutoIndent indent;
+				ShadowSceneNode* pSSN = BSShaderManager::GetShadowSceneNode(0);
+				if (pSSN) {
+					_MESSAGE("Scene Lights: %i", pSSN->kLights.GetSize());
+					_MESSAGE("Shadow Lights: %i", pSSN->kActorShadowCasters.GetSize());
+				}
+			}
+
+			_MESSAGE("\nProcess Lists:");
+			uint32_t uiTotal = 0;
+			{
+				AutoIndent indent;
+				for (uint32_t i = 0; i < 4; i++) {
+					uint32_t uiStart = ProcessLists::GetSingleton()->kAllProcessArrays.uiBeginOffsets[i];
+					uint32_t uiEnd = ProcessLists::GetSingleton()->kAllProcessArrays.uiEndOffsets[i];
+					uint32_t uiCount = uiEnd - uiStart;
+					const char* pProcessName = "Invalid";
+					switch (i) {
+						case BaseProcess::kProcessLevel_High:
+							pProcessName = "High:       ";
+							break;
+						case BaseProcess::kProcessLevel_MiddleHigh:
+							pProcessName = "Middle High:";
+							break;
+						case BaseProcess::kProcessLevel_MiddleLow:
+							pProcessName = "Middle Low: ";
+							break;
+						case BaseProcess::kProcessLevel_Low:
+							pProcessName = "Low:        ";
+							break;
+						default:
+							__assume(0);
+					}
+					_MESSAGE("%s %i", pProcessName, uiCount);
+					uiTotal += uiCount;
+				}
+			}
+			_MESSAGE("Total: %i", uiTotal);
+
 			_MESSAGE("\nLoaded assets:");
 			{
+				TextureCounter();
+
 				UInt32 uiFaceGenMeshes = 0;
 				if (BSFaceGenManager::GetSingleton() && BSFaceGenManager::GetSingleton()->pModelMap)
 					uiFaceGenMeshes = BSFaceGenManager::GetSingleton()->pModelMap->kEntryMap.GetCount();
@@ -175,40 +243,75 @@ namespace CrashLogger::GameData
 				_MESSAGE("Playing Sounds: %i", uiPlayingSounds);
 				{
 					AutoIndent indent;
-					_MESSAGE("Cached Sounds:  %i", uiCachedSounds);
+					_MESSAGE("Cached Sounds: %i", uiCachedSounds);
 				}
 			}
 
-			_MESSAGE("\nProcess Lists:");
-			uint32_t uiTotal = 0;
+			_MESSAGE("\nThreads States:");
 			{
 				AutoIndent indent;
-				for (uint32_t i = 0; i < 4; i++) {
-					uint32_t uiStart = ProcessLists::GetSingleton()->kAllProcessArrays.uiBeginOffsets[i];
-					uint32_t uiEnd = ProcessLists::GetSingleton()->kAllProcessArrays.uiEndOffsets[i];
-					uint32_t uiCount = uiEnd - uiStart;
-					const char* pProcessName = "Invalid";
-					switch (i) {
-						case BaseProcess::kProcessLevel_High:
-							pProcessName = "High:       ";
-							break;
-						case BaseProcess::kProcessLevel_MiddleHigh:
-							pProcessName = "Middle High:";
-							break;
-						case BaseProcess::kProcessLevel_MiddleLow:
-							pProcessName = "Middle Low: ";
-							break;
-						case BaseProcess::kProcessLevel_Low:
-							pProcessName = "Low:        ";
-							break;
-						default:
-							__assume(0);
+
+				{
+					AutoIndent indent;
+					_MESSAGE("Main Thread");
+					{
+						AutoIndent indent;
+						_MESSAGE("Rendering: %s", AILinearTaskThreadManager::IsMainRendering() ? "Yes" : "No");
+						_MESSAGE("Queue 3D Tasks: %s", AILinearTaskThreadManager::ShouldQueue3DTask() ? "Yes" : "No");
 					}
-					_MESSAGE("%s %i", pProcessName, uiCount);
-					uiTotal += uiCount;
+				}
+
+				AILinearTaskThreadManager* pThreadMgr = AILinearTaskThreadManager::GetSingleton();
+				if (pThreadMgr) {
+					AutoIndent indent;
+					_MESSAGE("AI Linear Task Threads");
+					{
+						AutoIndent indent;
+						_MESSAGE("Running: %s", AILinearTaskThreadManager::IsRunningThreads() ? "Yes" : "No");
+
+						// 2 threads
+						const char* pThread0 = AI_TASK_THREAD_1_EVENT_NAMES[pThreadMgr->eThreadStage[0]];
+						const char* pThread1 = AI_TASK_THREAD_2_EVENT_NAMES[pThreadMgr->eThreadStage[1]];
+
+						_MESSAGE("Last Thread 0 Stage: %s", pThread0);
+						_MESSAGE("Last Thread 1 Stage: %s", pThread1);
+					}
+				}
+
+				BSTaskManagerThread* pTaskManagerThread = IOManager::GetSingleton()->ppThreads[0];
+				{
+					AutoIndent indent;
+					_MESSAGE("Task Manager Thread");
+					{
+						AutoIndent indent;
+						uint32_t uiQueued = IOManager::GetSingleton()->GetCount();
+						uint32_t uiPostProcessQueued = IOManager::GetSingleton()->GetPostProcessQueueCount();
+						_MESSAGE("Queued Tasks: %i", uiQueued);
+						_MESSAGE("Post Process Tasks: %i", uiPostProcessQueued);
+					}
+				}
+
+				BackgroundCloneThread* pCloneThread = ModelLoader::GetSingleton()->pBackgroundCloneThread;
+				if (pCloneThread) {
+					AutoIndent indent;
+					_MESSAGE("Background Clone Thread");
+					{
+						AutoIndent indent;
+						_MESSAGE("Running Count: %i", pCloneThread->iRunningCount);
+						_MESSAGE("Process Count: %i", pCloneThread->pkProcessTaskQueue->GetCount());
+					}
+				}
+
+				BSParallelTaskThreadManager* pParallelThreadMgr = BSParallelTaskThreadManager::GetSingleton();
+				if (pParallelThreadMgr) {
+					AutoIndent indent;
+					_MESSAGE("Parallel Task Thread");
+					{
+						AutoIndent indent;
+						_MESSAGE("Running: %s", pParallelThreadMgr->bActive ? "Yes" : "No");
+					}
 				}
 			}
-			_MESSAGE("Total: %i", uiTotal);
 		}
 		catch (...) {
 			_MESSAGE("Failed to print game stats.\n");
