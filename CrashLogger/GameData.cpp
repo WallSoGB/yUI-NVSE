@@ -14,6 +14,7 @@
 #include "AILinearTaskThreadManager.hpp"
 #include "BSParallelTaskThreadManager.hpp"
 #include "ShadowSceneNode.hpp"
+#include "BGSSaveLoadGame.hpp"
 
 namespace CrashLogger::GameData
 {
@@ -170,6 +171,35 @@ namespace CrashLogger::GameData
 				if (pSSN) {
 					_MESSAGE("Scene Lights: %i", pSSN->kLights.GetSize());
 					_MESSAGE("Shadow Lights: %i", pSSN->kActorShadowCasters.GetSize());
+				}
+			}
+
+			BGSSaveLoadGame* pSaveLoad = BGSSaveLoadGame::GetSingleton();
+			if (pSaveLoad) {
+				_MESSAGE("\nSave Load State:");
+				AutoIndent indent;
+				{
+					BGSSaveLoadGame* pSaveLoad = BGSSaveLoadGame::GetSingleton();
+					_MESSAGE("Global Flags:");
+					{
+						AutoIndent indent;
+						_MESSAGE("Global Allow Changes: %i", pSaveLoad->GetGlobalAllowChanges());
+						_MESSAGE("Save Game Loading: %i", pSaveLoad->GetSaveGameLoading());
+						_MESSAGE("Save Game Saving: %i", pSaveLoad->GetSaveGameSaving());
+						_MESSAGE("Initing Forms : %i", pSaveLoad->GetInitingForms());
+						_MESSAGE("Defer Init Forms: %i", pSaveLoad->GetDeferInitForms());
+						_MESSAGE("Positioning Player Character: %i", pSaveLoad->GetPositioningPlayerCharacter());
+						_MESSAGE("Player Location Invalid: %i", pSaveLoad->GetPlayerLocationInvalid());
+						_MESSAGE("Save Load Failed: %i", pSaveLoad->GetSaveLoadFailed());
+					}
+					_MESSAGE("\nThread Flags:");
+					{
+						AutoIndent indent;
+						_MESSAGE("Thread Allow Changes: %i", pSaveLoad->GetThreadAllowChanges());
+						_MESSAGE("Loading Moved Refs: %i", pSaveLoad->GetLoadingMovedRefs());
+						_MESSAGE("Reconstructing Forms: %i", pSaveLoad->GetReconstructingForms());
+						_MESSAGE("Allow Changes: %i", pSaveLoad->GetAllowChanges());
+					}
 				}
 			}
 
