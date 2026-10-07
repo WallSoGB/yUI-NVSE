@@ -3,6 +3,7 @@
 #include <TESWorldSpace.hpp>
 #include <NiControllerManager.hpp>
 #include <TESObjectACTI.hpp>
+#include <bhkNiCollisionObject.hpp>
 
 #include <RTTI.hpp>
 
