@@ -7,11 +7,11 @@ uint8_t TESFile::GetCompileIndex() const {
 }
 
 uint16_t TESFile::GetSmallCompileIndex() const {
-	return usSmallCompileIndex;
+	return usSecondIndex;
 }
 
-void TESFile::SetSmallCompileIndex(uint16_t ausIndex) {
-	usSmallCompileIndex = ausIndex;
+uint8_t TESFile::GetMediumCompileIndex() const {
+	return ucMediumIndex;
 }
 
 // GAME - 0x471C20
@@ -66,6 +66,14 @@ bool TESFile::IsSmallFile() const {
 
 void TESFile::SetSmallFile(bool abSmallFile) {
 	uiFlags.SetBit(SMALL, abSmallFile);
+}
+
+bool TESFile::IsMediumFile() const {
+	return uiFlags.GetBit(MEDIUM);
+}
+
+void TESFile::SetMediumFile(bool abMediumFile) {
+	uiFlags.SetBit(MEDIUM, abMediumFile);
 }
 
 bool TESFile::IsOverlay() const {

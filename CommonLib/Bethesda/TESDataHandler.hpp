@@ -81,16 +81,20 @@ protected:
 			BSSimpleArray<TESFile*> kNormalFiles;
 			BSSimpleArray<TESFile*> kSmallFiles;
 			BSSimpleArray<TESFile*> kOverlayFiles;
-			uint32_t				padding[0xF4];
+			BSSimpleArray<TESFile*> kMediumFiles;
+			uint32_t				padding[0xD4];
 		};
 
 		struct {
 			uint32_t	uiCompiledFileCount;
-			TESFile* pFileArray[0xFF];
+			TESFile*	pFileArray[0xFF];
 		};
 	};
 
 public:
+	CompiledFiles();
+	~CompiledFiles();
+
 	uint32_t GetFileCount() const;
 
 	TESFile* GetFile(uint32_t auiIndex) const;
@@ -98,6 +102,10 @@ public:
 	uint32_t GetSmallFileCount() const;
 
 	TESFile* GetSmallFile(uint32_t auiIndex) const;
+
+	uint32_t GetMediumFileCount() const;
+
+	TESFile* GetMediumFile(uint32_t auiIndex) const;
 
 	uint32_t GetOverlayFileCount() const;
 
@@ -212,6 +220,9 @@ public:
 
 	uint32_t GetSmallCompiledFileCount() const;
 	TESFile* GetSmallFile(uint32_t auiIndex) const;
+
+	uint32_t GetMediumCompiledFileCount() const;
+	TESFile* GetMediumFile(uint32_t auiIndex) const;
 
 	uint32_t GetOverlayFileCount() const;
 	TESFile* GetOverlayFile(uint32_t auiIndex) const;

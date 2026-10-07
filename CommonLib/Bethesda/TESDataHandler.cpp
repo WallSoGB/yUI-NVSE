@@ -14,7 +14,7 @@ uint32_t TESDataHandler::GetCompiledFileCount() const {
 }
 
 TESFile* TESDataHandler::GetCompiledFile(uint32_t auiIndex) const {
-	return kCompiledFiles.GetFile(auiIndex);
+	return ThisStdCall<TESFile*>(0x465010, this, auiIndex);
 }
 
 TESFile* TESDataHandler::GetListFile(uint32_t auiIndex) {
@@ -43,23 +43,11 @@ TESFile* TESDataHandler::GetListFile(uint32_t auiIndex) {
 
 // GAME - 0x462F40
 TESFile* TESDataHandler::GetListFile(const char* apFileName) {
-	if (!apFileName)
-		return nullptr;
-
-	BSSimpleList<TESFile*>* pIter = GetFileList();
-	while (pIter && pIter->GetItem()) {
-		TESFile* pFile = pIter->GetItem();
-		if (pFile && !_stricmp(pFile->GetName(), apFileName))
-			return pFile;
-
-		pIter = pIter->GetNext();
-	}
-
-	return nullptr;
+	return ThisStdCall<TESFile*>(0x462F40, this, apFileName);
 }
 
 bool TESDataHandler::HasExtendedPlugins() const {
-	return ucFlags.GetBit(0xC0);
+	return ucFlags.GetBit(0x80);
 }
 
 bool TESDataHandler::ExtendedPlugins() {
@@ -72,6 +60,14 @@ uint32_t TESDataHandler::GetSmallCompiledFileCount() const {
 
 TESFile* TESDataHandler::GetSmallFile(uint32_t auiIndex) const {
 	return kCompiledFiles.GetSmallFile(auiIndex);
+}
+
+uint32_t TESDataHandler::GetMediumCompiledFileCount() const {
+	return kCompiledFiles.GetMediumFileCount();
+}
+
+TESFile* TESDataHandler::GetMediumFile(uint32_t auiIndex) const {
+	return kCompiledFiles.GetMediumFile(auiIndex);
 }
 
 uint32_t TESDataHandler::GetOverlayFileCount() const {
@@ -111,6 +107,21 @@ TESFile* CompiledFiles::GetSmallFile(uint32_t auiIndex) const {
 
 	if (TESDataHandler::ExtendedPlugins())
 		return kSmallFiles.GetAt(auiIndex);
+	return nullptr;
+}
+
+uint32_t CompiledFiles::GetMediumFileCount() const {
+	if (TESDataHandler::ExtendedPlugins())
+		return kMediumFiles.GetSize();
+	return 0;
+}
+
+TESFile* CompiledFiles::GetMediumFile(uint32_t auiIndex) const {
+	if (auiIndex >= GetMediumFileCount())
+		return nullptr;
+
+	if (TESDataHandler::ExtendedPlugins())
+		return kMediumFiles.GetAt(auiIndex);
 	return nullptr;
 }
 

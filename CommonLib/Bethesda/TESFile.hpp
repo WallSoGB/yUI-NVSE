@@ -791,6 +791,7 @@ public:
 		LOCALIZED		= 0x80,
 		SMALL			= 0x100,
 		OVERLAY 		= 0x200,
+		MEDIUM	 		= 0x400,
 	};
 
 	uint32_t							eLastError;
@@ -832,7 +833,10 @@ public:
 	TESFile**							ppMasters;
 	_FILETIME							kDeletedFormTime;
 	uint8_t								ucCompileIndex;
-	uint16_t							usSmallCompileIndex;
+	union {
+		uint8_t							ucMediumIndex;
+		uint16_t						usSecondIndex;
+	};
 	BSStringT<char>						strAuthor;
 	BSStringT<char>						strDescription;
 	void*								pDecompressedFormBuffer;
@@ -844,10 +848,10 @@ public:
 	TESFile* GetThreadSafeFile();
 
 	uint8_t GetCompileIndex() const;
-	void SetCompileIndex(uint8_t aucIndex);
 
 	uint16_t GetSmallCompileIndex() const;
-	void SetSmallCompileIndex(uint16_t ausIndex);
+
+	uint8_t GetMediumCompileIndex() const;
 
 	bool IsMaster() const;
 	void SetMaster(bool abMaster);
@@ -866,6 +870,9 @@ public:
 
 	bool IsSmallFile() const;
 	void SetSmallFile(bool abSmallFile);
+
+	bool IsMediumFile() const;
+	void SetMediumFile(bool abMediumFile);
 
 	bool IsOverlay() const;
 	void SetOverlay(bool abOverlay);

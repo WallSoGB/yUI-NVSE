@@ -22,9 +22,10 @@ namespace CrashLogger::Install
 namespace CrashLogger::Mods
 {
 	extern void __fastcall Process(EXCEPTION_POINTERS* info) {
+		const bool bExtendedPlugins = TESDataHandler::ExtendedPlugins();
 		try {
 
-			if (TESDataHandler::ExtendedPlugins())
+			if (bExtendedPlugins)
 				_MESSAGE("\nMods:\n  #  |  Index  | %*s%*s | %*s%*s", CENTERED_TEXT(80, "Mod"), CENTERED_TEXT(60, "Author"));
 			else
 				_MESSAGE("\nMods:\n  # | %*s%*s | %*s%*s", CENTERED_TEXT(80, "Mod"), CENTERED_TEXT(60, "Author"));
@@ -38,12 +39,15 @@ namespace CrashLogger::Mods
 				if (!author.usLen || !strcmp(mod->strAuthor.pcString, "DEFAULT"))
 					authorName = "";
 
-				if (TESDataHandler::ExtendedPlugins()) {
+				if (bExtendedPlugins) {
 					if (mod->IsOverlay()) {
 						_MESSAGE(" %03i |   XXX   | %-80s | %-60s", i, mod->GetName(), authorName);
 					}
 					else if (mod->IsSmallFile()) {
 						_MESSAGE(" %03i |  FE%03X  | %-80s | %-60s", i, mod->GetSmallCompileIndex(), mod->GetName(), authorName);
+					}
+					else if (mod->IsMediumFile()) {
+						_MESSAGE(" %03i |   FD%02X  | %-80s | %-60s", i, mod->GetMediumCompileIndex(), mod->GetName(), authorName);
 					}
 					else {
 						_MESSAGE(" %03i |    %02X   | %-80s | %-60s", i, mod->GetCompileIndex(), mod->GetName(), authorName);
