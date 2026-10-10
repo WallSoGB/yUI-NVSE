@@ -22,19 +22,41 @@ namespace CrashLogger::Install
 namespace CrashLogger::Mods
 {
 	extern void __fastcall Process(EXCEPTION_POINTERS* info) {
+		const bool bExtendedPlugins = TESDataHandler::ExtendedPlugins();
 		try {
-			_MESSAGE("\nMods:\n  # | %*s%*s | %*s%*s", CENTERED_TEXT(80, "Mod"), CENTERED_TEXT(60, "Author"));
-			for (UInt32 i = 0; i < TESDataHandler::GetSingleton()->kMods.uiLoadedModCount; i++) {
-				const auto mod = TESDataHandler::GetSingleton()->kMods.pLoadedMods[i];
+
+			if (bExtendedPlugins)
+				_MESSAGE("\nMods:\n  #  |  Index  | %*s%*s | %*s%*s", CENTERED_TEXT(80, "Mod"), CENTERED_TEXT(60, "Author"));
+			else
+				_MESSAGE("\nMods:\n  # | %*s%*s | %*s%*s", CENTERED_TEXT(80, "Mod"), CENTERED_TEXT(60, "Author"));
+			UInt32 i = 0;
+			for (TESFile* mod : *TESDataHandler::GetSingleton()->GetFileList()) {
 				if (!mod)
 					continue;
 
-				const auto& author = mod->author;
+				const auto& author = mod->strAuthor;
 				const char* authorName = author.pcString;
-				if (!author.usLen || !strcmp(mod->author.pcString, "DEFAULT"))
+				if (!author.usLen || !strcmp(mod->strAuthor.pcString, "DEFAULT"))
 					authorName = "";
 
-				_MESSAGE(" %02X | %-80s | %-60s", i, mod->m_Filename, authorName);
+				if (bExtendedPlugins) {
+					if (mod->IsOverlay()) {
+						_MESSAGE(" %03i |   XXX   | %-80s | %-60s", i, mod->GetName(), authorName);
+					}
+					else if (mod->IsSmallFile()) {
+						_MESSAGE(" %03i |  FE%03X  | %-80s | %-60s", i, mod->GetSmallCompileIndex(), mod->GetName(), authorName);
+					}
+					else if (mod->IsMediumFile()) {
+						_MESSAGE(" %03i |   FD%02X  | %-80s | %-60s", i, mod->GetMediumCompileIndex(), mod->GetName(), authorName);
+					}
+					else {
+						_MESSAGE(" %03i |    %02X   | %-80s | %-60s", i, mod->GetCompileIndex(), mod->GetName(), authorName);
+					}
+				}
+				else {
+					_MESSAGE(" %02X | %-80s | %-60s", i, mod->GetName(), authorName);
+				}
+				++i;
 			}
 		}
 		catch (...) {

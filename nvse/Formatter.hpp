@@ -353,14 +353,22 @@ inline void __fastcall LogClass(const TESForm& obj, bool nested = false) {
 		_MESSAGE("Flags: %s", cFlagsBuffer);
 	}
 
-	TESFile* pLastMod = obj.kMods.TailItem();
-	if (pLastMod) {
-		TESFile* pSourceMod = TESDataHandler::GetSingleton()->kMods.pLoadedMods[obj.ucModIndex];
+	const uint8_t ucIndex = obj.ucModIndex;
+	TESFile* pSourceMod = nullptr;
+	if (ucIndex == 0xFE && TESDataHandler::ExtendedPlugins()) {
+		const uint16_t usSmallIndex = (obj.GetFormID() >> 12) & 0xFFF;
+		pSourceMod = TESDataHandler::GetSingleton()->GetSmallFile(usSmallIndex);
+	}
+	else {
+		pSourceMod = TESDataHandler::GetSingleton()->GetCompiledFile(ucIndex);
+	}
+	
+	if (pSourceMod) {
+		_MESSAGE("Plugin: \"%s\"", pSourceMod->GetName());
 
-		_MESSAGE("Plugin: \"%s\"", pSourceMod->m_Filename);
-
-		if (pSourceMod != pLastMod) {
-			_MESSAGE("Last modified by: \"%s\"", pLastMod->m_Filename);
+		TESFile* pLastMod = obj.kMods.TailItem();
+		if (pLastMod && pSourceMod != pLastMod) {
+			_MESSAGE("Last modified by: \"%s\"", pLastMod->GetName());
 		}
 	}
 }
