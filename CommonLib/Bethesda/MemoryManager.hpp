@@ -69,8 +69,8 @@ struct MemoryManager {
 	bool GetPhysicalHeapStats(UInt32 auiPhysicalHeapIndex, bool abFullBlockInfo, HeapStats* apStats) const;
 
 private:
-	static [[nodiscard]] __declspec(restrict) __declspec(allocator) void* GameMalloc(size_t aSize);
-	static [[nodiscard]] __declspec(restrict) __declspec(allocator) void* GameRealloc(void* apOldMem, size_t auiNewSize);
+	[[nodiscard]] static __declspec(restrict) __declspec(allocator) void* GameMalloc(size_t aSize);
+	[[nodiscard]] static __declspec(restrict) __declspec(allocator) void* GameRealloc(void* apOldMem, size_t auiNewSize);
 	static void		GameFree(void* apMemory);
 	static size_t	GameSize(void* apMemory);
 };
