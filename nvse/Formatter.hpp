@@ -435,7 +435,7 @@ inline void __fastcall LogClass(const TESObjectREFR& obj, bool nested = false) {
 			LogMember("Cell:", *obj.pkParentCell);
 		}
 		else {
-			TESObjectCELL* pPersistentCell = ThisStdCall<TESObjectCELL*>(0x41D460, &obj.kExtraList);
+			TESObjectCELL* pPersistentCell = ThisCall<TESObjectCELL*>(0x41D460, &obj.kExtraList);
 			if (pPersistentCell)
 				LogMember("Persistent Cell", *pPersistentCell);
 			else

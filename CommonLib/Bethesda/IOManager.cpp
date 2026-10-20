@@ -10,5 +10,5 @@ bool IOManager::IsUpdating() {
 
 // GAME - 0x446DA0
 UInt32 IOManager::GetPostProcessQueueCount() const {
-    return ThisStdCall<UInt32>(0x446DA0, this);
+    return ThisCall<UInt32>(0x446DA0, this);
 }
