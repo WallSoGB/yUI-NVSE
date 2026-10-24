@@ -316,6 +316,29 @@ inline void __fastcall LogClass(const Tile& obj, bool nested = false) {
 		}
 	}
 
+	const uint32_t uiValueCount = obj.kValues.GetSize();
+	_MESSAGE("Values: %i", uiValueCount);
+	if (uiValueCount) {
+		AutoIndent indent;
+		try {
+			for (uint32_t i = 0; i < uiValueCount; ++i) {
+				const Tile::Value* pValue = obj.kValues.GetAt(i);
+				if (pValue) {
+					if (pValue->pcStringValue)
+						_MESSAGE("%i) %i - \"%s\"", i, pValue->eID, pValue->pcStringValue);
+					else
+						_MESSAGE("%i) %i - %f", i, pValue->eID, pValue->fNumericalValue);
+				}
+				else {
+					_MESSAGE("%i) %s", i, "null");
+				}
+			}
+		}
+		catch (...) {
+			_MESSAGE("Error during Tile::Value print");
+		}
+	}
+
 	_MESSAGE("XML Path: \"%s\"", finalPath);
 }
 
